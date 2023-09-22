@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="JsTestDriver">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/exercise/javascript-koans/lib/jsTestDriver/JsTestDriver.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
