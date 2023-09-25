@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./roman.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="mainHeading">
+        <h1 class="mainHeadingText">Numeral To Roman Converter</h1>
+    </div>
+<div class="mainContainer">
+    <div class="containerCover">
+    <div class="heading">
+        <h1>Enter Number Value Here</h1>
+        <h1>=></h1>
+    </div>
+        <div class="container">
+            <div class="para">
+                <p>This simple Roman Numerals Converter can be used at any time to convert numbers to Roman numerals. If you need to make conversion from numbers to Roman numerals, simply enter the number in the box.</p>
+            </div>
+            <div class="input">
+                <label for="convertButton"></label>
+                <input type="number" id="convertButton" name="convertButton" min="1" max="5">
+                <button class="button" id="button">Submit</button>
+            </div>
+        </div>
+    </div>
+    <div class="tableContainerCover">
+<!--        <div class="heading">-->
+<!--            <h1>Enter Number Value Here</h1>-->
+<!--            <h1>=></h1>-->
+<!--        </div>-->
+        <div class="tableContainer">
+            <div class="para">
+                <p>The Roman Value of your Number will be as Follows:</p>
+            </div>
+            <div class="tableWrapper">
+                <table id="romanNumeralsTable">
+                    <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Roman</th>
+                    </tr>
+                    </thead>
+                    <tbody id="romanNumeralsTableBody">
+                        <!-- Rows for romanTable will be fetched from the database -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+<script src="./roman.js"></script>
+<script src="./dom.js"></script>
+</html>

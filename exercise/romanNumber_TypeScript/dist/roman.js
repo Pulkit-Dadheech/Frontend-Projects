@@ -1,5 +1,5 @@
 "use strict";
-const roman = {
+const romanNumerals = {
     'M': 1000,
     'D': 500,
     'C': 100,
@@ -8,39 +8,36 @@ const roman = {
     'V': 5,
     'I': 1
 };
-function romans(num) {
+function intToRoman(num) {
     let romanNumber = "";
-    const keys = Object.keys(roman);
-    for (let i in roman) {
-        while (num >= roman[i]) {
+    const romanKeys = Object.keys(romanNumerals);
+    for (const romanSymbol of romanKeys) {
+        while (num >= romanNumerals[romanSymbol]) {
             const numString = num.toString();
-            const firstCharNum = parseInt(numString.charAt(0));
-            const length = (num.toString().length);
-            if ((firstCharNum === 4 || firstCharNum === 9) && length < 4) {
-                let index;
-                index = keys.findIndex(r => r === i);
-                if (firstCharNum === 4) {
-                    console.log(index);
-                    romanNumber += keys[index] + keys[index - 1];
+            const firstDigit = parseInt(numString.charAt(0));
+            const length = numString.length;
+            if ((firstDigit === 4 || firstDigit === 9) && length < 4) {
+                const currentIndex = romanKeys.findIndex(symbol => symbol === romanSymbol);
+                if (firstDigit === 4) {
+                    romanNumber += romanKeys[currentIndex] + romanKeys[currentIndex - 1];
                 }
                 else {
-                    romanNumber += keys[index + 1] + keys[index - 1];
+                    romanNumber += romanKeys[currentIndex + 1] + romanKeys[currentIndex - 1];
                 }
-                num -= (firstCharNum * Math.pow(10, (length - 1)));
+                num -= (firstDigit * Math.pow(10, (length - 1)));
             }
             else {
-                romanNumber += i;
-                num -= roman[i];
+                romanNumber += romanSymbol;
+                num -= romanNumerals[romanSymbol];
             }
         }
     }
     return romanNumber;
 }
-const romanToInt = (numArray) => {
-    const romanArrayString = [];
+function convertToRomanNumerals(numArray) {
+    const romanArray = [];
     numArray.forEach((number) => {
-        romanArrayString.push(romans(number));
+        romanArray.push(intToRoman(number));
     });
-    return romanArrayString;
-};
-console.log(romanToInt([950, 456, 4, 9, 49, 69]));
+    return romanArray;
+}
