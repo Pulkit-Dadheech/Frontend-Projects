@@ -1,49 +1,45 @@
-// import 'es6-promise/auto';
 const getHeader = () => {
     return new Headers({
-        'Content-Type': 'application/json', // Specify the content type as JSON
+        'Content-Type': 'application/json',
     });
 }
-export const fetchDishes = async () :Promise<any>=> {
+export type ingredients = Record<string, number>;
+export type Dish={
+    "id": number,
+    "name": string,
+    "ingredients": ingredients,
+    "time": number
+}
+export const fetchDishes = async () :Promise<Dish[]>=> {
+
+    let dishData:Dish[]=[];
     try {
         const response = await fetch(`https://dishes-api-production.up.railway.app/api/dishes`, {
             method: 'GET',
             headers: getHeader()
         })
 
-        const dishData = await response.json();
-        return dishData;
+        dishData = await response.json();
     } catch (err) {
         console.log('Error while retreiving dishes');
+
     }
+    return dishData;
 }
 // const newData=fetchDishes();
 // console.log(newData);
 
 export const fetchIngredients = async (): Promise<any> => {
+    let ingredientData:ingredients[]=[];
     try {
         const response = await fetch(`https://dishes-api-production.up.railway.app/api/ingredients`, {
             method: 'GET',
             headers: getHeader()
         })
-        const ingredientData = await response.json();
-         return ingredientData;
+        ingredientData = await response.json();
+
     } catch (err) {
         console.log('Error while retreiving ingredients');
     }
+    return ingredientData;
 }
-// async function dishesFetch():Promise<void> {
-//     try {
-//         const {
-//             dishesId,
-//             dishesName,
-//             dishesIngredients :Object,
-//             dishesTime :number
-//         } = await fetchDishes();
-//         let totalAvailableIngredients = await fetchIngredients();
-//         console.log(allDishes);
-//         console.log(totalAvailableIngredients);
-//     } catch (error) {
-//         console.error('An error occurred:', error);
-//     }
-// }
