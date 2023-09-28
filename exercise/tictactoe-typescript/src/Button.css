@@ -1,0 +1,17 @@
+.square{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 30px;
+    text-align: center;
+
+    /*display: inline-block;*/
+    width: 40px;
+    height: 40px;
+}
+p{
+    font-size: 25px;
+    font-family: SansSerif,sans-serif;
+    font-weight: bolder;
+
+}
