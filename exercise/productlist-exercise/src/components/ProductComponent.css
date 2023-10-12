@@ -1,4 +1,4 @@
-.Product-Information{
+.Product-Information {
     display: flex;
     flex-direction: row;
     border-radius: 20px;
@@ -9,31 +9,36 @@
     text-align: left;
     background-color: white;
 }
-.product-image{
+
+.product-image {
     width: 18%;
     display: flex;
     align-items: center;
     align-content: center;
     justify-content: center;
 }
-.product-description{
+
+.product-description {
     width: 40%;
 }
-.product-description h3,h4,p{
+
+.product-description h3, h4, p {
     padding-bottom: 10px;
 }
+
 /*.product-description p{*/
 /*    text-decoration: ;*/
 /*}*/
 
-.product-rating{
+.product-rating {
     width: 10%;
     display: flex;
     align-content: center;
     flex-direction: column;
     justify-content: center;
 }
-.product-rating button{
+
+.product-rating button {
     width: 6rem;
     padding: 7px;
     background-color: black;
@@ -41,4 +46,13 @@
     border: none;
     border-radius: 10px;
     margin-block-start: 10px;
+}
+
+.Product-Header {
+    /*background-color: #cccccc;*/
+    color: black;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+
 }
