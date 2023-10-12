@@ -1,0 +1,21 @@
+.Header-Elements{
+    display: flex;
+    flex-direction: row;
+    padding: 1.5rem;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.63);
+    justify-content: space-around;
+    text-align: center;
+    background-color: white;
+}
+.Search-Box{
+    padding: 1rem;
+    width: 20rem;
+    border-radius: 20px;
+    background-color: white;
+
+}
+.Product-Category{
+    padding: 1rem;
+    width: 10rem;
+    border-radius: 20px;
+}
