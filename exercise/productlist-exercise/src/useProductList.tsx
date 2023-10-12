@@ -33,12 +33,12 @@ export function useProductList(search?: string, category?: string) {
 
     let url: string;
 
-
-    url = fetchProduct();
     if (search) {
         url = fetchSearch(search);
     } else if (category) {
         url = fetchCategory(category);
+    } else {
+        url = fetchProduct();
     }
     let data = useFetch<ProductCatalog>(url);
 
@@ -46,35 +46,13 @@ export function useProductList(search?: string, category?: string) {
     useEffect(() => {
         setProductCatalog(data);
     }, [data]);
-
-
-    // useEffect(() => {
-    //
-    //
-    //     const fetchProductList = async () => {
-    //         try {
-    //             const response: Response = await productList();
-    //             if (response.ok) {
-    //                 const data = await response.json();
-    //                 setProductCatalog(data);
-    //             } else {
-    //                 throw new Error('Failed to fetch product data');
-    //             }
-    //         } catch (error) {
-    //             console.error(error);
-    //         }
-    //
-    //     };
-    //     fetchProductList();
-    // }, [search,category]);
     return useMemo(() => productCatalog, [productCatalog]);
-    // return productCatalog;
 
 }
 
 export function useCategoryList() {
     const [category, setCategory] = useState<string[] | undefined>([]);
-    const url=`https://dummyjson.com/products/categories`;
+    const url = `https://dummyjson.com/products/categories`;
     let data = useFetch<string[]>(url);
 
     useEffect(() => {
@@ -83,6 +61,25 @@ export function useCategoryList() {
 
     return useMemo(() => category, [category]);
 }
+
+interface UserData {
+    firstName: string;
+    lastName: string;
+    // Add other properties if needed
+}
+
+export function useUserList() {
+    const [username, setUsername] = useState<String | undefined>("");
+    const url = `https://dummyjson.com/users/2`;
+    let data = useFetch<UserData>(url);
+
+    useEffect(() => {
+        setUsername(`${data?.firstName}`+`${data?.lastName}`);
+    }, [data]);
+    console.log(username)
+    return useMemo(() => username, [username]);
+}
+
 
 
 // return productElements;

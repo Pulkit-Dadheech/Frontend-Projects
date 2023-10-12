@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import './Header.css';
-import ProductComponent from "./ProductComponent";
 import {useCategoryList} from "../useProductList";
+import {Link} from "react-router-dom";
 
 type headerType =
     {
@@ -11,17 +11,16 @@ type headerType =
         setSelectedCategory: (value: string) => void;
     }
 
-
 export default function Header({searchBoxResult, selectedCategory, setSearchBoxResult, setSelectedCategory}: headerType) {
     const categoryList = useCategoryList();
     const [searchTerm, setSearchTerm] = useState('')
 
     useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
+        const delayDebounceFunction = setTimeout(() => {
             setSearchBoxResult(searchTerm);
         }, 500)
 
-        return () => clearTimeout(delayDebounceFn)
+        return () => clearTimeout(delayDebounceFunction)
     }, [searchTerm])
 
 
@@ -54,10 +53,9 @@ export default function Header({searchBoxResult, selectedCategory, setSearchBoxR
                     </select>
                 </div>
                 <div id="cart">
-                    Bob's Cart
+                    <Link to="/cart">Cart</Link>
                 </div>
             </div>
-            <ProductComponent searchBoxResult={searchBoxResult} category={selectedCategory}/>
         </>
     );
 }
