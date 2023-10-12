@@ -1,12 +1,18 @@
-import React, {useState,useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import './Header.css';
 import ProductComponent from "./ProductComponent";
 import {useCategoryList} from "../useProductList";
 
+type headerType =
+    {
+        searchBoxResult: string;
+        selectedCategory: string;
+        setSearchBoxResult: (value: string) => void;
+        setSelectedCategory: (value: string) => void;
+    }
 
-export default function Header() {
-    const [searchBoxResult, setSearchBoxResult] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+export default function Header({searchBoxResult, selectedCategory, setSearchBoxResult, setSelectedCategory}: headerType) {
     const categoryList = useCategoryList();
     const [searchTerm, setSearchTerm] = useState('')
 
@@ -36,8 +42,7 @@ export default function Header() {
                         if (e.target.value !== 'All') {
 
                             setSelectedCategory(e.target.value)
-                        }
-                        else{
+                        } else {
                             setSelectedCategory("")
                         }
 
