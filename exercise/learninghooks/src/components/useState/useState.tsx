@@ -20,21 +20,21 @@ function Button({handleSubtractButton,handleAddButton,count}:buttonFunctions) {
 
 
 export function UseStateExample() {
-    let [buttonCount, setButtonCount] = useState(0);
+    const [buttonCount, setButtonCount] = useState(0);
     useEffect(() => {
         document.title = String(buttonCount);
 
     },[buttonCount]);
 
     function handleAddButton():void {
-        setButtonCount(++buttonCount);
+        setButtonCount(buttonCount + 1);
     }
 
     function handleSubtractButton() {
         if (buttonCount === 0) {
             return
         }
-        setButtonCount(--buttonCount);
+        setButtonCount(buttonCount - 1);
     }
 
 

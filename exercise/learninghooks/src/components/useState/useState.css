@@ -1,7 +1,12 @@
 button{
     padding: 20px;
-    background-color: rebeccapurple;
+    background-color: mediumpurple;
     color: black;
-    box-shadow: 2px 2px#3e205b;
+    box-shadow: 2px 2px 1px rebeccapurple;
     margin: 20px;
+    opacity: 0.9;
+    border: none;
+}
+button:hover{
+    opacity: 1;
 }
