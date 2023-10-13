@@ -1,17 +1,20 @@
 import React from "react";
 import {useGetUserCart, useGetUserDetails, UserCart} from "../../customHooks";
+import './cartHeader.css'
 
 export default function CartHeader(){
     const userDetails=useGetUserDetails();
     const userName=`${userDetails?.firstName} ${userDetails?.lastName}`;
 
     const userCartCatalog = useGetUserCart();
-    const length=userCartCatalog?.carts[0].products.length;
+    const totalProductsInUserCart=userCartCatalog?.carts[0].products.length;
 
     return (
-        <div className="cartHeaderName">
-            <h1>{userName}</h1>
-            <h2>{length}</h2>
+        <div className="cart-header">
+            <h1 className="cart-header-name">{userName}</h1>
+            <h2 className="cart-total-products">
+                ITEMS({totalProductsInUserCart})
+            </h2>
         </div>
     )
 }

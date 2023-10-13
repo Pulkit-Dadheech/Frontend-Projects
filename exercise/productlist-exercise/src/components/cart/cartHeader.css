@@ -1,0 +1,26 @@
+.cart-header{
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    padding: 20px;
+    justify-content: space-between;
+    box-shadow: 2px 2px 2px grey;
+    align-items: center;
+    border-radius: 10px;
+    border: 2px solid grey;
+
+
+}
+.cart-header-name{
+    font-size: 40px;
+    padding-inline: 30px;
+    color: cadetblue;
+}
+.cart-total-products{
+    text-align: center;
+    padding-inline: 30px;
+    background-color: black;
+    padding: 15px;
+    border-radius: 20px;
+    color: white
+}
