@@ -1,5 +1,5 @@
 import React from "react";
-import {useGetUserCart, useGetUserDetails, UserCart} from "../../customHooks";
+import {useGetUserCart, useGetUserDetails} from "../../customHooks";
 import './cartHeader.css'
 
 export default function CartHeader(){
@@ -13,7 +13,7 @@ export default function CartHeader(){
         <div className="cart-header">
             <h1 className="cart-header-name">{userName}</h1>
             <h2 className="cart-total-products">
-                ITEMS({totalProductsInUserCart})
+                Your Products({totalProductsInUserCart})
             </h2>
         </div>
     )
