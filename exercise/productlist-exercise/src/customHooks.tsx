@@ -91,14 +91,10 @@ export function useGetUserCart() {
     return useFetch<UserCart>(url);
 }
 
-
-
-// return productElements;
-
 interface UserData {
     firstName: string;
     lastName: string;
-    // Add other properties if needed
+
 }
 
 export function useGetUserDetails() {

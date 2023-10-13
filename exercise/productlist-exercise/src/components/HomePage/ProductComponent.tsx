@@ -1,10 +1,14 @@
 import React from "react";
-import {ProductCatalog, useProductList} from "../customHooks";
+import {ProductCatalog, useGetUserCart, useProductList} from "../../customHooks";
 import "./ProductComponent.css";
+import {Button} from "../button/button";
 
 export default function ProductComponent(props: { searchBoxResult?: string; category?: string },) {
 
     const productCatalog: ProductCatalog | undefined = useProductList(props.searchBoxResult, props.category);
+    const userCartCatalog = useGetUserCart();
+
+
     const fetchDiscountPrice = (discount: number, price: number) => {
         return Math.round(price - (discount / 100) * price);
     }
@@ -34,7 +38,7 @@ export default function ProductComponent(props: { searchBoxResult?: string; cate
                         </div>
                         <div className={"product-rating"}>
                             <p>Rating: {product.rating}</p>
-                            <button>Add to Cart</button>
+                            <Button id={product.id} userCartCatalog={userCartCatalog}/>
                         </div>
                     </div>
                 ))
