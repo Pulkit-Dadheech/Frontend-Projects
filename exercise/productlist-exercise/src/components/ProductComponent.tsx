@@ -1,5 +1,5 @@
 import React from "react";
-import {ProductCatalog, useProductList} from "../useProductList";
+import {ProductCatalog, useProductList} from "../customHooks";
 import "./ProductComponent.css";
 
 export default function ProductComponent(props: { searchBoxResult?: string; category?: string },) {
@@ -15,6 +15,7 @@ export default function ProductComponent(props: { searchBoxResult?: string; cate
                     <div key={product.id} className="Product-Information">
                         <div className={"product-image"}>
                             <img src={product.images[0]} alt="Product List" height="100"/>
+
                         </div>
                         <div className={"product-description"}>
                             <h3>Name: {product.title}</h3>

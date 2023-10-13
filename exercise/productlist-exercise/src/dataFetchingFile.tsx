@@ -1,18 +1,24 @@
 import {useEffect, useState} from "react";
-import {ProductCatalog} from "./useProductList";
+import {ProductCatalog} from "./customHooks";
+import exp from "constants";
 
 
-export const baseURL = 'https://dummyjson.com/products';
+export const baseURL = 'https://dummyjson.com';
 export const fetchSearch = (search: string) => {
-    return `${baseURL}/search?q=${search}`;
+    return `${baseURL}/products/search?q=${search}`;
 }
 export const fetchCategory = (category: string) => {
-    return `${baseURL}/category/${category}`;
+    return `${baseURL}/products/category/${category}`;
 
 }
 export const fetchProduct = () => {
-    return `${baseURL}`;
-
+    return `${baseURL}/products`;
+}
+export function getUrlForSingleProduct(id: number) {
+    return `${baseURL}/products/${id}`;
+}
+export function getUserDetails(){
+    return `${baseURL}/users/2`;
 }
 export default function useFetch<Type>(url: string):Type | undefined {
     const [fetchResult, setFetchResult] = useState<Type>();
