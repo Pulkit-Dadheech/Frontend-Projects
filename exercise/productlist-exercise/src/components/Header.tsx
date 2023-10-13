@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import './Header.css';
-import {useCategoryList} from "../customHooks";
+import {useCategoryList, useGetUserDetails} from "../customHooks";
 import {Link} from "react-router-dom";
 
 type headerType =
@@ -14,6 +14,8 @@ type headerType =
 export default function Header({searchBoxResult, selectedCategory, setSearchBoxResult, setSelectedCategory}: headerType) {
     const categoryList = useCategoryList();
     const [searchTerm, setSearchTerm] = useState('')
+    const userDetails=useGetUserDetails();
+    const userName=`${userDetails?.firstName} ${userDetails?.lastName}`;
 
     useEffect(() => {
         const delayDebounceFunction = setTimeout(() => {
@@ -53,7 +55,7 @@ export default function Header({searchBoxResult, selectedCategory, setSearchBoxR
                     </select>
                 </div>
                 <div id="cart">
-                    <Link to="/cart">Cart</Link>
+                    <Link to="/cart">{userName}</Link>
                 </div>
             </div>
         </>
