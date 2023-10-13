@@ -61,7 +61,7 @@ export default function CartProductsList() {
                             <p>Rating: {product.rating}</p>
                             <div id={"product-quantity-button"}>
                                 <button onClick={()=>"handleAddProduct"}>-</button>
-                                <div style={{padding: "5px"}}>{userCartCatalog?.carts[0].products[0].quantity}</div>
+                                <div style={{padding: "5px"}}>{}</div>
                                 <button onClick={()=>"handleDeleteProduct"}>+</button>
                             </div>
                         </div>

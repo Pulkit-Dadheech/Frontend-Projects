@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
-import Header from "./components/Header";
-import ProductComponent from "./components/ProductComponent";
+import Header from "./components/HomePage/Header";
+import ProductComponent from "./components/HomePage/ProductComponent";
 
 function App() {
     const [searchBoxResult, setSearchBoxResult] = useState<string>("");

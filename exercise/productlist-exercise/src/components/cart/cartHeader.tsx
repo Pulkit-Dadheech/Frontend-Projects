@@ -3,10 +3,11 @@ import {useGetUserCart, useGetUserDetails} from "../../customHooks";
 import './cartHeader.css'
 
 export default function CartHeader(){
-    const userDetails=useGetUserDetails();
-    const userName=`${userDetails?.firstName} ${userDetails?.lastName}`;
 
     const userCartCatalog = useGetUserCart();
+    const userDetails = useGetUserDetails();
+    const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;
+
     const totalProductsInUserCart=userCartCatalog?.carts[0].products.length;
 
     return (
