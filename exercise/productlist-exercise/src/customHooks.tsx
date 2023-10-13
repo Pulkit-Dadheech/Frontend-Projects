@@ -1,8 +1,8 @@
 import {useEffect, useMemo, useState} from 'react';
 import './productlist.css'
-import useFetch, {fetchCategory, fetchProduct, fetchSearch} from "./dataFetchingFile";
+import useFetch, {baseURL, fetchCategory, fetchProduct, fetchSearch, getUserDetails} from "./dataFetchingFile";
 
-type Product = {
+export type Product = {
     id: number;
     title: string;
     description: string;
@@ -22,6 +22,30 @@ export type ProductCatalog = {
     skip: number;
     limit: number;
 };
+type cartProduct = {
+    id: number;
+    title: string;
+    price: number;
+    quantity: number;
+    total: number;
+    discountPercentage: number;
+    discountedPrice: number;
+};
+export type carts = {
+    id:number,
+    products: cartProduct[]
+    total: number,
+    "discountedTotal": number,
+    "userId": number, // user id is 5
+    "totalProducts": number,
+    "totalQuantity": number
+}
+export type UserCart = {
+    carts: carts[]
+    total: number
+    skip: number
+    limit: number
+}
 
 export function useProductList(search?: string, category?: string) {
     const [productCatalog, setProductCatalog] = useState<ProductCatalog | undefined>({
@@ -40,7 +64,7 @@ export function useProductList(search?: string, category?: string) {
     } else {
         url = fetchProduct();
     }
-    let data = useFetch<ProductCatalog>(url);
+    const data = useFetch<ProductCatalog>(url);
 
 
     useEffect(() => {
@@ -52,8 +76,8 @@ export function useProductList(search?: string, category?: string) {
 
 export function useCategoryList() {
     const [category, setCategory] = useState<string[] | undefined>([]);
-    const url = `https://dummyjson.com/products/categories`;
-    let data = useFetch<string[]>(url);
+    const url = `${baseURL}/products/categories`;
+    const data = useFetch<string[]>(url);
 
     useEffect(() => {
         setCategory(data);
@@ -62,25 +86,21 @@ export function useCategoryList() {
     return useMemo(() => category, [category]);
 }
 
-interface UserData {
-    firstName: string;
-    lastName: string;
-    // Add other properties if needed
-}
-
-export function useUserList() {
-    const [username, setUsername] = useState<String | undefined>("");
-    const url = `https://dummyjson.com/users/2`;
-    let data = useFetch<UserData>(url);
-
-    useEffect(() => {
-        setUsername(`${data?.firstName}`+`${data?.lastName}`);
-    }, [data]);
-    console.log(username)
-    return useMemo(() => username, [username]);
+export function useGetUserCart() {
+    const url = `${baseURL}/users/5/carts`;
+    return useFetch<UserCart>(url);
 }
 
 
 
 // return productElements;
 
+interface UserData {
+    firstName: string;
+    lastName: string;
+    // Add other properties if needed
+}
+
+export function useGetUserDetails() {
+    return useFetch<UserData>(getUserDetails());
+}

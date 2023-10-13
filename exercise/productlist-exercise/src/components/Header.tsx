@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import './Header.css';
-import {useCategoryList} from "../useProductList";
+import {useCategoryList} from "../customHooks";
 import {Link} from "react-router-dom";
 
 type headerType =
