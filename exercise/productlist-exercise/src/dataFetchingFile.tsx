@@ -1,6 +1,4 @@
 import {useEffect, useState} from "react";
-import {ProductCatalog} from "./customHooks";
-import exp from "constants";
 
 
 export const baseURL = 'https://dummyjson.com';
@@ -14,13 +12,16 @@ export const fetchCategory = (category: string) => {
 export const fetchProduct = () => {
     return `${baseURL}/products`;
 }
+
 export function getUrlForSingleProduct(id: number) {
     return `${baseURL}/products/${id}`;
 }
-export function getUserDetails(){
-    return `${baseURL}/users/2`;
+
+export function getUserDetails() {
+    return `${baseURL}/users/5`;
 }
-export default function useFetch<Type>(url: string):Type | undefined {
+
+export default function useFetch<Type>(url: string): Type | undefined {
     const [fetchResult, setFetchResult] = useState<Type>();
 
     useEffect(() => {

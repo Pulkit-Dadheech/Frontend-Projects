@@ -1,14 +1,51 @@
-import React from "react";
-import {UserCart} from "../../customHooks";
+import React, { Dispatch, SetStateAction } from "react";
+import { UserCart } from "../../customHooks";
 
-
-export function Button({id, userCartCatalog}: {
-    id: number,
-    userCartCatalog: UserCart | undefined
+export function Button({
+                           id,
+                           userCartCatalog,
+                           setUserCartCatalog,
+                       }: {
+    id: number;
+    userCartCatalog: UserCart | undefined;
+    setUserCartCatalog: Dispatch<SetStateAction<UserCart | undefined>> | undefined;
 }) {
     const totalProducts = userCartCatalog?.carts[0].products;
 
     let shouldRenderAddToCart = true;
+
+    async function handleProduct(id: number, quantity?: number) {
+        if (quantity === undefined) {
+            quantity = 0;
+        }
+
+        try {
+            const response = await fetch(`https://dummyjson.com/carts/19`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    merge: true,
+                    products: [
+                        {
+                            id: id,
+                            quantity: quantity + 1,
+                        },
+                    ],
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (setUserCartCatalog) {
+                    setUserCartCatalog(data);
+                }
+            } else {
+                console.error("Failed to update the cart.");
+            }
+        } catch (error) {
+            console.error("An error occurred while updating the cart:", error);
+        }
+    }
 
     return (
         <div>
@@ -18,9 +55,9 @@ export function Button({id, userCartCatalog}: {
                     shouldRenderAddToCart = false;
                     return (
                         <div key={product.id} id="product-quantity-button">
-                            <button onClick={handleAddProduct}>-</button>
-                            <div style={{padding: "5px"}}>{product.quantity}</div>
-                            <button onClick={handleDeleteProduct}>+</button>
+                            <button onClick={() => handleAddProduct(id, product.quantity)}>+</button>
+                            <div style={{ padding: "5px" }}>{product.quantity}</div>
+                            <button onClick={() => handleDeleteProduct(product.id)}>-</button>
                         </div>
                     );
                 } else {
@@ -29,21 +66,16 @@ export function Button({id, userCartCatalog}: {
             })}
 
             {shouldRenderAddToCart && (
-                <button onClick={handleAddToCart}>Add to Cart</button>
+                <button onClick={() => handleAddProduct(id)}>Add to Cart</button>
             )}
         </div>
     );
 
-
-    function handleAddProduct() {
-
+    function handleAddProduct(id: number, quantity?: number) {
+        handleProduct(id, quantity);
     }
 
-    function handleDeleteProduct() {
-
-    }
-
-    function handleAddToCart() {
-
+    function handleDeleteProduct(id: number) {
+        // Handle product deletion logic here
     }
 }

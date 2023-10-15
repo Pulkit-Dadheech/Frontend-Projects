@@ -1,12 +1,16 @@
-import React, {useEffect, useState} from "react";
-import {Product, useGetUserCart, UserCart} from "../../customHooks";
+import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
+import {cartProduct, Product, useGetUserCart, UserCart} from "../../customHooks";
 import {getUrlForSingleProduct} from "../../dataFetchingFile";
+import {Button} from "../button/button";
 
 
-export default function CartProductsList() {
+export default function CartProductsList({userCartCatalog,setUserCartCatalog}: {
+    userCartCatalog: UserCart | undefined;
+    setUserCartCatalog: Dispatch<SetStateAction<UserCart | undefined>>;
+}) {
 
     const [userCartProducts, setUserCartProducts] = useState<Product[] | undefined>();
-    const userCartCatalog = useGetUserCart();
+
     const products = userCartCatalog?.carts[0]?.products;
 
     useEffect(() => {
@@ -59,11 +63,12 @@ export default function CartProductsList() {
                         </div>
                         <div className={"product-rating"}>
                             <p>Rating: {product.rating}</p>
-                            <div id={"product-quantity-button"}>
-                                <button onClick={()=>"handleAddProduct"}>-</button>
-                                <div style={{padding: "5px"}}>{}</div>
-                                <button onClick={()=>"handleDeleteProduct"}>+</button>
-                            </div>
+                            {/*<div id={"product-quantity-button"}>*/}
+                            {/*    <button onClick={()=>"handleAddProduct"}>-</button>*/}
+                            {/*    <div style={{padding: "5px"}}>{}</div>*/}
+                            {/*    <button onClick={()=>"handleDeleteProduct"}>+</button>*/}
+                            {/*</div>*/}
+                            <Button id={product.id} userCartCatalog={userCartCatalog} setUserCartCatalog={setUserCartCatalog}></Button>
                         </div>
                     </div>
                 ))
