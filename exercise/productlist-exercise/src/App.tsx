@@ -17,6 +17,10 @@ function App() {
     const [searchBoxResult, setSearchBoxResult] = useState<string>("");
     const [selectedCategory, setSelectedCategory] = useState<string>("");
 
+    if(!userCart){
+        return <></>;
+    }
+    console.log(userCart);
     return (
         <>
             <Header

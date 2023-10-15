@@ -1,23 +1,23 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction,useState } from "react";
 import { UserCart } from "../../customHooks";
 
-export function Button({
-                           id,
-                           userCartCatalog,
-                           setUserCartCatalog,
-                       }: {
-    id: number;
-    userCartCatalog: UserCart | undefined;
-    setUserCartCatalog: Dispatch<SetStateAction<UserCart | undefined>> | undefined;
+export function Button({id, userCartCatalog, setUserCartCatalog,}: { id: number; userCartCatalog: UserCart | undefined; setUserCartCatalog: Dispatch<SetStateAction<UserCart | undefined>> | undefined;
 }) {
-    const totalProducts = userCartCatalog?.carts[0].products;
+    const [userPrevCartCatalog,setUserPrevCartCatalog]=useState<{
+        id: number,
+        quantity: number
+    }[]>();
+    const totalProducts = userCartCatalog?.carts[0]?.products;
 
     let shouldRenderAddToCart = true;
 
-    async function handleProduct(id: number, quantity?: number) {
+    async function handleAddProduct(id: number, quantity?: number,isDelete?: boolean) {
         if (quantity === undefined) {
             quantity = 0;
         }
+        const updatedProduct = { id: id, quantity: isDelete? quantity - 1:quantity+1 };
+        const updatedCart = userPrevCartCatalog ? [...userPrevCartCatalog, updatedProduct] : [updatedProduct];
+        console.log(updatedCart);
 
         try {
             const response = await fetch(`https://dummyjson.com/carts/19`, {
@@ -25,23 +25,29 @@ export function Button({
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     merge: true,
-                    products: [
-                        {
-                            id: id,
-                            quantity: quantity + 1,
-                        },
-                    ],
+                    products: updatedCart,
+
                 }),
             });
 
+
             if (response.ok) {
                 const data = await response.json();
-                if (setUserCartCatalog) {
-                    setUserCartCatalog(data);
+                if (setUserCartCatalog && userCartCatalog) {
+                    setUserCartCatalog({
+                        carts: Array(data),
+                        total: userCartCatalog.total ?? undefined,
+                        skip: userCartCatalog.skip ?? undefined,
+                        limit: userCartCatalog.limit ?? undefined,
+                    });
+                } else {
+                    console.error("userCartCatalog is undefined or setUserCartCatalog is not available");
                 }
             } else {
                 console.error("Failed to update the cart.");
             }
+            console.log('cartCatalog',userPrevCartCatalog);
+            setUserPrevCartCatalog(updatedCart);
         } catch (error) {
             console.error("An error occurred while updating the cart:", error);
         }
@@ -57,7 +63,7 @@ export function Button({
                         <div key={product.id} id="product-quantity-button">
                             <button onClick={() => handleAddProduct(id, product.quantity)}>+</button>
                             <div style={{ padding: "5px" }}>{product.quantity}</div>
-                            <button onClick={() => handleDeleteProduct(product.id)}>-</button>
+                            <button onClick={() => handleAddProduct(product.id,product.quantity,true)}>-</button>
                         </div>
                     );
                 } else {
@@ -71,11 +77,5 @@ export function Button({
         </div>
     );
 
-    function handleAddProduct(id: number, quantity?: number) {
-        handleProduct(id, quantity);
-    }
 
-    function handleDeleteProduct(id: number) {
-        // Handle product deletion logic here
-    }
 }

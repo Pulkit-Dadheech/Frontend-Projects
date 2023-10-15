@@ -1,5 +1,5 @@
 import {createContext, useState, Dispatch, SetStateAction, useEffect} from "react";
-import { useGetUserCart, UserCart } from "./customHooks";
+import {useGetUserCart, useGetUserDetails, UserCart} from "./customHooks";
 
 interface ContextType {
     userCart: UserCart | undefined;
@@ -10,13 +10,14 @@ export const UserContext = createContext<ContextType | undefined>(undefined);
 
 function MyContextProvider({ children }: {children:React.ReactNode}) {
     const [userCart, setUserCart] = useState<UserCart | undefined>();
-
     const userCartCatalog = useGetUserCart();
-    console.log(userCartCatalog);
+
+
 
     useEffect(()=>{
+        console.log(`previous->`,userCart);
         setUserCart(userCartCatalog);
-        console.log(userCart);
+        console.log(`next->`,userCart);
     },[userCartCatalog])
 
     return (
