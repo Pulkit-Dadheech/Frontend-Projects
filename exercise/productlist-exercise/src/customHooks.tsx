@@ -22,7 +22,7 @@ export type ProductCatalog = {
     skip: number;
     limit: number;
 };
-type cartProduct = {
+export type cartProduct = {
     id: number;
     title: string;
     price: number;

@@ -1,12 +1,11 @@
-import React from "react";
-import {ProductCatalog, useGetUserCart, useProductList} from "../../customHooks";
+import React, {Dispatch, SetStateAction} from "react";
+import {ProductCatalog, useProductList, UserCart} from "../../customHooks";
 import "./ProductComponent.css";
 import {Button} from "../button/button";
 
-export default function ProductComponent(props: { searchBoxResult?: string; category?: string },) {
+export default function ProductComponent(props: { searchBoxResult?: string; category?: string, userCartCatalog?: UserCart | undefined, setUserCartCatalog?: Dispatch<SetStateAction<UserCart | undefined>>; },) {
 
     const productCatalog: ProductCatalog | undefined = useProductList(props.searchBoxResult, props.category);
-    const userCartCatalog = useGetUserCart();
 
 
     const fetchDiscountPrice = (discount: number, price: number) => {
@@ -38,7 +37,8 @@ export default function ProductComponent(props: { searchBoxResult?: string; cate
                         </div>
                         <div className={"product-rating"}>
                             <p>Rating: {product.rating}</p>
-                            <Button id={product.id} userCartCatalog={userCartCatalog}/>
+                            <Button id={product.id} userCartCatalog={props.userCartCatalog}
+                                    setUserCartCatalog={props.setUserCartCatalog}/>
                         </div>
                     </div>
                 ))
