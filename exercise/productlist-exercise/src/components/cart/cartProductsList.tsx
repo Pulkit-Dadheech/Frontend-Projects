@@ -1,10 +1,10 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {cartProduct, Product, useGetUserCart, UserCart} from "../../customHooks";
+import {Product, UserCart} from "../../customHooks";
 import {getUrlForSingleProduct} from "../../dataFetchingFile";
 import {Button} from "../button/button";
 
 
-export default function CartProductsList({userCartCatalog,setUserCartCatalog}: {
+export default function CartProductsList({userCartCatalog, setUserCartCatalog}: {
     userCartCatalog: UserCart | undefined;
     setUserCartCatalog: Dispatch<SetStateAction<UserCart | undefined>>;
 }) {
@@ -33,8 +33,6 @@ export default function CartProductsList({userCartCatalog,setUserCartCatalog}: {
     const fetchDiscountPrice = (discount: number, price: number) => {
         return Math.round(price - (discount / 100) * price);
     }
-
-
 
 
     return (
@@ -68,7 +66,8 @@ export default function CartProductsList({userCartCatalog,setUserCartCatalog}: {
                             {/*    <div style={{padding: "5px"}}>{}</div>*/}
                             {/*    <button onClick={()=>"handleDeleteProduct"}>+</button>*/}
                             {/*</div>*/}
-                            <Button id={product.id} userCartCatalog={userCartCatalog} setUserCartCatalog={setUserCartCatalog}></Button>
+                            <Button id={product.id} userCartCatalog={userCartCatalog}
+                                    setUserCartCatalog={setUserCartCatalog}></Button>
                         </div>
                     </div>
                 ))
