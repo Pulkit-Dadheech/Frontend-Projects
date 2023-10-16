@@ -14,10 +14,9 @@ export default function Cart() {
     }
 
     const {userCart, setUserCart} = userContext;
-
-    if(!userCart){
-        return <></>;
-    }
+    // if(!userCart){
+    //     return <></>;
+    // }
     return (
         <>
             <CartHeader userCartCatalog={userCart}/>

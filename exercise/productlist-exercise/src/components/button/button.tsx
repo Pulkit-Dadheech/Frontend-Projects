@@ -1,28 +1,32 @@
-import React, { Dispatch, SetStateAction,useState } from "react";
-import { UserCart } from "../../customHooks";
+import React, {Dispatch, SetStateAction, useContext} from "react";
+import {UserCart} from "../../customHooks";
+import {UserContext} from "../../context";
 
-export function Button({id, userCartCatalog, setUserCartCatalog,}: { id: number; userCartCatalog: UserCart | undefined; setUserCartCatalog: Dispatch<SetStateAction<UserCart | undefined>> | undefined;
+export function Button({id, userCartCatalog, setUserCartCatalog}: {
+    id: number; userCartCatalog: UserCart | undefined; setUserCartCatalog: Dispatch<SetStateAction<UserCart | undefined>> | undefined;
 }) {
-    const [userPrevCartCatalog,setUserPrevCartCatalog]=useState<{
-        id: number,
-        quantity: number
-    }[]>();
     const totalProducts = userCartCatalog?.carts[0]?.products;
 
     let shouldRenderAddToCart = true;
 
-    async function handleAddProduct(id: number, quantity?: number,isDelete?: boolean) {
+    const userContext=useContext(UserContext);
+    if (userContext === undefined) {
+        throw new Error("UserContext is not provided correctly.");
+    }
+    const {userPrevCartCatalog,setUserPrevCartCatalog}=userContext
+    async function handleProduct(id: number, quantity?: number, isDelete?: boolean) {
         if (quantity === undefined) {
             quantity = 0;
         }
-        const updatedProduct = { id: id, quantity: isDelete? quantity - 1:quantity+1 };
+        const updatedProduct = {id: id, quantity: isDelete ? quantity - 1 : quantity + 1};
         const updatedCart = userPrevCartCatalog ? [...userPrevCartCatalog, updatedProduct] : [updatedProduct];
         console.log(updatedCart);
 
+        setUserPrevCartCatalog(updatedCart);
         try {
             const response = await fetch(`https://dummyjson.com/carts/19`, {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
                     merge: true,
                     products: updatedCart,
@@ -46,8 +50,8 @@ export function Button({id, userCartCatalog, setUserCartCatalog,}: { id: number;
             } else {
                 console.error("Failed to update the cart.");
             }
-            console.log('cartCatalog',userPrevCartCatalog);
-            setUserPrevCartCatalog(updatedCart);
+            // console.log('cartCatalog',userPrevCartCatalog);
+
         } catch (error) {
             console.error("An error occurred while updating the cart:", error);
         }
@@ -61,9 +65,9 @@ export function Button({id, userCartCatalog, setUserCartCatalog,}: { id: number;
                     shouldRenderAddToCart = false;
                     return (
                         <div key={product.id} id="product-quantity-button">
-                            <button onClick={() => handleAddProduct(id, product.quantity)}>+</button>
-                            <div style={{ padding: "5px" }}>{product.quantity}</div>
-                            <button onClick={() => handleAddProduct(product.id,product.quantity,true)}>-</button>
+                            <button onClick={() => handleProduct(id, product.quantity)}>+</button>
+                            <div style={{padding: "5px"}}>{product.quantity}</div>
+                            <button onClick={() => handleProduct(product.id, product.quantity, true)}>-</button>
                         </div>
                     );
                 } else {
@@ -72,7 +76,7 @@ export function Button({id, userCartCatalog, setUserCartCatalog,}: { id: number;
             })}
 
             {shouldRenderAddToCart && (
-                <button onClick={() => handleAddProduct(id)}>Add to Cart</button>
+                <button onClick={() => handleProduct(id)}>Add to Cart</button>
             )}
         </div>
     );
