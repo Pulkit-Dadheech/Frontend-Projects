@@ -1,6 +1,13 @@
 import {useEffect, useMemo, useState} from 'react';
 import './productlist.css'
-import useFetch, {baseURL, fetchCategory, fetchProduct, fetchSearch, getUserDetails} from "./dataFetchingFile";
+import useFetch, {
+    baseURL,
+    fetchCategory,
+    fetchProduct,
+    fetchSearch,
+    getUserCart,
+    getUserDetails
+} from "./dataFetchingFile";
 
 export type Product = {
     id: number;
@@ -32,11 +39,11 @@ export type cartProduct = {
     discountedPrice: number;
 };
 export type carts = {
-    id:number,
+    id: number,
     products: cartProduct[]
     total: number,
     "discountedTotal": number,
-    "userId": number, // user id is 5
+    "userId": number,
     "totalProducts": number,
     "totalQuantity": number
 }
@@ -46,6 +53,7 @@ export type UserCart = {
     skip: number
     limit: number
 }
+
 interface UserData {
     firstName: string;
     lastName: string;
@@ -63,20 +71,18 @@ export function useProductList(search?: string, category?: string) {
 
     if (search) {
         url = fetchSearch(search);
-    }
-    else if (category) {
+    } else if (category) {
         url = fetchCategory(category);
+    } else {
+        url = fetchProduct();
     }
-    else {
-            url = fetchProduct();
-    }
-    let data:ProductCatalog | undefined;
+    let data: ProductCatalog | undefined;
     data = useFetch<ProductCatalog>(url);
 
-    if(search && category){
-        const newData=data?.products.filter((product)=> product.category===category)
-        if(data && newData){
-            data={
+    if (search && category) {
+        const newData = data?.products.filter((product) => product.category === category)
+        if (data && newData) {
+            data = {
                 products: newData,
                 total: data.total,
                 skip: data.skip,
@@ -85,7 +91,6 @@ export function useProductList(search?: string, category?: string) {
             }
         }
     }
-
 
 
     useEffect(() => {
@@ -106,12 +111,6 @@ export function useCategoryList() {
 
     return useMemo(() => category, [category]);
 }
-
-export function useGetUserCart() {
-    const url = `${baseURL}/users/5/carts`;
-    return useFetch<UserCart>(url);
-}
-
 
 
 export function useGetUserDetails() {
