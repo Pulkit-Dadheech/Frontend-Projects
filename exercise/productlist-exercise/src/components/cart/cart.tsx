@@ -13,6 +13,7 @@ export default function Cart() {
     }
 
     const {userCart, setUserCart} = userContext;
+
     return (
         <>
             <CartHeader userCartCatalog={userCart}/>

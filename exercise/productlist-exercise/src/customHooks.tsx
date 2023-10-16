@@ -1,13 +1,6 @@
 import {useEffect, useMemo, useState} from 'react';
 import './productlist.css'
-import useFetch, {
-    baseURL,
-    fetchCategory,
-    fetchProduct,
-    fetchSearch,
-    getUserCart,
-    getUserDetails
-} from "./dataFetchingFile";
+import useFetch, {baseURL, fetchCategory, fetchProduct, fetchSearch, getUserDetails} from "./dataFetchingFile";
 
 export type Product = {
     id: number;

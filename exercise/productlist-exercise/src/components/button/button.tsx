@@ -40,7 +40,7 @@ export function Button({id, userCartCatalog, setUserCartCatalog}: {
 
 
             if (response.ok) {
-                const data = await response.json();
+                const data = await response.json()
                 if (setUserCartCatalog && userCartCatalog) {
                     setUserCartCatalog({
                         carts: Array(data),
