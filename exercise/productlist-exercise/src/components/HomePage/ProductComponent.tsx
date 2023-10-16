@@ -3,10 +3,14 @@ import {ProductCatalog, useProductList, UserCart} from "../../customHooks";
 import "./ProductComponent.css";
 import {Button} from "../button/button";
 
-export default function ProductComponent(props: { searchBoxResult?: string; category?: string, userCartCatalog?: UserCart | undefined, setUserCartCatalog?: Dispatch<SetStateAction<UserCart | undefined>>; },) {
+export default function ProductComponent(props: {
+    searchBoxResult?: string;
+    category?: string,
+    userCartCatalog?: UserCart | undefined,
+    setUserCartCatalog?: Dispatch<SetStateAction<UserCart | undefined>>;
+},) {
 
     const productCatalog: ProductCatalog | undefined = useProductList(props.searchBoxResult, props.category);
-
 
     const fetchDiscountPrice = (discount: number, price: number) => {
         return Math.round(price - (discount / 100) * price);

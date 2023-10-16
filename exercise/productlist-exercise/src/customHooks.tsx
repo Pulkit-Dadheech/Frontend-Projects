@@ -46,6 +46,10 @@ export type UserCart = {
     skip: number
     limit: number
 }
+interface UserData {
+    firstName: string;
+    lastName: string;
+}
 
 export function useProductList(search?: string, category?: string) {
     const [productCatalog, setProductCatalog] = useState<ProductCatalog | undefined>({
@@ -59,12 +63,29 @@ export function useProductList(search?: string, category?: string) {
 
     if (search) {
         url = fetchSearch(search);
-    } else if (category) {
-        url = fetchCategory(category);
-    } else {
-        url = fetchProduct();
     }
-    const data = useFetch<ProductCatalog>(url);
+    else if (category) {
+        url = fetchCategory(category);
+    }
+    else {
+            url = fetchProduct();
+    }
+    let data:ProductCatalog | undefined;
+    data = useFetch<ProductCatalog>(url);
+
+    if(search && category){
+        const newData=data?.products.filter((product)=> product.category===category)
+        if(data && newData){
+            data={
+                products: newData,
+                total: data.total,
+                skip: data.skip,
+                limit: data.limit,
+
+            }
+        }
+    }
+
 
 
     useEffect(() => {
@@ -91,11 +112,7 @@ export function useGetUserCart() {
     return useFetch<UserCart>(url);
 }
 
-interface UserData {
-    firstName: string;
-    lastName: string;
 
-}
 
 export function useGetUserDetails() {
     return useFetch<UserData>(getUserDetails());

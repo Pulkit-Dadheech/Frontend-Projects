@@ -41,7 +41,6 @@ export default function Header({searchBoxResult, selectedCategory, setSearchBoxR
                 <div>
                     <select onChange={(e) => {
                         if (e.target.value !== 'All') {
-
                             setSelectedCategory(e.target.value)
                         } else {
                             setSelectedCategory("")
