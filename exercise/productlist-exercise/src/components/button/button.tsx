@@ -1,6 +1,7 @@
 import React, {Dispatch, SetStateAction, useContext} from "react";
 import {UserCart} from "../../customHooks";
 import {UserContext} from "../../context";
+import {baseURL, getUserCart} from "../../dataFetchingFile";
 
 export function Button({id, userCartCatalog, setUserCartCatalog}: {
     id: number; userCartCatalog: UserCart | undefined; setUserCartCatalog: Dispatch<SetStateAction<UserCart | undefined>> | undefined;
@@ -24,7 +25,7 @@ export function Button({id, userCartCatalog, setUserCartCatalog}: {
 
         setUserPrevCartCatalog(updatedCart);
         try {
-            const response = await fetch(`https://dummyjson.com/carts/19`, {
+            const response = await fetch(getUserCart(), {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
