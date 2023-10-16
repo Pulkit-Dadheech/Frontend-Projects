@@ -1,27 +1,29 @@
-import {createContext, useState, Dispatch, SetStateAction, useEffect} from "react";
-import {useGetUserCart, useGetUserDetails, UserCart} from "./customHooks";
+import {createContext, Dispatch, SetStateAction, useEffect, useState} from "react";
+import {useGetUserCart, UserCart} from "./customHooks";
 
 interface ContextType {
     userCart: UserCart | undefined;
     setUserCart: Dispatch<SetStateAction<UserCart | undefined>>;
+    userPrevCartCatalog: { id: number, quantity: number}[] | undefined;
+    setUserPrevCartCatalog: Dispatch<SetStateAction<{ id: number, quantity: number}[] | undefined>>
 }
 
 export const UserContext = createContext<ContextType | undefined>(undefined);
 
-function MyContextProvider({ children }: {children:React.ReactNode}) {
+function MyContextProvider({children}: { children: React.ReactNode }) {
     const [userCart, setUserCart] = useState<UserCart | undefined>();
     const userCartCatalog = useGetUserCart();
+    const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<{
+        id: number,
+        quantity: number
+    }[]>();
 
-
-
-    useEffect(()=>{
-        console.log(`previous->`,userCart);
+    useEffect(() => {
         setUserCart(userCartCatalog);
-        console.log(`next->`,userCart);
-    },[userCartCatalog])
+    }, [userCartCatalog])
 
     return (
-        <UserContext.Provider value={{ userCart, setUserCart }}>
+        <UserContext.Provider value={{userCart, setUserCart,userPrevCartCatalog,setUserPrevCartCatalog}}>
             {children}
         </UserContext.Provider>
     );
