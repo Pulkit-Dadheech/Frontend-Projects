@@ -4,9 +4,7 @@ import './index.css';
 import App from './App';
 import Cart from "./components/cart/cart";
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
-import {useGetUserDetails} from "./customHooks";
 import MyContextProvider from "./context";
-
 
 
 const root = ReactDOM.createRoot(

@@ -1,23 +1,22 @@
-import React, { useState, useContext } from 'react';
+import React, {useContext, useState} from 'react';
 import './App.css';
 import Header from "./components/HomePage/Header";
 import ProductComponent from "./components/HomePage/ProductComponent";
-import { UserContext } from "./context";
+import {UserContext} from "./context";
 
 function App() {
     const userContext = useContext(UserContext);
 
-    // Check if userContext is defined
     if (userContext === undefined) {
         throw new Error("UserContext is not provided correctly.");
     }
 
-    const { userCart, setUserCart } = userContext;
+    const {userCart, setUserCart} = userContext;
 
     const [searchBoxResult, setSearchBoxResult] = useState<string>("");
     const [selectedCategory, setSelectedCategory] = useState<string>("");
 
-    if(!userCart){
+    if (!userCart) {
         return <></>;
     }
     console.log(userCart);

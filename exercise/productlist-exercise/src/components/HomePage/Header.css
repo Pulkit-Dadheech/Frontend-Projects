@@ -1,4 +1,4 @@
-.Header-Elements{
+.Header-Elements {
     display: flex;
     flex-direction: row;
     padding: 1.5rem;
@@ -8,23 +8,25 @@
     background-color: white;
     align-items: center;
 }
-.Search-Box{
+
+.Search-Box {
     padding: 1rem;
     width: 20rem;
     border-radius: 20px;
     background-color: white;
 
 }
-.Product-Category{
+
+.Product-Category {
     padding: 1rem;
     width: 10rem;
     border-radius: 20px;
 }
 
-a{
+a {
     background-color: black;
     text-decoration: none;
-    color:white;
+    color: white;
     padding: 15px;
     box-shadow: 2px 2px 2px black;
     border-radius: 10px;

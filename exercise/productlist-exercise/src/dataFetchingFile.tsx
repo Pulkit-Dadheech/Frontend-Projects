@@ -1,6 +1,4 @@
 import {useEffect, useState} from "react";
-import exp from "constants";
-
 
 export const baseURL = 'https://dummyjson.com';
 export const fetchSearch = (search: string) => {
@@ -17,11 +15,16 @@ export const fetchProduct = () => {
 export function getUrlForSingleProduct(id: number) {
     return `${baseURL}/products/${id}`;
 }
+
 export function getUserDetails() {
     return `${baseURL}/users/5`;
 }
-export function getUserCart(){
+
+export function getCart() {
     return `${baseURL}/carts/19`;
+}
+export function getUserCart() {
+    return `${baseURL}/users/5/carts`;
 }
 
 export default function useFetch<Type>(url: string): Type | undefined {

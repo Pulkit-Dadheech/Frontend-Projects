@@ -1,21 +1,24 @@
 import React, {Dispatch, SetStateAction, useContext} from "react";
 import {UserCart} from "../../customHooks";
 import {UserContext} from "../../context";
-import {baseURL, getUserCart} from "../../dataFetchingFile";
+import {getCart} from "../../dataFetchingFile";
 
 export function Button({id, userCartCatalog, setUserCartCatalog}: {
-    id: number; userCartCatalog: UserCart | undefined; setUserCartCatalog: Dispatch<SetStateAction<UserCart | undefined>> | undefined;
+    id: number;
+    userCartCatalog: UserCart | undefined;
+    setUserCartCatalog: Dispatch<SetStateAction<UserCart | undefined>> | undefined;
 }) {
     const totalProducts = userCartCatalog?.carts[0]?.products;
 
     let shouldRenderAddToCart = true;
 
-    const userContext=useContext(UserContext);
+    const userContext = useContext(UserContext);
     if (userContext === undefined) {
         throw new Error("UserContext is not provided correctly.");
     }
-    const {userPrevCartCatalog,setUserPrevCartCatalog}=userContext
-    async function handleProduct(id: number, quantity?: number, isDelete?: boolean) {
+    const {userPrevCartCatalog, setUserPrevCartCatalog} = userContext
+
+    async function handleProductButton(id: number, quantity?: number, isDelete?: boolean) {
         if (quantity === undefined) {
             quantity = 0;
         }
@@ -25,7 +28,7 @@ export function Button({id, userCartCatalog, setUserCartCatalog}: {
 
         setUserPrevCartCatalog(updatedCart);
         try {
-            const response = await fetch(getUserCart(), {
+            const response = await fetch(getCart(), {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
@@ -66,9 +69,9 @@ export function Button({id, userCartCatalog, setUserCartCatalog}: {
                     shouldRenderAddToCart = false;
                     return (
                         <div key={product.id} id="product-quantity-button">
-                            <button onClick={() => handleProduct(id, product.quantity)}>+</button>
+                            <button onClick={() => handleProductButton(id, product.quantity)}>+</button>
                             <div style={{padding: "5px"}}>{product.quantity}</div>
-                            <button onClick={() => handleProduct(product.id, product.quantity, true)}>-</button>
+                            <button onClick={() => handleProductButton(product.id, product.quantity, true)}>-</button>
                         </div>
                     );
                 } else {
@@ -77,7 +80,7 @@ export function Button({id, userCartCatalog, setUserCartCatalog}: {
             })}
 
             {shouldRenderAddToCart && (
-                <button onClick={() => handleProduct(id)}>Add to Cart</button>
+                <button onClick={() => handleProductButton(id)}>Add to Cart</button>
             )}
         </div>
     );

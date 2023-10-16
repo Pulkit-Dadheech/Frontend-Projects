@@ -11,11 +11,16 @@ type headerType =
         setSelectedCategory: (value: string) => void;
     }
 
-export default function Header({searchBoxResult, selectedCategory, setSearchBoxResult, setSelectedCategory}: headerType) {
+export default function Header({
+                                   searchBoxResult,
+                                   selectedCategory,
+                                   setSearchBoxResult,
+                                   setSelectedCategory
+                               }: headerType) {
     const categoryList = useCategoryList();
     const [searchTerm, setSearchTerm] = useState('')
-    const userDetails=useGetUserDetails();
-    const userName=`${userDetails?.firstName} ${userDetails?.lastName}`;
+    const userDetails = useGetUserDetails();
+    const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;
 
     useEffect(() => {
         const delayDebounceFunction = setTimeout(() => {
