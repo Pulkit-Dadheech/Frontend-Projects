@@ -11,17 +11,18 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog}: 
 
     const [userCartProducts, setUserCartProducts] = useState<Product[] | undefined>();
 
-    const products = userCartCatalog?.carts[0]?.products;
+    const productsList = userCartCatalog?.carts[0]?.products;
+    const filteredproductsList=productsList?.filter((product)=>product.quantity!==0);
 
     useEffect(() => {
-        if (products) {
+        if (filteredproductsList) {
             const fetchProductData = async () => {
-                const productPromises = products.map(async (product) => {
+                const productPromises = filteredproductsList.map(async (product) => {
                     const response = await fetch(getUrlForSingleProduct(product.id));
                     return await response.json();
                 });
                 const productData = await Promise.all(productPromises);
-                // const filteredProductData = productData.filter((product) => product !== undefined) as unknown as Product[];
+
                 setUserCartProducts(productData);
             };
 
@@ -61,18 +62,13 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog}: 
                         </div>
                         <div className={"product-rating"}>
                             <p>Rating: {product.rating}</p>
-                            {/*<div id={"product-quantity-button"}>*/}
-                            {/*    <button onClick={()=>"handleAddProduct"}>-</button>*/}
-                            {/*    <div style={{padding: "5px"}}>{}</div>*/}
-                            {/*    <button onClick={()=>"handleDeleteProduct"}>+</button>*/}
-                            {/*</div>*/}
                             <Button id={product.id} userCartCatalog={userCartCatalog}
                                     setUserCartCatalog={setUserCartCatalog}></Button>
                         </div>
                     </div>
                 ))
             ) : (
-                <h1 className={"Product-Header"}>No Items Found!</h1>
+                <h1 className={"Product-Header"}>Fetching Product Cart ...</h1>
             )}
         </div>
     );

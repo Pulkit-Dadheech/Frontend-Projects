@@ -1,4 +1,4 @@
-.cart-header{
+.cart-header {
     display: flex;
     flex-direction: row;
     background-color: white;
@@ -11,12 +11,14 @@
 
 
 }
-.cart-header-name{
+
+.cart-header-name {
     font-size: 40px;
     padding-inline: 30px;
     color: cadetblue;
 }
-.cart-total-products{
+
+.cart-total-products {
     text-align: center;
     padding-inline: 30px;
     background-color: black;

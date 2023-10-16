@@ -8,7 +8,9 @@ export default function CartHeader({userCartCatalog}: { userCartCatalog: UserCar
     const userDetails = useGetUserDetails();
     const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;
 
-    const totalProductsInUserCart = userCartCatalog?.carts[0]?.products.length;
+    const filteredUserCart=userCartCatalog?.carts[0].products.filter((product)=>product.quantity!==0)
+
+    const totalProductsInUserCart = filteredUserCart?.length;
 
     return (
         <div className="cart-header">
