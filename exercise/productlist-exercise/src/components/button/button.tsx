@@ -41,9 +41,9 @@ export function Button({id, userCartCatalog, setUserCartCatalog}: {
             if (setUserCartCatalog && userCartCatalog) {
                 setUserCartCatalog({
                     carts: Array(data),
-                    total: userCartCatalog.total ?? undefined,
-                    skip: userCartCatalog.skip ?? undefined,
-                    limit: userCartCatalog.limit ?? undefined,
+                    total: userCartCatalog.total,
+                    skip: userCartCatalog.skip,
+                    limit: userCartCatalog.limit,
                 });
             } else {
                 console.error("userCartCatalog is undefined or setUserCartCatalog is not available");
