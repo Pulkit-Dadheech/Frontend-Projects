@@ -23,12 +23,13 @@ export default function Header({
     const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;
 
     useEffect(() => {
-        const delayDebounceFunction = setTimeout(() => {
+        const SearchDelay = setTimeout(() => {
             setSearchBoxResult(searchTerm);
         }, 500)
 
-        return () => clearTimeout(delayDebounceFunction)
-    }, [searchTerm])
+        return () => clearTimeout(SearchDelay)
+    }, [searchTerm
+    ])
 
 
     return (
