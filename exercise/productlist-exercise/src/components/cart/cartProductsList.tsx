@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {UserCart,Product} from "../../dataTypes";
-import {getUrlForSingleProduct} from "../../dataFetchingFile";
+import {Product, UserCart} from "../../dataTypes";
+import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import {Button} from "../button/button";
 
 
@@ -18,7 +18,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog}: 
         if (filteredproductsList) {
             const fetchProductData = async () => {
                 const productPromises = filteredproductsList.map(async (product) => {
-                    const response = await fetch(getUrlForSingleProduct(product.id));
+                    const response = await fetch(createApiUrl(apiQueries.SingleProduct,product.id));
                     return await response.json();
                 });
                 const productData = await Promise.all(productPromises);

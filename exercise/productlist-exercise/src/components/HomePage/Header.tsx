@@ -54,7 +54,7 @@ export default function Header({
 
                     }} className="product-category">
                         <option>All</option>
-                        {categoryList.map((category: string, index: number) => (
+                        {categoryList?.map((category: string, index: number) => (
                             <option key={index}>{category}</option>
                         ))}
                     </select>

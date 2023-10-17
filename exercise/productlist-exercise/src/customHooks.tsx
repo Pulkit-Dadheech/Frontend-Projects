@@ -1,7 +1,8 @@
 import {useEffect, useMemo, useState} from 'react';
 import './productlist.css'
-import useFetch, {baseURL, fetchCategory, fetchProduct, fetchSearch, getUserDetails} from "./dataFetchingFile";
-import {ProductCatalog,UserData} from "./dataTypes";
+import useFetch, {apiQueries, baseURL, createApiUrl} from "./dataFetchingFile";
+import {ProductCatalog, UserData} from "./dataTypes";
+
 export function useProductList(search?: string, category?: string) {
     const [productCatalog, setProductCatalog] = useState<ProductCatalog>({
         products: [],
@@ -13,11 +14,11 @@ export function useProductList(search?: string, category?: string) {
     let url: string;
 
     if (search) {
-        url = fetchSearch(search);
+        url = createApiUrl(apiQueries.Search,search);
     } else if (category) {
-        url = fetchCategory(category);
+        url = createApiUrl(apiQueries.Category,category);
     } else {
-        url = fetchProduct();
+        url = createApiUrl(apiQueries.Product);
     }
     let data: ProductCatalog;
     data = useFetch<ProductCatalog>(url);
@@ -57,5 +58,5 @@ export function useCategoryList() {
 
 
 export function useGetUserDetails() {
-    return useFetch<UserData>(getUserDetails());
+    return useFetch<UserData>(createApiUrl(apiQueries.UserDetails));
 }

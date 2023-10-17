@@ -1,30 +1,60 @@
 import {useEffect, useState} from "react";
 
 export const baseURL = 'https://dummyjson.com';
-export const fetchSearch = (search: string) => {
-    return `${baseURL}/products/search?q=${search}`;
-}
-export const fetchCategory = (category: string) => {
-    return `${baseURL}/products/category/${category}`;
-
-}
-export const fetchProduct = () => {
-    return `${baseURL}/products`;
-}
-
-export function getUrlForSingleProduct(id: number) {
-    return `${baseURL}/products/${id}`;
+export enum apiQueries {
+    Search = 'search',
+    Category = 'category',
+    Product = 'product',
+    SingleProduct = 'singleProduct',
+    UserDetails = 'userDetails',
+    Cart = 'cart',
+    UserCart = 'userCart',
 }
 
-export function getUserDetails() {
-    return `${baseURL}/users/5`;
-}
 
-export function getCart() {
-    return `${baseURL}/carts/19`;
-}
-export function getUserCart() {
-    return `${baseURL}/users/5/carts`;
+export function createApiUrl(queryType:apiQueries, parameter?: string|number) {
+    let url = baseURL;
+
+    switch (queryType) {
+        case 'search':
+            if (parameter) {
+                url += `/products/search?q=${parameter}`;
+            }
+            break;
+
+        case 'category':
+            if (parameter) {
+                url += `/products/category/${parameter}`;
+            }
+            break;
+
+        case 'product':
+            url += '/products';
+            break;
+
+        case 'singleProduct':
+            if (parameter) {
+                url += `/products/${parameter}`;
+            }
+            break;
+
+        case 'userDetails':
+            url += '/users/5';
+            break;
+
+        case 'cart':
+            url += '/carts/19';
+            break;
+
+        case 'userCart':
+            url += '/users/5/carts';
+            break;
+
+        default:
+            throw new Error('Invalid action');
+    }
+
+    return url;
 }
 
 export default function useFetch<Type>(url: string): Type {

@@ -1,6 +1,6 @@
 import {createContext, Dispatch, SetStateAction, useEffect, useState} from "react";
 import {UserCart} from "./dataTypes";
-import useFetch, {getUserCart} from "./dataFetchingFile";
+import useFetch, {apiQueries, createApiUrl} from "./dataFetchingFile";
 
 interface ContextType {
     userCart: UserCart;
@@ -17,7 +17,7 @@ export const UserContext = createContext<ContextType | undefined>({} as ContextT
 
 function MyContextProvider({children}: { children: React.ReactNode }) {
     const [userCart, setUserCart] = useState<UserCart>({} as UserCart);
-    const userCartCatalog = useFetch<UserCart>(getUserCart());
+    const userCartCatalog = useFetch<UserCart>(createApiUrl(apiQueries.UserCart));
     const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<userCartCatalog[]>([] as userCartCatalog[]);
 
     useEffect(() => {

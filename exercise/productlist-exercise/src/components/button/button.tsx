@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction, useContext} from "react";
 import {UserCart} from "../../dataTypes";
 import {UserContext} from "../../context";
-import {getCart} from "../../dataFetchingFile";
+import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 
 export function Button({id, userCartCatalog, setUserCartCatalog}: {
     id: number;
@@ -28,7 +28,7 @@ export function Button({id, userCartCatalog, setUserCartCatalog}: {
 
         setUserPrevCartCatalog(updatedCart);
         try {
-            const response = await fetch(getCart(), {
+            const response = await fetch(createApiUrl(apiQueries.Cart), {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
