@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useContext} from "react";
-import {UserCart} from "../../customHooks";
+import {UserCart} from "../../dataTypes";
 import {UserContext} from "../../context";
 import {getCart} from "../../dataFetchingFile";
 

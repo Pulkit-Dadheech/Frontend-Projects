@@ -1,5 +1,6 @@
 import React from "react";
-import {useGetUserDetails, UserCart} from "../../customHooks";
+import {useGetUserDetails} from "../../customHooks";
+import {UserCart} from "../../dataTypes";
 import './cartHeader.css'
 
 export default function CartHeader({userCartCatalog}: { userCartCatalog: UserCart; }) {

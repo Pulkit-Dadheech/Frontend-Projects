@@ -1,5 +1,6 @@
 import React, {Dispatch, SetStateAction} from "react";
-import {ProductCatalog, useProductList, UserCart} from "../../customHooks";
+import { useProductList} from "../../customHooks";
+import {UserCart,ProductCatalog} from "../../dataTypes";
 import "./ProductComponent.css";
 import {Button} from "../button/button";
 

@@ -1,5 +1,5 @@
 import {createContext, Dispatch, SetStateAction, useEffect, useState} from "react";
-import {UserCart} from "./customHooks";
+import {UserCart} from "./dataTypes";
 import useFetch, {getUserCart} from "./dataFetchingFile";
 
 interface ContextType {

@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {Product, UserCart} from "../../customHooks";
+import {UserCart,Product} from "../../dataTypes";
 import {getUrlForSingleProduct} from "../../dataFetchingFile";
 import {Button} from "../button/button";
 
