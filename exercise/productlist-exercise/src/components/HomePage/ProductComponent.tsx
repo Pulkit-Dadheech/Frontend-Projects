@@ -10,7 +10,7 @@ export default function Product(props: {
     setUserCartCatalog: Dispatch<SetStateAction<UserCart>>;
 },) {
 
-    const productCatalog: ProductCatalog | undefined = useProductList(props.searchBoxResult, props.category);
+    const productCatalog: ProductCatalog = useProductList(props.searchBoxResult, props.category);
 
     const fetchDiscountPrice = (discount: number, price: number) => {
         return Math.round(price - (discount / 100) * price);
