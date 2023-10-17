@@ -1,13 +1,13 @@
 import React, {useContext, useState} from 'react';
 import './App.css';
 import Header from "./components/HomePage/Header";
-import ProductComponent from "./components/HomePage/ProductComponent";
+import Product from "./components/HomePage/ProductComponent";
 import {UserContext} from "./context";
 
 function App() {
     const userContext = useContext(UserContext);
 
-    if (userContext === undefined) {
+    if (!userContext) {
         throw new Error("UserContext is not provided correctly.");
     }
 
@@ -19,7 +19,7 @@ function App() {
     if (!userCart) {
         return <></>;
     }
-    console.log(userCart);
+
     return (
         <>
             <Header
@@ -28,7 +28,7 @@ function App() {
                 setSearchBoxResult={setSearchBoxResult}
                 setSelectedCategory={setSelectedCategory}
             />
-            <ProductComponent
+            <Product
                 searchBoxResult={searchBoxResult}
                 category={selectedCategory}
                 userCartCatalog={userCart}

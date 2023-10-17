@@ -3,11 +3,11 @@ import {ProductCatalog, useProductList, UserCart} from "../../customHooks";
 import "./ProductComponent.css";
 import {Button} from "../button/button";
 
-export default function ProductComponent(props: {
+export default function Product(props: {
     searchBoxResult?: string;
     category?: string,
-    userCartCatalog?: UserCart | undefined,
-    setUserCartCatalog?: Dispatch<SetStateAction<UserCart | undefined>>;
+    userCartCatalog: UserCart,
+    setUserCartCatalog: Dispatch<SetStateAction<UserCart>>;
 },) {
 
     const productCatalog: ProductCatalog | undefined = useProductList(props.searchBoxResult, props.category);
@@ -17,11 +17,11 @@ export default function ProductComponent(props: {
     }
     return (
         <div>
-            {productCatalog && productCatalog.products.length > 0 ? (
+            {productCatalog && productCatalog.products && productCatalog.products.length > 0 ? (
                 productCatalog.products.map((product) => (
-                    <div key={product.id} className="Product-Information">
+                    <div key={product.id} className="product-information">
                         <div className={"product-image"}>
-                            <img src={product.images[0]} alt="Product List" height="100"/>
+                            <img src={product.images[0]} alt="Product List" height="170"/>
 
                         </div>
                         <div className={"product-description"}>
@@ -47,7 +47,7 @@ export default function ProductComponent(props: {
                     </div>
                 ))
             ) : (
-                <h1 className={"Product-Header"}>No Items Found!</h1>
+                <h1 className={"product-header"}>No Items Found!</h1>
             )}
         </div>
     );

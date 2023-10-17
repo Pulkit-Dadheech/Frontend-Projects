@@ -5,14 +5,14 @@ import {Button} from "../button/button";
 
 
 export default function CartProductsList({userCartCatalog, setUserCartCatalog}: {
-    userCartCatalog: UserCart | undefined;
-    setUserCartCatalog: Dispatch<SetStateAction<UserCart | undefined>>;
+    userCartCatalog: UserCart;
+    setUserCartCatalog: Dispatch<SetStateAction<UserCart>>;
 }) {
 
-    const [userCartProducts, setUserCartProducts] = useState<Product[] | undefined>();
+    const [userCartProducts, setUserCartProducts] = useState<Product[]>([] as Product[]);
 
-    const productsList = userCartCatalog?.carts[0]?.products;
-    const filteredproductsList=productsList?.filter((product)=>product.quantity!==0);
+    const productsList = userCartCatalog.carts[0].products;
+    const filteredproductsList=productsList.filter((product)=>product.quantity!==0);
 
     useEffect(() => {
         if (filteredproductsList) {
@@ -40,7 +40,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog}: 
         <div>
             {userCartProducts && userCartProducts.length > 0 ? (
                 userCartProducts.map((product) => (
-                    <div key={product.id} className="Product-Information">
+                    <div key={product.id} className="product-information">
                         <div className={"product-image"}>
                             <img src={product.images[0]} alt="Product List" height="100"/>
                         </div>
@@ -68,7 +68,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog}: 
                     </div>
                 ))
             ) : (
-                <h1 className={"Product-Header"}>Fetching Product Cart ...</h1>
+                <h1 className={"product-header"}>Fetching Product Cart ...</h1>
             )}
         </div>
     );

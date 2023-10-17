@@ -53,12 +53,12 @@ interface UserData {
 }
 
 export function useProductList(search?: string, category?: string) {
-    const [productCatalog, setProductCatalog] = useState<ProductCatalog | undefined>({
+    const [productCatalog, setProductCatalog] = useState<ProductCatalog>({
         products: [],
         total: 0,
         skip: 0,
         limit: 30,
-    });
+    }as ProductCatalog);
 
     let url: string;
 
@@ -69,11 +69,11 @@ export function useProductList(search?: string, category?: string) {
     } else {
         url = fetchProduct();
     }
-    let data: ProductCatalog | undefined;
+    let data: ProductCatalog;
     data = useFetch<ProductCatalog>(url);
 
     if (search && category) {
-        const newData = data?.products.filter((product) => product.category === category)
+        const newData = data.products.filter((product) => product.category === category)
         if (data && newData) {
             data = {
                 products: newData,
@@ -94,7 +94,7 @@ export function useProductList(search?: string, category?: string) {
 }
 
 export function useCategoryList() {
-    const [category, setCategory] = useState<string[] | undefined>([]);
+    const [category, setCategory] = useState<string[]>([] as string[]);
     const url = `${baseURL}/products/categories`;
     const data = useFetch<string[]>(url);
 

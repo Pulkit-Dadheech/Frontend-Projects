@@ -3,21 +3,22 @@ import {UserCart} from "./customHooks";
 import useFetch, {getUserCart} from "./dataFetchingFile";
 
 interface ContextType {
-    userCart: UserCart | undefined;
-    setUserCart: Dispatch<SetStateAction<UserCart | undefined>>;
-    userPrevCartCatalog: { id: number, quantity: number }[] | undefined;
-    setUserPrevCartCatalog: Dispatch<SetStateAction<{ id: number, quantity: number }[] | undefined>>
+    userCart: UserCart;
+    setUserCart: Dispatch<SetStateAction<UserCart>>;
+    userPrevCartCatalog: { id: number, quantity: number }[];
+    setUserPrevCartCatalog: Dispatch<SetStateAction<{ id: number, quantity: number }[]>>
+}
+interface userCartCatalog{
+    id: number,
+    quantity: number
 }
 
-export const UserContext = createContext<ContextType | undefined>(undefined);
+export const UserContext = createContext<ContextType | undefined>({} as ContextType);
 
 function MyContextProvider({children}: { children: React.ReactNode }) {
-    const [userCart, setUserCart] = useState<UserCart | undefined>();
+    const [userCart, setUserCart] = useState<UserCart>({} as UserCart);
     const userCartCatalog = useFetch<UserCart>(getUserCart());
-    const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<{
-        id: number,
-        quantity: number
-    }[]>();
+    const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<userCartCatalog[]>([] as userCartCatalog[]);
 
     useEffect(() => {
         setUserCart(userCartCatalog);

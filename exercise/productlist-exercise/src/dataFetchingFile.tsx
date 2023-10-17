@@ -27,8 +27,8 @@ export function getUserCart() {
     return `${baseURL}/users/5/carts`;
 }
 
-export default function useFetch<Type>(url: string): Type | undefined {
-    const [fetchResult, setFetchResult] = useState<Type>();
+export default function useFetch<Type>(url: string): Type {
+    const [fetchResult, setFetchResult] = useState<Type>([] as Type);
 
     useEffect(() => {
 
@@ -44,12 +44,13 @@ export default function useFetch<Type>(url: string): Type | undefined {
                 }
             } catch (error) {
                 console.error(error);
+                setFetchResult({} as Type)
             }
 
         };
         fetchProductList().then(r => console.log("fetch function called"));
     }, [url]);
 
-    return fetchResult;
+    return fetchResult as Type;
 
 }

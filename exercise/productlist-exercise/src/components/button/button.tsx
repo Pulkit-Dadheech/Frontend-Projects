@@ -5,8 +5,8 @@ import {getCart} from "../../dataFetchingFile";
 
 export function Button({id, userCartCatalog, setUserCartCatalog}: {
     id: number;
-    userCartCatalog: UserCart | undefined;
-    setUserCartCatalog: Dispatch<SetStateAction<UserCart | undefined>> | undefined;
+    userCartCatalog: UserCart;
+    setUserCartCatalog: Dispatch<SetStateAction<UserCart>>;
 }) {
     const totalProducts = userCartCatalog?.carts[0]?.products;
 
@@ -37,22 +37,16 @@ export function Button({id, userCartCatalog, setUserCartCatalog}: {
 
                 }),
             });
-
-
-            if (response.ok) {
-                const data = await response.json()
-                if (setUserCartCatalog && userCartCatalog) {
-                    setUserCartCatalog({
-                        carts: Array(data),
-                        total: userCartCatalog.total ?? undefined,
-                        skip: userCartCatalog.skip ?? undefined,
-                        limit: userCartCatalog.limit ?? undefined,
-                    });
-                } else {
-                    console.error("userCartCatalog is undefined or setUserCartCatalog is not available");
-                }
+            const data = await response.json()
+            if (setUserCartCatalog && userCartCatalog) {
+                setUserCartCatalog({
+                    carts: Array(data),
+                    total: userCartCatalog.total ?? undefined,
+                    skip: userCartCatalog.skip ?? undefined,
+                    limit: userCartCatalog.limit ?? undefined,
+                });
             } else {
-                console.error("Failed to update the cart.");
+                console.error("userCartCatalog is undefined or setUserCartCatalog is not available");
             }
             // console.log('cartCatalog',userPrevCartCatalog);
 
@@ -68,9 +62,9 @@ export function Button({id, userCartCatalog, setUserCartCatalog}: {
                     console.log(product);
                     shouldRenderAddToCart = false;
                     return (
-                        <div key={product.id} id="product-quantity-button">
+                        <div key={product.id} className="product-quantity-button">
                             <button onClick={() => handleProductButton(id, product.quantity)}>+</button>
-                            <div style={{padding: "5px"}}>{product.quantity}</div>
+                            <div className="product-quantity-button-text">{product.quantity}</div>
                             <button onClick={() => handleProductButton(product.id, product.quantity, true)}>-</button>
                         </div>
                     );

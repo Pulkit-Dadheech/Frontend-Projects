@@ -33,10 +33,10 @@ export default function Header({
 
     return (
         <>
-            <div className={"Header-Elements"}>
+            <div className={"header-elements"}>
                 <div>
                     <input
-                        className="Search-Box"
+                        className="search-box"
                         type="text"
                         placeholder="Search.."
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -51,9 +51,9 @@ export default function Header({
                             setSelectedCategory("")
                         }
 
-                    }} className="Product-Category">
+                    }} className="product-category">
                         <option>All</option>
-                        {categoryList?.map((category: string, index: number) => (
+                        {categoryList.map((category: string, index: number) => (
                             <option key={index}>{category}</option>
                         ))}
                     </select>
