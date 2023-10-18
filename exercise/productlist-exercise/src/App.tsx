@@ -17,7 +17,7 @@ function App() {
     const [selectedCategory, setSelectedCategory] = useState<string>("");
 
     if (!userCart) {
-        return <></>;
+        return <><h1>Loading...</h1></>;
     }
 
     return (

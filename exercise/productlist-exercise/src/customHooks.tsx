@@ -12,31 +12,36 @@ export function useProductList(search?: string, category?: string) {
     } else {
         url = createApiUrl(apiQueries.Product);
     }
-    let data = useFetch<ProductCatalog>(url);
+    const {data, error} = useFetch<ProductCatalog>(url);
+    let filteredData;
 
     if (search && category) {
-        const newData = data.products.filter((product) => product.category === category)
+        const newData = data?.products.filter((product) => product.category === category)
         if (newData) {
-            return {
+            filteredData = {
                 products: newData,
-                total: data.total,
-                skip: data.skip,
-                limit: data.limit,
-
-            }
+                total: data?.total,
+                skip: data?.skip,
+                limit: data?.limit,
+            } as ProductCatalog
+            return {productCatalog: filteredData, productError:error}
         }
     }
 
-    return data;
+
+    return {productCatalog:data, productError: error};
 
 }
 
 export function useCategoryList() {
     const url = `${baseURL}/products/categories`;
-    return useFetch<string[]>(url);
+    const {data,error}= useFetch<string[]>(url);
+    return {categoryList: data,categoryError :error};
 }
 
 
 export function useGetUserDetails() {
-    return useFetch<UserData>(createApiUrl(apiQueries.UserDetails));
+
+    const {data,error}=useFetch<UserData>(createApiUrl(apiQueries.UserDetails));
+    return {userDetails: data, userDataError: error}
 }

@@ -17,9 +17,10 @@ export default function Header({
                                    setSearchBoxResult,
                                    setSelectedCategory
                                }: headerType) {
-    const categoryList = useCategoryList();
+    const {categoryList,categoryError}= useCategoryList();
     const [searchTerm, setSearchTerm] = useState('')
-    const userDetails = useGetUserDetails();
+    const {userDetails,userDataError} = useGetUserDetails();
+
     const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;
 
     useEffect(() => {
@@ -31,6 +32,15 @@ export default function Header({
     }, [searchTerm
     ])
 
+    if(categoryError){
+        return(<h1>Failed to Fetch Category Data</h1>)
+    }
+    if(!userDetails){
+        return(<div>Fetching User Details...</div>)
+    }
+    if(userDataError){
+        return (<h1>Error: {userDataError}</h1>)
+    }
 
     return (
         <>

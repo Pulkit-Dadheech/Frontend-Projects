@@ -1,18 +1,19 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 
 export const baseURL = 'https://dummyjson.com';
+
 export enum apiQueries {
     Search = 'search',
     Category = 'category',
     Product = 'product',
     SingleProduct = 'singleProduct',
     UserDetails = 'userDetails',
-    Cart = 'cart',
+    AddToCart = 'addToCart',
     UserCart = 'userCart',
 }
 
 
-export function createApiUrl(queryType:apiQueries, parameter?: string|number) {
+export function createApiUrl(queryType: apiQueries, parameter?: string | number) {
     let url = baseURL;
 
     switch (queryType) {
@@ -42,7 +43,7 @@ export function createApiUrl(queryType:apiQueries, parameter?: string|number) {
             url += '/users/5';
             break;
 
-        case 'cart':
+        case 'addToCart':
             url += '/carts/19';
             break;
 
@@ -57,30 +58,26 @@ export function createApiUrl(queryType:apiQueries, parameter?: string|number) {
     return url;
 }
 
-export default function useFetch<Type>(url: string): Type {
-    const [fetchResult, setFetchResult] = useState<Type>([] as Type);
 
-    useEffect(() => {
+export default function useFetch<Type>(url: string): { data: Type | null, error: string | null } {
+    const [data, setData] = useState<Type | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
-
-        const fetchProductList = async () => {
-            try {
-                const response: Response = await fetch(url);
-                if (response.ok) {
-                    const data = await response.json();
-                    setFetchResult(data);
-                } else {
-                    throw new Error('Failed to fetch product data');
-                }
-            } catch (error) {
-                console.error(error);
-                setFetchResult({} as Type)
-            }
-
-        };
-        fetchProductList().then(r => console.log("fetch function called"));
+    const fetchData = useCallback(async () => {
+        try {
+            const response = await fetch(url);
+            const responseData = await response.json();
+            setData(responseData);
+            setError(null);
+        } catch (error) {
+            setError('Failed to fetch data');
+        }
     }, [url]);
 
-    return fetchResult as Type;
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
+    return {data, error};
 }
+

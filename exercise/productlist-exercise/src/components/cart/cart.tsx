@@ -8,11 +8,14 @@ export default function Cart() {
 
     const userContext = useContext(UserContext);
 
-    if (userContext === undefined) {
+    if (!userContext) {
         throw new Error("UserContext is not provided correctly.");
     }
 
     const {userCart, setUserCart} = userContext;
+    if(!userCart){
+        return (<h1>Loading...</h1>)
+    }
 
     return (
         <>

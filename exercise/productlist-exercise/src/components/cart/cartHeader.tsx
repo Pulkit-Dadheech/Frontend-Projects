@@ -3,16 +3,24 @@ import {useGetUserDetails} from "../../customHooks";
 import {UserCart} from "../../dataTypes";
 import './cartHeader.css'
 
-export default function CartHeader({userCartCatalog}: { userCartCatalog: UserCart; }) {
+export default function CartHeader({userCartCatalog}: { userCartCatalog: UserCart | null; }) {
 
 
-    const userDetails = useGetUserDetails();
-    const userName = `${userDetails.firstName} ${userDetails.lastName}`;
-
+    const {userDetails,userDataError} = useGetUserDetails();
+    const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;
+    if(!userCartCatalog){
+        return(<h1>Loading...</h1>)
+    }
     const filteredUserCart=userCartCatalog.carts[0].products.filter((product)=>product.quantity!==0)
 
-    const totalProductsInUserCart = filteredUserCart.length;
+    const totalProductsInUserCart = filteredUserCart?.length;
 
+    if(userDataError){
+        return (<h1>Failed to get User Details</h1>)
+    }
+    if(!userDetails){
+        return(<div>Loading...</div>)
+    }
     return (
         <div className="cart-header">
             <h1 className="cart-header-name">{userName}</h1>

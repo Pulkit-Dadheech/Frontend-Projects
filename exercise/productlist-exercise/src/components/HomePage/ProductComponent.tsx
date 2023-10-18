@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction} from "react";
-import { useProductList} from "../../customHooks";
-import {UserCart,ProductCatalog} from "../../dataTypes";
+import {useProductList} from "../../customHooks";
+import {UserCart} from "../../dataTypes";
 import "./ProductComponent.css";
 import {Button} from "../button/button";
 
@@ -8,10 +8,18 @@ export default function Product(props: {
     searchBoxResult?: string;
     category?: string,
     userCartCatalog: UserCart,
-    setUserCartCatalog: Dispatch<SetStateAction<UserCart>>;
+    setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
 },) {
 
-    const productCatalog: ProductCatalog = useProductList(props.searchBoxResult, props.category);
+    const {productCatalog, productError} = useProductList(props.searchBoxResult, props.category);
+
+    if (!productCatalog) {
+        return (<h1>fetching user name...</h1>)
+    }
+    if (productError) {
+        return (<h1>Error Fetching Product Catalog</h1>);
+    }
+
 
     const fetchDiscountPrice = (discount: number, price: number) => {
         return Math.round(price - (discount / 100) * price);

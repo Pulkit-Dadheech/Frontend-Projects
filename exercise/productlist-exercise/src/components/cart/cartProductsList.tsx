@@ -6,10 +6,10 @@ import {Button} from "../button/button";
 
 export default function CartProductsList({userCartCatalog, setUserCartCatalog}: {
     userCartCatalog: UserCart;
-    setUserCartCatalog: Dispatch<SetStateAction<UserCart>>;
+    setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
 }) {
 
-    const [userCartProducts, setUserCartProducts] = useState<Product[]>([] as Product[]);
+    const [userCartProducts, setUserCartProducts] = useState<Product[]>();
 
     const productsList = userCartCatalog.carts[0].products;
     const filteredproductsList=productsList.filter((product)=>product.quantity!==0);
@@ -22,14 +22,11 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog}: 
                     return await response.json();
                 });
                 const productData = await Promise.all(productPromises);
-
                 setUserCartProducts(productData);
             };
-
             fetchProductData().then(r => console.log("userCartFetchSuccessfully"));
         }
-
-    }, [userCartCatalog]);
+    }, []);
 
     const fetchDiscountPrice = (discount: number, price: number) => {
         return Math.round(price - (discount / 100) * price);
