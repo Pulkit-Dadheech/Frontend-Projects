@@ -18,7 +18,7 @@ export const UserContext = createContext<ContextType | null>(null);
 
 function MyContextProvider({children}: { children: React.ReactNode }) {
     const [userCart, setUserCart] = useState<UserCart | null>(null);
-    const {data, error} = useFetch<UserCart>(createApiUrl(apiQueries.UserCart));
+    const {data, error,loading} = useFetch<UserCart>(createApiUrl(apiQueries.UserCart));
     const userCartCatalog = data;
     const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<userCartCatalog[]>([]);
 
@@ -26,6 +26,9 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
         if (userCartCatalog) setUserCart(userCartCatalog);
     }, [userCartCatalog])
 
+    if(loading){
+        return(<h1>Loading..</h1>)
+    }
     if (error) return (<>Error: {error}</>)
 
     return (

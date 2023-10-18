@@ -59,18 +59,22 @@ export function createApiUrl(queryType: apiQueries, parameter?: string | number)
 }
 
 
-export default function useFetch<Type>(url: string): { data: Type | null, error: string | null } {
+export default function useFetch<Type>(url: string): { data: Type | null, error: string | null,loading:boolean } {
     const [data, setData] = useState<Type | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const fetchData = useCallback(async () => {
         try {
+            setLoading(true);
             const response = await fetch(url);
             const responseData = await response.json();
             setData(responseData);
             setError(null);
         } catch (error) {
             setError('Failed to fetch data');
+        } finally {
+            setLoading(false);
         }
     }, [url]);
 
@@ -78,6 +82,6 @@ export default function useFetch<Type>(url: string): { data: Type | null, error:
         fetchData();
     }, [fetchData]);
 
-    return {data, error};
+    return {data, error,loading};
 }
 

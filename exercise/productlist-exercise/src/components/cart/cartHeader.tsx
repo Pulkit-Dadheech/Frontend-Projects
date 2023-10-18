@@ -19,7 +19,7 @@ export default function CartHeader({userCartCatalog}: { userCartCatalog: UserCar
         return (<h1>Failed to get User Details</h1>)
     }
     if(!userDetails){
-        return(<div>Loading...</div>)
+        return(<div>Fetching User Details....</div>)
     }
     return (
         <div className="cart-header">

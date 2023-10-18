@@ -12,7 +12,7 @@ export function useProductList(search?: string, category?: string) {
     } else {
         url = createApiUrl(apiQueries.Product);
     }
-    const {data, error} = useFetch<ProductCatalog>(url);
+    const {data, error,loading} = useFetch<ProductCatalog>(url);
     let filteredData;
 
     if (search && category) {
@@ -24,12 +24,12 @@ export function useProductList(search?: string, category?: string) {
                 skip: data?.skip,
                 limit: data?.limit,
             } as ProductCatalog
-            return {productCatalog: filteredData, productError:error}
+            return {productCatalog: filteredData, productError:error,loading}
         }
     }
 
 
-    return {productCatalog:data, productError: error};
+    return {productCatalog:data, productError: error,loading};
 
 }
 

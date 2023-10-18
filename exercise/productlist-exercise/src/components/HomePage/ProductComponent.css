@@ -50,7 +50,7 @@
     border: none;
     border-radius: 10px;
     margin-block-start: 10px;
-    margin: auto;
+    margin: 0;
 }
 
 .product-header {
