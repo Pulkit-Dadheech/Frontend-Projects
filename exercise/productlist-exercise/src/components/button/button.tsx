@@ -6,16 +6,16 @@ import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 export function Button({id, userCartCatalog, setUserCartCatalog}: {
     id: number;
     userCartCatalog: UserCart;
-    setUserCartCatalog: Dispatch<SetStateAction<UserCart>>;
+    setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
 }) {
     const totalProducts = userCartCatalog?.carts[0]?.products;
-
     let shouldRenderAddToCart = true;
-
     const userContext = useContext(UserContext);
-    if (userContext === undefined) {
+
+    if (!userContext) {
         throw new Error("UserContext is not provided correctly.");
     }
+
     const {userPrevCartCatalog, setUserPrevCartCatalog} = userContext
 
     async function handleProductButton(id: number, quantity?: number, isDelete?: boolean) {
@@ -23,17 +23,26 @@ export function Button({id, userCartCatalog, setUserCartCatalog}: {
             quantity = 0;
         }
         const updatedProduct = {id: id, quantity: isDelete ? quantity - 1 : quantity + 1};
-        const updatedCart = userPrevCartCatalog ? [...userPrevCartCatalog, updatedProduct] : [updatedProduct];
-        console.log(updatedCart);
+        const updatedCarts = userPrevCartCatalog ? [...userPrevCartCatalog, updatedProduct] : [updatedProduct];
 
-        setUserPrevCartCatalog(updatedCart);
+        interface LatestItems {
+            [id: number]: { id: number; quantity: number };
+        }
+
+        let filteredProducts: LatestItems = {};
+        updatedCarts.forEach((item, index) => {
+                filteredProducts[item.id] = item;
+            }
+        )
+
+        setUserPrevCartCatalog(updatedCarts);
         try {
-            const response = await fetch(createApiUrl(apiQueries.Cart), {
+            const response = await fetch(createApiUrl(apiQueries.AddToCart), {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
                     merge: true,
-                    products: updatedCart,
+                    products: Object.values(filteredProducts),
 
                 }),
             });
