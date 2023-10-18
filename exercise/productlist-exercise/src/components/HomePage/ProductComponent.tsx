@@ -11,9 +11,10 @@ export default function Product(props: {
     setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
 },) {
 
-    const {productCatalog, productError} = useProductList(props.searchBoxResult, props.category);
+    const {productCatalog, productError,loading} = useProductList(props.searchBoxResult, props.category);
+    const {userCartCatalog}=props;
 
-    if (!productCatalog) {
+    if (loading) {
         return (<h1>fetching user name...</h1>)
     }
     if (productError) {
@@ -24,34 +25,40 @@ export default function Product(props: {
     const fetchDiscountPrice = (discount: number, price: number) => {
         return Math.round(price - (discount / 100) * price);
     }
+    const productListWithQuantity=productCatalog?.products.map((product)=>{
+        return{
+            ...product,
+            quantity: userCartCatalog.carts[0].products.find((p)=>p.id===product.id)?.quantity || 0
+        }
+    })
     return (
         <div>
-            {productCatalog && productCatalog.products && productCatalog.products.length > 0 ? (
-                productCatalog.products.map((product) => (
-                    <div key={product.id} className="product-information">
+            {!!productListWithQuantity?.length ? (
+                productListWithQuantity.map((productWithQuantity) => (
+                    <div key={productWithQuantity.id} className="product-information">
                         <div className={"product-image"}>
-                            <img src={product.images[0]} alt="Product List" height="170"/>
+                            <img src={productWithQuantity.images[0]} alt="Product List" height="170"/>
 
                         </div>
                         <div className={"product-description"}>
-                            <h3>Name: {product.title}</h3>
+                            <h3>Name: {productWithQuantity.title}</h3>
                             <h4>Price:
                                 <>
-                                    {fetchDiscountPrice(product.discountPercentage, product.price)}
+                                    {fetchDiscountPrice(productWithQuantity.discountPercentage, productWithQuantity.price)}
                                     <span>&#36;</span>
                                     (
-                                    <del>{product.price}</del>
+                                    <del>{productWithQuantity.price}</del>
                                     <span>&#36;</span>
                                     )
                                 </>
                             </h4>
-                            <h4>Category: {product.category}</h4>
-                            <p>Description: {product.description}</p>
+                            <h4>Category: {productWithQuantity.category}</h4>
+                            <p>Description: {productWithQuantity.description}</p>
                         </div>
                         <div className={"product-rating"}>
-                            <p>Rating: {product.rating}</p>
-                            <Button id={product.id} userCartCatalog={props.userCartCatalog}
-                                    setUserCartCatalog={props.setUserCartCatalog}/>
+                            <p>Rating: {productWithQuantity.rating}</p>
+                            <Button id={productWithQuantity.id} userCartCatalog={props.userCartCatalog}
+                                    setUserCartCatalog={props.setUserCartCatalog} quantity={productWithQuantity.quantity}/>
                         </div>
                     </div>
                 ))

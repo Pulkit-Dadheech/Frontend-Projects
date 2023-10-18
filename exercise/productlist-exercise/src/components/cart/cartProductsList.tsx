@@ -33,10 +33,25 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog}: 
     }
 
 
+    let filterProducts=userCartProducts;
+
+    const filteredCartWithNoProducts=userCartCatalog.carts[0].products.filter((product)=>product.quantity !== 0)
+    if (filteredCartWithNoProducts.length>=0) {
+        filterProducts = userCartProducts?.filter((product) => {
+            return !!filteredCartWithNoProducts.filter((filterProduct) => filterProduct.id === product.id).length;
+        });
+    }
+    const productListWithQuantity=filterProducts?.map((product)=>{
+        return{
+            ...product,
+            quantity: userCartCatalog.carts[0].products.find((p)=>p.id===product.id)?.quantity || 0
+        }
+    })
+
     return (
         <div>
-            {userCartProducts && userCartProducts.length > 0 ? (
-                userCartProducts.map((product) => (
+            {!!productListWithQuantity?.length ? (
+                productListWithQuantity.map((product) => (
                     <div key={product.id} className="product-information">
                         <div className={"product-image"}>
                             <img src={product.images[0]} alt="Product List" height="100"/>
@@ -60,12 +75,12 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog}: 
                         <div className={"product-rating"}>
                             <p>Rating: {product.rating}</p>
                             <Button id={product.id} userCartCatalog={userCartCatalog}
-                                    setUserCartCatalog={setUserCartCatalog}></Button>
+                                    setUserCartCatalog={setUserCartCatalog} quantity={product.quantity}></Button>
                         </div>
                     </div>
                 ))
             ) : (
-                <h1 className={"product-header"}>Fetching Product Cart ...</h1>
+                <h1 className={"product-header"}>Empty Cart ...</h1>
             )}
         </div>
     );

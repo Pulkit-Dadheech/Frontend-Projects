@@ -3,13 +3,12 @@ import {UserCart} from "../../dataTypes";
 import {UserContext} from "../../context";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 
-export function Button({id, userCartCatalog, setUserCartCatalog}: {
+export function Button({id, userCartCatalog, setUserCartCatalog, quantity}: {
     id: number;
     userCartCatalog: UserCart;
     setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
+    quantity?: number
 }) {
-    const totalProducts = userCartCatalog?.carts[0]?.products;
-    let shouldRenderAddToCart = true;
     const userContext = useContext(UserContext);
 
     if (!userContext) {
@@ -17,9 +16,10 @@ export function Button({id, userCartCatalog, setUserCartCatalog}: {
     }
 
     const {userPrevCartCatalog, setUserPrevCartCatalog} = userContext
-
-    async function handleProductButton(id: number, quantity?: number, isDelete?: boolean) {
-        if (quantity === undefined) {
+//addOrRemoveProductFromCart  Products page
+    //updateCartItem Cart Page
+    async function addOrRemoveProductFromCart(id: number, quantity?: number, isDelete?: boolean) {
+        if (!quantity) {
             quantity = 0;
         }
         const updatedProduct = {id: id, quantity: isDelete ? quantity - 1 : quantity + 1};
@@ -57,36 +57,19 @@ export function Button({id, userCartCatalog, setUserCartCatalog}: {
             } else {
                 console.error("userCartCatalog is undefined or setUserCartCatalog is not available");
             }
-            // console.log('cartCatalog',userPrevCartCatalog);
 
         } catch (error) {
             console.error("An error occurred while updating the cart:", error);
         }
     }
-
+    if(quantity===0){
+        return ( <button className="product-quantity-button" onClick={() => addOrRemoveProductFromCart(id)}>Add to Cart</button>)
+    }
     return (
-        <div>
-            {totalProducts?.map((product) => {
-                if (product.id === id && product.quantity > 0) {
-                    console.log(product);
-                    shouldRenderAddToCart = false;
-                    return (
-                        <div key={product.id} className="product-quantity-button">
-                            <button onClick={() => handleProductButton(id, product.quantity)}>+</button>
-                            <div className="product-quantity-button-text">{product.quantity}</div>
-                            <button onClick={() => handleProductButton(product.id, product.quantity, true)}>-</button>
-                        </div>
-                    );
-                } else {
-                    return null;
-                }
-            })}
-
-            {shouldRenderAddToCart && (
-                <button onClick={() => handleProductButton(id)}>Add to Cart</button>
-            )}
+        <div key={id} className="product-quantity-button">
+            <button onClick={() => addOrRemoveProductFromCart(id, quantity)}>+</button>
+            <div className="product-quantity-button-text">{quantity}</div>
+            <button onClick={() => addOrRemoveProductFromCart(id, quantity, true)}>-</button>
         </div>
     );
-
-
 }
