@@ -1,8 +1,9 @@
-import React, {Dispatch, SetStateAction} from "react";
+import React, {Dispatch, SetStateAction, useState} from "react";
 import {useProductList} from "../../customHooks";
 import {listWithQuantity, UserCart} from "../../dataTypes";
 import "./ProductComponent.css";
 import ProductList from "../ProductList/ProductsList";
+import Paginate from "../Pagination/paginate";
 
 export default function Product(props: {
     searchBoxResult?: string;
@@ -13,6 +14,7 @@ export default function Product(props: {
 
     const {productCatalog, productError, loading} = useProductList(props.searchBoxResult, props.category);
     const {userCartCatalog} = props;
+    const [currentPage, setCurrentPage] = useState<number>(1);
 
     if (loading) {
         return (<h1>fetching user name...</h1>)
@@ -28,14 +30,16 @@ export default function Product(props: {
             quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0
         }
     })
-    return (
-        <ProductList
-            productListWithQuantity={productListWithQuantity}
-            userCartCatalog={props.userCartCatalog}
-            setUserCartCatalog={props.setUserCartCatalog}
-            loading={loading}
-        />
-
+    return (<>
+            <ProductList
+                productListWithQuantity={productListWithQuantity}
+                userCartCatalog={props.userCartCatalog}
+                setUserCartCatalog={props.setUserCartCatalog}
+                loading={loading}
+            />
+            <Paginate totalProducts={productCatalog ? productCatalog?.total : null} currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}/>
+        </>
     );
 
 

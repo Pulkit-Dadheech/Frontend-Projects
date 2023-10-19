@@ -1,0 +1,48 @@
+.pagination{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*margin-top: 1rem;*/
+    background-color: white;
+    padding-block: 1rem;
+    align-items: center;
+}
+.pagination-button-block {
+    padding: 1rem;
+}
+
+.pagination-button-block button {
+    width: 40px;
+    height: 40px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 16px;
+    margin: 0 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #cccccc;
+    color: white;
+    border-color: #eee;
+}
+
+.pagination-button-block button.active {
+    font-weight: 900;
+    border-color: #101010;
+    background: black;
+    color: white;
+}
+
+.custom-input {
+    width: 200px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.error-message {
+    font-size: 14px;
+    margin-top: 5px;
+}
