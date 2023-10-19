@@ -3,7 +3,7 @@ import {NoteStateProps} from "./noteState";
 
 export type NoteContextValue = {
     state: NoteStateProps;
-    update: () => void;
+
 };
 
 const defaultContextValue: NoteContextValue = {
@@ -11,10 +11,7 @@ const defaultContextValue: NoteContextValue = {
         name: "",
         class: 0,
     },
-    update: () => {
-    },
 };
-
 const CreateContext = createContext<NoteContextValue>(defaultContextValue);
 
 export default CreateContext;

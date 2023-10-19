@@ -1,5 +1,5 @@
 import CreateContext from "./createContext";
-import React, {useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 
 export type NoteStateProps = {
     name: string;
@@ -7,24 +7,25 @@ export type NoteStateProps = {
 };
 
 const NoteState: React.FC<React.PropsWithChildren> = (props) => {
-
-    const s1: NoteStateProps = {
+    const [state, setState] = useState({
         name: "Pulkit",
         class: 12,
-    };
+    });
+    const updateStateCallback = useCallback(() => {
+        setState({
+            name: "Rohit",
+            class: 9
+        });
+    }, []);
 
-    const [state, setState] = useState(s1);
-    const update = (): void => {
-        setTimeout(() => {
-            setState({
-                name: "Rohit",
-                class: 9
-            })
-        }, 5000);
-    }
+    useEffect(() => {
+        const timeout = setTimeout(updateStateCallback,1000);//return value is undefined
+        return (()=>clearTimeout(timeout));//()=>void
+    }, [updateStateCallback]);
+
 
     return (
-        <CreateContext.Provider value={{state, update}}>
+        <CreateContext.Provider value={{state}}>
             {props.children}
         </CreateContext.Provider>
     );

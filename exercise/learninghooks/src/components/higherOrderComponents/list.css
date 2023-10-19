@@ -1,0 +1,9 @@
+.mainSection{
+    display: flex;
+    justify-content: space-evenly;
+}
+.section{
+    border-radius: 10px;
+    background-color: #cccccc;
+    padding: 20px;
+}

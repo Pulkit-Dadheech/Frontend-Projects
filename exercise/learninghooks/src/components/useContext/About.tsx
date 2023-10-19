@@ -1,14 +1,15 @@
 import React, {useContext, useEffect} from "react";
 import CreateContext, {NoteContextValue} from "./createContext";
 
-export const About = (): React.JSX.Element => {
-    const a = useContext<NoteContextValue>(CreateContext);
+export const Abouts = () => {
+
+    const contextValue = useContext<NoteContextValue>(CreateContext);
     useEffect(() => {
-        a.update()
-    }, [a])
+        console.log("I Am Updated")
+    }, [contextValue])
     return (
         <div>
-            my name is {a.state.name} and my class is {a.state.class}
+            my name is {contextValue.state.name} and my class is {contextValue.state.class}
         </div>
     );
 };

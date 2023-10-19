@@ -4,4 +4,19 @@
     align-items: center;
     justify-content: center;
 }
+#header{
+    background-color: black;
+    padding:30px;
+    text-align: center;
+    box-shadow: 0 0 10px rgb(0,0,0,0.3);
+}
+#header > a{
+    text-decoration: none;
+    color: grey;
+    margin: 20px;
+}
+#header > a:hover {
+    color: white;
+    animation: 0.5s;
+}
 
