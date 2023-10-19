@@ -33,6 +33,7 @@ export default function Product(props: {
             productListWithQuantity={productListWithQuantity}
             userCartCatalog={props.userCartCatalog}
             setUserCartCatalog={props.setUserCartCatalog}
+            loading={loading}
         />
 
     );

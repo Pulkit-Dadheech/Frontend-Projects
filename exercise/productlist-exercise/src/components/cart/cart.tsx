@@ -12,15 +12,15 @@ export default function Cart() {
         throw new Error("UserContext is not provided correctly.");
     }
 
-    const {userCart, setUserCart} = userContext;
-    if(!userCart){
+    const {userCart, setUserCart, loading} = userContext;
+    if (!userCart) {
         return (<h1>Loading...</h1>)
     }
 
     return (
         <>
             <CartHeader userCartCatalog={userCart}/>
-            <CartProductsList userCartCatalog={userCart} setUserCartCatalog={setUserCart}/>
+            <CartProductsList userCartCatalog={userCart} setUserCartCatalog={setUserCart} loading={loading}/>
         </>
     )
 }

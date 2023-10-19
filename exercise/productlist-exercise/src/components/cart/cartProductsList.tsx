@@ -4,9 +4,10 @@ import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import ProductList from "../ProductList/ProductsList";
 
 
-export default function CartProductsList({userCartCatalog, setUserCartCatalog}: {
+export default function CartProductsList({userCartCatalog, setUserCartCatalog,loading}: {
     userCartCatalog: UserCart;
     setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
+    loading:boolean;
 }) {
 
     const [userCartProducts, setUserCartProducts] = useState<Product[]>();
@@ -49,6 +50,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog}: 
             productListWithQuantity={productListWithQuantity}
             userCartCatalog={userCartCatalog}
             setUserCartCatalog={setUserCartCatalog}
+            loading={loading}
         />
     );
 }

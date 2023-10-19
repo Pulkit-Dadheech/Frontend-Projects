@@ -2,19 +2,28 @@ import React, {Dispatch, SetStateAction} from "react";
 import {ButtonUtils} from "../button/buttonUtils";
 import {listWithQuantity, UserCart} from "../../dataTypes"; // Import your ButtonUtils component here
 
-function ProductList({productListWithQuantity: productListWithCartQuantity, userCartCatalog, setUserCartCatalog}:
+function ProductList({
+                         productListWithQuantity: productListWithCartQuantity,
+                         userCartCatalog,
+                         setUserCartCatalog,
+                         loading
+                     }:
                          {
                              productListWithQuantity: listWithQuantity
                              userCartCatalog: UserCart,
                              setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
+                             loading: boolean
                          }) {
 
     const fetchDiscountPrice = (discount: number, price: number) => {
         return Math.round(price - (discount / 100) * price);
     }
+    if (loading) {
+        return <>Loading ......</>
+    }
     return (
         <div>
-            {!!productListWithCartQuantity?.length ? (
+            {!!productListWithCartQuantity?.length &&
                 productListWithCartQuantity.map((productWithQuantity) => (
                     <div key={productWithQuantity.id} className="product-information">
                         <div className={"product-image"}>
@@ -46,9 +55,7 @@ function ProductList({productListWithQuantity: productListWithCartQuantity, user
                         </div>
                     </div>
                 ))
-            ) : (
-                <h1 className={"product-header"}>No Items Found!</h1>
-            )}
+            }
         </div>
     );
 }

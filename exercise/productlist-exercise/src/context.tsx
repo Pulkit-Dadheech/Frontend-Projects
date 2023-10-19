@@ -7,6 +7,7 @@ interface ContextType {
     setUserCart: Dispatch<SetStateAction<UserCart | null>>;
     userPrevCartCatalog: { id: number, quantity: number }[];
     setUserPrevCartCatalog: Dispatch<SetStateAction<{ id: number, quantity: number }[]>>
+    loading: boolean
 }
 
 interface userCartCatalog {
@@ -32,7 +33,7 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
     if (error) return (<>Error: {error}</>)
 
     return (
-        <UserContext.Provider value={{userCart, setUserCart, userPrevCartCatalog, setUserPrevCartCatalog}}>
+        <UserContext.Provider value={{userCart, setUserCart, userPrevCartCatalog, setUserPrevCartCatalog,loading}}>
             {children}
         </UserContext.Provider>
     );
