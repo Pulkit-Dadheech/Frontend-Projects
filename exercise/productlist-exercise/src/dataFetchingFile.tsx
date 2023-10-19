@@ -1,55 +1,87 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 
 export const baseURL = 'https://dummyjson.com';
-export const fetchSearch = (search: string) => {
-    return `${baseURL}/products/search?q=${search}`;
-}
-export const fetchCategory = (category: string) => {
-    return `${baseURL}/products/category/${category}`;
 
-}
-export const fetchProduct = () => {
-    return `${baseURL}/products`;
-}
-
-export function getUrlForSingleProduct(id: number) {
-    return `${baseURL}/products/${id}`;
+export enum apiQueries {
+    Search = 'search',
+    Category = 'category',
+    Product = 'product',
+    SingleProduct = 'singleProduct',
+    UserDetails = 'userDetails',
+    AddToCart = 'addToCart',
+    UserCart = 'userCart',
 }
 
-export function getUserDetails() {
-    return `${baseURL}/users/5`;
-}
 
-export function getCart() {
-    return `${baseURL}/carts/19`;
-}
-export function getUserCart() {
-    return `${baseURL}/users/5/carts`;
-}
+export function createApiUrl(queryType: apiQueries, parameter?: string | number) {
+    let url = baseURL;
 
-export default function useFetch<Type>(url: string): Type | undefined {
-    const [fetchResult, setFetchResult] = useState<Type>();
-
-    useEffect(() => {
-
-
-        const fetchProductList = async () => {
-            try {
-                const response: Response = await fetch(url);
-                if (response.ok) {
-                    const data = await response.json();
-                    setFetchResult(data);
-                } else {
-                    throw new Error('Failed to fetch product data');
-                }
-            } catch (error) {
-                console.error(error);
+    switch (queryType) {
+        case 'search':
+            if (parameter) {
+                url += `/products/search?q=${parameter}`;
             }
+            break;
 
-        };
-        fetchProductList().then(r => console.log("fetch function called"));
+        case 'category':
+            if (parameter) {
+                url += `/products/category/${parameter}`;
+            }
+            break;
+
+        case 'product':
+            url += '/products';
+            break;
+
+        case 'singleProduct':
+            if (parameter) {
+                url += `/products/${parameter}`;
+            }
+            break;
+
+        case 'userDetails':
+            url += '/users/5';
+            break;
+
+        case 'addToCart':
+            url += `/carts/${parameter}`;
+            break;
+
+        case 'userCart':
+            url += '/users/5/carts';
+            break;
+
+        default:
+            throw new Error('Invalid action');
+    }
+
+    return url;
+}
+
+
+export default function useFetch<Type>(url: string): { data: Type | null, error: string | null,loading:boolean } {
+    const [data, setData] = useState<Type | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    const fetchData = useCallback(async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(url);
+            const responseData = await response.json();
+            setData(responseData);
+            setError(null);
+        } catch (error) {
+            setError('Failed to fetch data');
+        } finally {
+            setLoading(false);
+        }
     }, [url]);
 
-    return fetchResult;
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
+    return {data, error,loading};
 }
+

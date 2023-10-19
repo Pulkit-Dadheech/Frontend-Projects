@@ -1,34 +1,32 @@
-.Header-Elements {
+.header-elements {
     display: flex;
     flex-direction: row;
     padding: 1.5rem;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.63);
+    box-shadow: 0.125rem 0.125rem 0.313rem rgba(0, 0, 0, 0.63);
     justify-content: space-around;
     text-align: center;
     background-color: white;
     align-items: center;
 }
 
-.Search-Box {
-    padding: 1rem;
-    width: 20rem;
-    border-radius: 20px;
+.search-box {
+    padding: 1.1rem;
+    width: 30rem;
+    border-radius: 1rem;
     background-color: white;
-
 }
 
-.Product-Category {
-    padding: 1rem;
+.product-category {
+    padding: 1.1rem;
     width: 10rem;
-    border-radius: 20px;
+    border-radius: 1rem;
 }
 
 a {
     background-color: black;
     text-decoration: none;
     color: white;
-    padding: 15px;
-    box-shadow: 2px 2px 2px black;
-    border-radius: 10px;
-
+    padding: 1rem;
+    box-shadow: 0.125rem 0.125rem 0.125rem black;
+    border-radius: 0.625rem;
 }

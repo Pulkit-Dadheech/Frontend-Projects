@@ -17,26 +17,37 @@ export default function Header({
                                    setSearchBoxResult,
                                    setSelectedCategory
                                }: headerType) {
-    const categoryList = useCategoryList();
+    const {categoryList, categoryError} = useCategoryList();
     const [searchTerm, setSearchTerm] = useState('')
-    const userDetails = useGetUserDetails();
+    const {userDetails, userDataError} = useGetUserDetails();
+
     const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;
 
     useEffect(() => {
-        const delayDebounceFunction = setTimeout(() => {
+        const SearchDelay = setTimeout(() => {
             setSearchBoxResult(searchTerm);
         }, 500)
 
-        return () => clearTimeout(delayDebounceFunction)
-    }, [searchTerm])
+        return () => clearTimeout(SearchDelay)
+    }, [searchTerm
+    ])
 
+    if (categoryError) {
+        return (<h1>Failed to Fetch Category Data</h1>)
+    }
+    if (!userDetails) {
+        return (<div>Fetching User Details...</div>)
+    }
+    if (userDataError) {
+        return (<h1>Error: {userDataError}</h1>)
+    }
 
     return (
         <>
-            <div className={"Header-Elements"}>
+            <div className={"header-elements"}>
                 <div>
                     <input
-                        className="Search-Box"
+                        className="search-box"
                         type="text"
                         placeholder="Search.."
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -51,7 +62,7 @@ export default function Header({
                             setSelectedCategory("")
                         }
 
-                    }} className="Product-Category">
+                    }} className="product-category">
                         <option>All</option>
                         {categoryList?.map((category: string, index: number) => (
                             <option key={index}>{category}</option>

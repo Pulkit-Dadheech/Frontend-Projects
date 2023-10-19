@@ -1,111 +1,47 @@
-import {useEffect, useMemo, useState} from 'react';
 import './productlist.css'
-import useFetch, {baseURL, fetchCategory, fetchProduct, fetchSearch, getUserDetails} from "./dataFetchingFile";
-
-export type Product = {
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    discountPercentage: number;
-    rating: number;
-    stock: number;
-    brand: string;
-    category: string;
-    thumbnail: string;
-    images: string[];
-};
-
-export type ProductCatalog = {
-    products: Product[];
-    total: number;
-    skip: number;
-    limit: number;
-};
-export type cartProduct = {
-    id: number;
-    title: string;
-    price: number;
-    quantity: number;
-    total: number;
-    discountPercentage: number;
-    discountedPrice: number;
-};
-export type carts = {
-    id: number,
-    products: cartProduct[]
-    total: number,
-    "discountedTotal": number,
-    "userId": number,
-    "totalProducts": number,
-    "totalQuantity": number
-}
-export type UserCart = {
-    carts: carts[]
-    total: number
-    skip: number
-    limit: number
-}
-
-interface UserData {
-    firstName: string;
-    lastName: string;
-}
+import useFetch, {apiQueries, baseURL, createApiUrl} from "./dataFetchingFile";
+import {ProductCatalog, UserData} from "./dataTypes";
 
 export function useProductList(search?: string, category?: string) {
-    const [productCatalog, setProductCatalog] = useState<ProductCatalog | undefined>({
-        products: [],
-        total: 0,
-        skip: 0,
-        limit: 30,
-    });
-
     let url: string;
 
     if (search) {
-        url = fetchSearch(search);
+        url = createApiUrl(apiQueries.Search, search);
     } else if (category) {
-        url = fetchCategory(category);
+        url = createApiUrl(apiQueries.Category, category);
     } else {
-        url = fetchProduct();
+        url = createApiUrl(apiQueries.Product);
     }
-    let data: ProductCatalog | undefined;
-    data = useFetch<ProductCatalog>(url);
+    const {data, error,loading} = useFetch<ProductCatalog>(url);
+    let filteredData;
 
     if (search && category) {
         const newData = data?.products.filter((product) => product.category === category)
-        if (data && newData) {
-            data = {
+        if (newData) {
+            filteredData = {
                 products: newData,
-                total: data.total,
-                skip: data.skip,
-                limit: data.limit,
-
-            }
+                total: data?.total,
+                skip: data?.skip,
+                limit: data?.limit,
+            } as ProductCatalog
+            return {productCatalog: filteredData, productError:error,loading}
         }
     }
 
 
-    useEffect(() => {
-        setProductCatalog(data);
-    }, [data]);
-    return useMemo(() => productCatalog, [productCatalog]);
+    return {productCatalog:data, productError: error,loading};
 
 }
 
 export function useCategoryList() {
-    const [category, setCategory] = useState<string[] | undefined>([]);
     const url = `${baseURL}/products/categories`;
-    const data = useFetch<string[]>(url);
-
-    useEffect(() => {
-        setCategory(data);
-    }, [data]);
-
-    return useMemo(() => category, [category]);
+    const {data,error}= useFetch<string[]>(url);
+    return {categoryList: data,categoryError :error};
 }
 
 
 export function useGetUserDetails() {
-    return useFetch<UserData>(getUserDetails());
+
+    const {data,error}=useFetch<UserData>(createApiUrl(apiQueries.UserDetails));
+    return {userDetails: data, userDataError: error}
 }
