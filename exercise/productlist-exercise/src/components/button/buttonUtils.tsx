@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useContext} from "react";
+import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
 import {UserCart} from "../../dataTypes";
 import {UserContext} from "../../context";
 import {CartButton} from "./CartButton";
@@ -18,6 +18,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
     }
 
     const {userPrevCartCatalog, setUserPrevCartCatalog} = userContext
+    const [userCartId,setUserCartId]=useState<number>(0);
 
     function onAdd(id:number,quantity?:number){
         AddOrRemoveProductFromCart(id, quantity, false)
@@ -25,6 +26,11 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
     function onDelete(id:number,quantity?:number){
         AddOrRemoveProductFromCart(id, quantity, true)
     }
+
+    useEffect(() => {
+        const userCartIdNumber=userCartCatalog.carts[0].id;
+        setUserCartId(userCartIdNumber)
+    }, [userCartId]);
 
     async function AddOrRemoveProductFromCart(
         id: number,
@@ -52,7 +58,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
             setUserPrevCartCatalog(updatedCarts);
         }
         try {
-            const response = await fetch(createApiUrl(apiQueries.AddToCart), {
+            const response = await fetch(createApiUrl(apiQueries.AddToCart,userCartId), {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({

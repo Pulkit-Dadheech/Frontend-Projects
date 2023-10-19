@@ -44,7 +44,7 @@ export function createApiUrl(queryType: apiQueries, parameter?: string | number)
             break;
 
         case 'addToCart':
-            url += '/carts/19';
+            url += `/carts/${parameter}`;
             break;
 
         case 'userCart':
