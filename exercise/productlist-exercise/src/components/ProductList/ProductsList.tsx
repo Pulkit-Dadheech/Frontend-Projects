@@ -2,7 +2,7 @@ import React, {Dispatch, SetStateAction} from "react";
 import {ButtonUtils} from "../button/buttonUtils";
 import {listWithQuantity, UserCart} from "../../dataTypes"; // Import your ButtonUtils component here
 
-function ProductList({productListWithQuantity, userCartCatalog, setUserCartCatalog}:
+function ProductList({productListWithQuantity: productListWithCartQuantity, userCartCatalog, setUserCartCatalog}:
                          {
                              productListWithQuantity: listWithQuantity
                              userCartCatalog: UserCart,
@@ -14,8 +14,8 @@ function ProductList({productListWithQuantity, userCartCatalog, setUserCartCatal
     }
     return (
         <div>
-            {!!productListWithQuantity?.length ? (
-                productListWithQuantity.map((productWithQuantity) => (
+            {!!productListWithCartQuantity?.length ? (
+                productListWithCartQuantity.map((productWithQuantity) => (
                     <div key={productWithQuantity.id} className="product-information">
                         <div className={"product-image"}>
                             <img src={productWithQuantity.images[0]} alt="Product List" height="170"/>

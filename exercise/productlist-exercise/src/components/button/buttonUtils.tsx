@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction, useContext} from "react";
 import {UserCart} from "../../dataTypes";
 import {UserContext} from "../../context";
-import {Button} from "./Button";
+import {CartButton} from "./CartButton";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 
 export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}: {
@@ -11,8 +11,6 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
     quantity?: number
 }) {
 
-//addOrRemoveProductFromCart  Products page
-    //updateCartItem Cart Page
     const userContext = useContext(UserContext);
 
     if (!userContext) {
@@ -82,7 +80,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
 
     return (
         <>
-        <Button id={id} onAdd={onAdd} onDelete={onDelete} quantity={quantity} />
+        <CartButton id={id} onAdd={onAdd} onDelete={onDelete} quantity={quantity} />
         </>
     );
 

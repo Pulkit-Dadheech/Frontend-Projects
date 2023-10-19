@@ -43,7 +43,7 @@
 }
 
 .product-rating button {
-    width: 6rem;
+    width: auto;
     padding: 12px;
     background-color: black;
     color: white;
@@ -76,4 +76,13 @@
 }
 .product-quantity-button-text{
     padding-inline: 0.65rem;
+}
+
+.display-none {
+    display: none;
+}
+
+.display-inline {
+    display: inline-flex;
+    align-items: center;
 }
