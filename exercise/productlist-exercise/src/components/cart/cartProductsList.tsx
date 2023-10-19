@@ -1,7 +1,7 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {Product, UserCart} from "../../dataTypes";
+import {listWithQuantity, Product, UserCart} from "../../dataTypes";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
-import {Button} from "../button/button";
+import ProductList from "../ProductList/ProductsList";
 
 
 export default function CartProductsList({userCartCatalog, setUserCartCatalog}: {
@@ -12,13 +12,13 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog}: 
     const [userCartProducts, setUserCartProducts] = useState<Product[]>();
 
     const productsList = userCartCatalog.carts[0].products;
-    const filteredproductsList=productsList.filter((product)=>product.quantity!==0);
+    const filteredproductsList = productsList.filter((product) => product.quantity !== 0);
 
     useEffect(() => {
         if (filteredproductsList) {
             const fetchProductData = async () => {
                 const productPromises = filteredproductsList.map(async (product) => {
-                    const response = await fetch(createApiUrl(apiQueries.SingleProduct,product.id));
+                    const response = await fetch(createApiUrl(apiQueries.SingleProduct, product.id));
                     return await response.json();
                 });
                 const productData = await Promise.all(productPromises);
@@ -28,61 +28,28 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog}: 
         }
     }, []);
 
-    const fetchDiscountPrice = (discount: number, price: number) => {
-        return Math.round(price - (discount / 100) * price);
-    }
 
+    let filterProducts = userCartProducts;
 
-    let filterProducts=userCartProducts;
-
-    const filteredCartWithNoProducts=userCartCatalog.carts[0].products.filter((product)=>product.quantity !== 0)
-    if (filteredCartWithNoProducts.length>=0) {
+    const filteredCartWithNoProducts = userCartCatalog.carts[0].products.filter((product) => product.quantity !== 0)
+    if (filteredCartWithNoProducts.length >= 0) {
         filterProducts = userCartProducts?.filter((product) => {
             return !!filteredCartWithNoProducts.filter((filterProduct) => filterProduct.id === product.id).length;
         });
     }
-    const productListWithQuantity=filterProducts?.map((product)=>{
-        return{
+    const productListWithQuantity: listWithQuantity = filterProducts?.map((product) => {
+        return {
             ...product,
-            quantity: userCartCatalog.carts[0].products.find((p)=>p.id===product.id)?.quantity || 0
+            quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0
         }
     })
 
     return (
-        <div>
-            {!!productListWithQuantity?.length ? (
-                productListWithQuantity.map((product) => (
-                    <div key={product.id} className="product-information">
-                        <div className={"product-image"}>
-                            <img src={product.images[0]} alt="Product List" height="100"/>
-                        </div>
-                        <div className={"product-description"}>
-                            <h3>Name: {product.title}</h3>
-                            <h4>
-                                Price:
-                                <>
-                                    {fetchDiscountPrice(product.discountPercentage, product.price)}
-                                    <span>&#36;</span>
-                                    (
-                                    <del>{product.price}</del>
-                                    <span>&#36;</span>
-                                    )
-                                </>
-                            </h4>
-                            <h4>Category: {product.category}</h4>
-                            <p>Description: {product.description}</p>
-                        </div>
-                        <div className={"product-rating"}>
-                            <p>Rating: {product.rating}</p>
-                            <Button id={product.id} userCartCatalog={userCartCatalog}
-                                    setUserCartCatalog={setUserCartCatalog} quantity={product.quantity}></Button>
-                        </div>
-                    </div>
-                ))
-            ) : (
-                <h1 className={"product-header"}>Empty Cart ...</h1>
-            )}
-        </div>
+        <ProductList
+            productListWithQuantity={productListWithQuantity}
+            userCartCatalog={userCartCatalog}
+            setUserCartCatalog={setUserCartCatalog}
+        />
     );
 }
 
