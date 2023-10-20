@@ -7,21 +7,24 @@ export default function Paginate({totalProducts, currentPage, setCurrentPage}: {
     currentPage: number;
     setCurrentPage: Dispatch<SetStateAction<number>>,
 }) {
-    const {itemsPerPage}=usePagination();
+    const {itemsPerPage} = usePagination();
     const totalPages = Math.ceil((totalProducts ? totalProducts : 0) / itemsPerPage);
-    if(currentPage>totalPages && totalPages!==0){
+    if (currentPage > totalPages && totalPages !== 0) {
         setCurrentPage(totalPages);
     }
     return (
         <>
             {totalProducts ? (<div className="pagination">
                 <span className="pagination-button-block">
-                    <button onClick={() => currentPage !== 1 && setCurrentPage(1)}>First</button>
-                    <button onClick={() => setCurrentPage(currentPage !== 1 ? currentPage - 1 : 1)}>Prev</button>
+                    <button className={currentPage !== 1 ? "active" : ""}
+                            onClick={() => currentPage !== 1 && setCurrentPage(1)}>First</button>
+                    <button className={currentPage !== 1 ? "active" : ""}
+                            onClick={() => setCurrentPage(currentPage !== 1 ? currentPage - 1 : 1)}>Prev</button>
                     <button className="active">{currentPage}</button>
-                    <button
-                        onClick={() => setCurrentPage(currentPage !== totalPages ? currentPage + 1 : totalPages)}>Next</button>
-                    <button onClick={() => currentPage !== totalPages && setCurrentPage(totalPages)}>Last</button>
+                    <button className={currentPage !== totalPages ? "active" : ""}
+                            onClick={() => setCurrentPage(currentPage !== totalPages ? currentPage + 1 : totalPages)}>Next</button>
+                    <button className={currentPage !== totalPages ? "active" : ""}
+                            onClick={() => currentPage !== totalPages && setCurrentPage(totalPages)}>Last</button>
                 </span>
                     <div>Pages {currentPage} out of {totalPages}</div>
                 </div>) :

@@ -12,15 +12,15 @@
 }
 
 .pagination-button-block button {
-    width: 40px;
-    height: 40px;
+    width: 3rem;
+    height: 3rem;
     font-family: inherit;
     font-weight: 600;
-    font-size: 16px;
-    margin: 0 10px;
-    border-radius: 6px;
+    font-size: 1rem;
+    margin: 0 1.2rem;
+    border-radius: 0.5rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+
     background: #cccccc;
     color: white;
     border-color: #eee;
@@ -31,18 +31,9 @@
     border-color: #101010;
     background: black;
     color: white;
+    opacity: 0.8;
+}
+.pagination-button-block button.active:hover{
+    opacity: 1;
 }
 
-.custom-input {
-    width: 200px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-}
-
-.error-message {
-    font-size: 14px;
-    margin-top: 5px;
-}
