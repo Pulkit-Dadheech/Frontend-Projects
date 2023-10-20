@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useState} from "react";
-import {useProductList} from "../../customHooks";
+import {usePagination, useProductList} from "../../customHooks";
 import {listWithQuantity, UserCart} from "../../dataTypes";
 import "./ProductComponent.css";
 import ProductList from "../ProductList/ProductsList";
@@ -12,17 +12,19 @@ export default function Product(props: {
     setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
 },) {
 
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [categoryCurrentPage,setCategoryCurrentPage]=useState<number>(1);
-    const productsPerPage=4;
-    const skippedProducts=props.category ? (categoryCurrentPage-1)*productsPerPage : (currentPage-1)*productsPerPage;
+    const [categoryCurrentPage, setCategoryCurrentPage] = useState<number>(1);
+    const {currentPage, setCurrentPage, itemsPerPage} = usePagination();
+    const skippedProducts = props.category ? (categoryCurrentPage - 1) * itemsPerPage : (currentPage - 1) * itemsPerPage;
 
-
-    const {productCatalog, productError, loading} = useProductList(props.searchBoxResult, props.category,skippedProducts,productsPerPage);
+    const {
+        productCatalog,
+        productError,
+        loading
+    } = useProductList(props.searchBoxResult, props.category, skippedProducts, itemsPerPage);
     const {userCartCatalog} = props;
 
     if (loading) {
-        return (<h1>fetching user name...</h1>)
+        return (<h1>fetching user cart...</h1>)
     }
     if (productError) {
         return (<h1>Error Fetching Product Catalog</h1>);
@@ -42,8 +44,10 @@ export default function Product(props: {
                 setUserCartCatalog={props.setUserCartCatalog}
                 loading={loading}
             />
-            <Paginate totalProducts={productCatalog ? productCatalog?.total : null} currentPage={props.category? categoryCurrentPage : currentPage}
-                      setCurrentPage={props.category? setCategoryCurrentPage : setCurrentPage} productPerPage={productsPerPage}/>
+            <Paginate totalProducts={productCatalog?.total ?? 0}
+                      currentPage={props.category ? categoryCurrentPage : currentPage}
+                      setCurrentPage={props.category ? setCategoryCurrentPage : setCurrentPage}
+            />
         </>
     );
 

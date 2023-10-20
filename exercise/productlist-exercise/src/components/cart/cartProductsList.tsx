@@ -2,18 +2,21 @@ import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {listWithQuantity, Product, UserCart} from "../../dataTypes";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import ProductList from "../ProductList/ProductsList";
+import Paginate from "../Pagination/paginate";
+import {usePagination} from "../../customHooks";
 
 
-export default function CartProductsList({userCartCatalog, setUserCartCatalog,loading}: {
+export default function CartProductsList({userCartCatalog, setUserCartCatalog, loading}: {
     userCartCatalog: UserCart;
     setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
-    loading:boolean;
+    loading: boolean;
 }) {
 
     const [userCartProducts, setUserCartProducts] = useState<Product[]>();
 
     const productsList = userCartCatalog.carts[0].products;
     const filteredproductsList = productsList.filter((product) => product.quantity !== 0);
+    const {currentPage, setCurrentPage, itemsPerPage} = usePagination()
 
     useEffect(() => {
         if (filteredproductsList) {
@@ -25,7 +28,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog,lo
                 const productData = await Promise.all(productPromises);
                 setUserCartProducts(productData);
             };
-            fetchProductData().then(r => console.log("userCartFetchSuccessfully"));
+            fetchProductData();
         }
     }, []);
 
@@ -45,13 +48,21 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog,lo
         }
     })
 
+    const ProductListWithQuantity = productListWithQuantity?.slice((currentPage - 1) * itemsPerPage, (currentPage) * itemsPerPage);
+
     return (
-        <ProductList
-            productListWithQuantity={productListWithQuantity}
-            userCartCatalog={userCartCatalog}
-            setUserCartCatalog={setUserCartCatalog}
-            loading={loading}
-        />
+        <>
+            <ProductList
+                productListWithQuantity={ProductListWithQuantity}
+                userCartCatalog={userCartCatalog}
+                setUserCartCatalog={setUserCartCatalog}
+                loading={loading}
+            />
+            <Paginate totalProducts={filterProducts?.length ?? 0}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+            />
+        </>
     );
 }
 

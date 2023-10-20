@@ -13,7 +13,7 @@ export enum apiQueries {
 }
 
 
-export function createApiUrl(queryType: apiQueries, parameter?: string | number, limit?: number,skip?: number) {
+export function createApiUrl(queryType: apiQueries, parameter?: string | number, limit?: number, skip?: number) {
     let url = baseURL;
 
     switch (queryType) {
@@ -58,7 +58,6 @@ export function createApiUrl(queryType: apiQueries, parameter?: string | number,
 
     return url;
 }
-
 
 export default function useFetch<Type>(url: string): { data: Type | null, error: string | null, loading: boolean } {
     const [data, setData] = useState<Type | null>(null);
