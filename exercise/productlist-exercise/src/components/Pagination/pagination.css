@@ -1,12 +1,12 @@
-.pagination{
+.pagination {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /*margin-top: 1rem;*/
     background-color: white;
     padding-block: 1rem;
     align-items: center;
 }
+
 .pagination-button-block {
     padding: 1rem;
 }
@@ -35,9 +35,10 @@
     color: black;
     opacity: 0.8;
 }
-.pagination-button-block button.active:hover{
+
+.pagination-button-block button.active:hover {
     opacity: 1;
     background-color: black;
-    color:white;
+    color: white;
 }
 

@@ -1,12 +1,14 @@
-import React, {Dispatch, SetStateAction} from "react";
+import React from "react";
 import './pagination.css'
 import {usePagination} from "../../customHooks";
 
-export default function Paginate({totalProducts, currentPage, setCurrentPage}: {
+interface PaginationState {
     totalProducts: number;
     currentPage: number;
-    setCurrentPage: Dispatch<SetStateAction<number>>,
-}) {
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function Paginator({totalProducts, currentPage, setCurrentPage}: PaginationState) {
     const {itemsPerPage} = usePagination();
     const totalPages = Math.ceil((totalProducts ? totalProducts : 0) / itemsPerPage);
     if (currentPage > totalPages && totalPages !== 0) {
@@ -28,7 +30,7 @@ export default function Paginate({totalProducts, currentPage, setCurrentPage}: {
                 </span>
                     <div>Pages {currentPage} out of {totalPages}</div>
                 </div>) :
-                (<h1>FetchingProducts...</h1>)}
+                (<h1>Products Not found</h1>)}
 
         </>
     )

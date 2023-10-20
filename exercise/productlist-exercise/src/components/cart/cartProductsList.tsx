@@ -2,7 +2,7 @@ import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {listWithQuantity, Product, UserCart} from "../../dataTypes";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import ProductList from "../ProductList/ProductsList";
-import Paginate from "../Pagination/paginate";
+import Paginator from "../Pagination/paginator";
 import {usePagination} from "../../customHooks";
 
 
@@ -58,9 +58,9 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
                 setUserCartCatalog={setUserCartCatalog}
                 loading={loading}
             />
-            <Paginate totalProducts={filterProducts?.length ?? 0}
-                      currentPage={currentPage}
-                      setCurrentPage={setCurrentPage}
+            <Paginator totalProducts={filterProducts?.length ?? 0}
+                       currentPage={currentPage}
+                       setCurrentPage={setCurrentPage}
             />
         </>
     );

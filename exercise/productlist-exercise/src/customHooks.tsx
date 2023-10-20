@@ -1,13 +1,13 @@
 import './productlist.css'
 import useFetch, {apiQueries, baseURL, createApiUrl} from "./dataFetchingFile";
 import {ProductCatalog, UserData} from "./dataTypes";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export function useProductList(search?: string, category?: string, skippedProducts?: number, limit?: number) {
     let url: string;
 
     if (search) {
-        url = createApiUrl(apiQueries.Search, search);
+        url = createApiUrl(apiQueries.Search, search, limit, skippedProducts);
     } else if (category) {
         url = createApiUrl(apiQueries.Category, category, limit, skippedProducts);
     } else {
@@ -21,7 +21,7 @@ export function useProductList(search?: string, category?: string, skippedProduc
         if (newData) {
             filteredData = {
                 products: newData,
-                total: data?.total,
+                total: newData.length,
                 skip: data?.skip,
                 limit: data?.limit,
             } as ProductCatalog
@@ -48,11 +48,21 @@ export function useGetUserDetails() {
 }
 
 
-export function usePagination() {
+export function usePagination(category?: string, search?: string) {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 4;
 
-
+    useEffect(() => {
+        if (category && search) {
+            setCurrentPage(1);
+        }
+        if (category) {
+            setCurrentPage(1);
+        }
+        if (search) {
+            setCurrentPage(1);
+        }
+    }, [category, search]);
     return {
         currentPage,
         setCurrentPage,

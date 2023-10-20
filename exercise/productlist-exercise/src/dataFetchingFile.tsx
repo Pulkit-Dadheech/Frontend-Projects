@@ -19,7 +19,7 @@ export function createApiUrl(queryType: apiQueries, parameter?: string | number,
     switch (queryType) {
         case 'search':
             if (parameter) {
-                url += `/products/search?q=${parameter}`;
+                url += `/products/search?q=${parameter}&limit=${limit}&skip=${skip}`;
             }
             break;
 
