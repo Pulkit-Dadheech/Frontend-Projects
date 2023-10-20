@@ -13,7 +13,7 @@ export enum apiQueries {
 }
 
 
-export function createApiUrl(queryType: apiQueries, parameter?: string | number) {
+export function createApiUrl(queryType: apiQueries, parameter?: string | number, limit?: number,skip?: number) {
     let url = baseURL;
 
     switch (queryType) {
@@ -25,12 +25,12 @@ export function createApiUrl(queryType: apiQueries, parameter?: string | number)
 
         case 'category':
             if (parameter) {
-                url += `/products/category/${parameter}`;
+                url += `/products/category/${parameter}?limit=${limit}&skip=${skip}`;
             }
             break;
 
         case 'product':
-            url += '/products';
+            url += `/products?limit=${limit}&skip=${skip}`;
             break;
 
         case 'singleProduct':
@@ -51,6 +51,7 @@ export function createApiUrl(queryType: apiQueries, parameter?: string | number)
             url += '/users/5/carts';
             break;
 
+
         default:
             throw new Error('Invalid action');
     }
@@ -59,7 +60,7 @@ export function createApiUrl(queryType: apiQueries, parameter?: string | number)
 }
 
 
-export default function useFetch<Type>(url: string): { data: Type | null, error: string | null,loading:boolean } {
+export default function useFetch<Type>(url: string): { data: Type | null, error: string | null, loading: boolean } {
     const [data, setData] = useState<Type | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
@@ -82,6 +83,6 @@ export default function useFetch<Type>(url: string): { data: Type | null, error:
         fetchData();
     }, [fetchData]);
 
-    return {data, error,loading};
+    return {data, error, loading};
 }
 

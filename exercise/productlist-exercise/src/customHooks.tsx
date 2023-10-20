@@ -2,15 +2,15 @@ import './productlist.css'
 import useFetch, {apiQueries, baseURL, createApiUrl} from "./dataFetchingFile";
 import {ProductCatalog, UserData} from "./dataTypes";
 
-export function useProductList(search?: string, category?: string) {
+export function useProductList(search?: string, category?: string,skippedProducts?: number,limit? : number) {
     let url: string;
 
     if (search) {
         url = createApiUrl(apiQueries.Search, search);
     } else if (category) {
-        url = createApiUrl(apiQueries.Category, category);
+        url = createApiUrl(apiQueries.Category, category,limit,skippedProducts);
     } else {
-        url = createApiUrl(apiQueries.Product);
+        url = createApiUrl(apiQueries.Product,"",limit,skippedProducts);
     }
     const {data, error,loading} = useFetch<ProductCatalog>(url);
     let filteredData;

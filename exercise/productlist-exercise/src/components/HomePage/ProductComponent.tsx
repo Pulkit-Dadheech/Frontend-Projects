@@ -12,9 +12,14 @@ export default function Product(props: {
     setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
 },) {
 
-    const {productCatalog, productError, loading} = useProductList(props.searchBoxResult, props.category);
-    const {userCartCatalog} = props;
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [categoryCurrentPage,setCategoryCurrentPage]=useState<number>(1);
+    const productsPerPage=4;
+    const skippedProducts=props.category ? (categoryCurrentPage-1)*productsPerPage : (currentPage-1)*productsPerPage;
+
+
+    const {productCatalog, productError, loading} = useProductList(props.searchBoxResult, props.category,skippedProducts,productsPerPage);
+    const {userCartCatalog} = props;
 
     if (loading) {
         return (<h1>fetching user name...</h1>)
@@ -37,8 +42,8 @@ export default function Product(props: {
                 setUserCartCatalog={props.setUserCartCatalog}
                 loading={loading}
             />
-            <Paginate totalProducts={productCatalog ? productCatalog?.total : null} currentPage={currentPage}
-                      setCurrentPage={setCurrentPage}/>
+            <Paginate totalProducts={productCatalog ? productCatalog?.total : null} currentPage={props.category? categoryCurrentPage : currentPage}
+                      setCurrentPage={props.category? setCategoryCurrentPage : setCurrentPage} productPerPage={productsPerPage}/>
         </>
     );
 

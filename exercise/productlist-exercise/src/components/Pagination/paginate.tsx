@@ -5,11 +5,10 @@ export default function Paginate({totalProducts, currentPage, setCurrentPage, pr
     totalProducts: number | null;
     currentPage: number;
     setCurrentPage: Dispatch<SetStateAction<number>>,
-    productPerPage?: number
+    productPerPage: number
 }) {
-    if (!productPerPage) productPerPage = 5;
 
-    const totalPages = (totalProducts? totalProducts : 0) / productPerPage;
+    const totalPages = Math.ceil((totalProducts? totalProducts : 0) / productPerPage);
 
     return (
         <>
@@ -21,8 +20,8 @@ export default function Paginate({totalProducts, currentPage, setCurrentPage, pr
                     <button onClick={() => setCurrentPage(currentPage !== totalPages ? currentPage + 1 : totalPages)}>Next</button>
                     <button onClick={() => currentPage!==totalPages && setCurrentPage(totalPages)}>Last</button>
                 </span>
-                <div>Pages {currentPage} out of {totalPages}</div>
-            </div>):
+                    <div>Pages {currentPage} out of {totalPages}</div>
+                </div>):
                 (<h1>FetchingProducts...</h1>)}
 
         </>
