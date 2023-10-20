@@ -21,19 +21,23 @@
     border-radius: 0.5rem;
     cursor: pointer;
 
-    background: #cccccc;
+
+    background-color: #cccccc;
     color: white;
-    border-color: #eee;
+    /*border-color: #eee;*/
+    opacity: 0.8;
 }
 
 .pagination-button-block button.active {
     font-weight: 900;
-    border-color: #101010;
-    background: black;
-    color: white;
+    border: 0.1rem solid black;
+    background-color: white;
+    color: black;
     opacity: 0.8;
 }
 .pagination-button-block button.active:hover{
     opacity: 1;
+    background-color: black;
+    color:white;
 }
 
