@@ -41,4 +41,16 @@
     background-color: black;
     color: white;
 }
+.pagination-page-text{
+    padding: 0.8rem;
+    width: 1rem;
+    background-color: black;
+    border-radius: 0.8rem;
+    color:white;
+    margin: 1rem;
+    display: inline-block;
+    text-align: center;
+    font-weight: 900;
+
+}
 

@@ -9,11 +9,14 @@ interface PaginationState {
 }
 
 export default function Paginator({totalProducts, currentPage, setCurrentPage}: PaginationState) {
+
     const {itemsPerPage} = usePagination();
     const totalPages = Math.ceil((totalProducts ? totalProducts : 0) / itemsPerPage);
+
     if (currentPage > totalPages && totalPages !== 0) {
         setCurrentPage(totalPages);
     }
+
     return (
         <>
             {totalProducts ? (<div className="pagination">
@@ -22,7 +25,7 @@ export default function Paginator({totalProducts, currentPage, setCurrentPage}: 
                             onClick={() => currentPage !== 1 && setCurrentPage(1)}>{"<<"}</button>
                     <button className={currentPage !== 1 ? "active" : ""}
                             onClick={() => setCurrentPage(currentPage !== 1 ? currentPage - 1 : 1)}>Prev</button>
-                    <button className="active">{currentPage}</button>
+                    <span className="pagination-page-text">{currentPage}</span>
                     <button className={currentPage !== totalPages ? "active" : ""}
                             onClick={() => setCurrentPage(currentPage !== totalPages ? currentPage + 1 : totalPages)}>Next</button>
                     <button className={currentPage !== totalPages ? "active" : ""}
