@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {usePagination, useProductList} from "../../customHooks";
 import {listWithQuantity, UserCart} from "../../dataTypes";
 import "./ProductComponent.css";
@@ -17,11 +17,26 @@ export default function Product(props: ShoppingCartProps) {
     const {currentPage, setCurrentPage, itemsPerPage} = usePagination(props.category, props.searchBoxResult);
     const skippedProducts = (currentPage - 1) * itemsPerPage;
 
+
     const {
         productCatalog,
         productError,
         loading
     } = useProductList(props.searchBoxResult, props.category, skippedProducts, itemsPerPage);
+
+    useEffect(() => {
+        if (props.category && props.searchBoxResult) {
+            setCurrentPage(1);
+        }
+        if (props.category) {
+            setCurrentPage(1);
+        }
+        if (props.searchBoxResult) {
+            setCurrentPage(1);
+        }
+    }, [props.category, props.searchBoxResult, setCurrentPage]);
+    
+    
 
     const {userCartCatalog} = props;
 
@@ -38,6 +53,8 @@ export default function Product(props: ShoppingCartProps) {
             quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0
         }
     })
+    
+    
 
     return (<>
             <ProductList

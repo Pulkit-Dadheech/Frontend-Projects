@@ -1,7 +1,7 @@
 import './productlist.css'
 import useFetch, {apiQueries, baseURL, createApiUrl} from "./dataFetchingFile";
 import {ProductCatalog, UserData} from "./dataTypes";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 export function useProductList(search?: string, category?: string, skippedProducts?: number, limit?: number) {
     let url: string;
@@ -52,17 +52,7 @@ export function usePagination(category?: string, search?: string) {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 4;
 
-    useEffect(() => {
-        if (category && search) {
-            setCurrentPage(1);
-        }
-        if (category) {
-            setCurrentPage(1);
-        }
-        if (search) {
-            setCurrentPage(1);
-        }
-    }, [category, search]);
+
     return {
         currentPage,
         setCurrentPage,
