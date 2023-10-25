@@ -30,3 +30,14 @@ a {
     box-shadow: 0.125rem 0.125rem 0.125rem black;
     border-radius: 0.625rem;
 }
+
+.clear-button {
+    display: inline-block;
+    position: relative;
+    right: 2.5rem;
+    top: 0.1rem;
+    cursor: pointer;
+    padding: 0.625rem;
+}
+
+
