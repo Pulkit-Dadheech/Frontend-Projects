@@ -46,14 +46,21 @@ export default function Header({
     return (
         <>
             <div className={"header-elements"}>
-                <div>
+                <div className="search-container">
                     <input
                         className="search-box"
                         type="text"
                         placeholder="Search.."
-                        onChange={(e) => setSearchTerm(e.target.value)}
                         value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
+                    {searchTerm &&(
+                        <span
+                            className="clear-button"
+                            onClick={() => setSearchTerm("")}
+                        >&#10060;
+                        </span>
+                    )}
                 </div>
                 <div>
                     <select onChange={(e) => {
