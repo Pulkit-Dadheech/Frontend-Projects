@@ -2,6 +2,7 @@ import React from "react";
 import {useGetUserDetails} from "../customHooks/getUserDetails";
 import {UserCart} from "../../dataTypes";
 import './cartHeader.css'
+import {Link} from "react-router-dom";
 
 export default function CartHeader({userCartCatalog}: { userCartCatalog: UserCart | null; }) {
 
@@ -22,10 +23,14 @@ export default function CartHeader({userCartCatalog}: { userCartCatalog: UserCar
     }
     return (
         <div className="cart-header">
+            <div className="homepage">
+                <Link to="/">HomePage</Link>
+            </div>
             <h1 className="cart-header-name">{userName}</h1>
             <h2 className="cart-total-products">
                 Your Products({totalProductsInUserCart})
             </h2>
+
         </div>
     )
 }
