@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {listWithQuantity, Product, UserCart} from "../../dataTypes";
+import {listsWithQuantity, Product, UserCart} from "../../dataTypes";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
@@ -45,7 +45,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
             return !!filteredCartWithNoProducts.filter((filterProduct) => filterProduct.id === product.id).length;
         });
     }
-    const productListWithQuantity: listWithQuantity = filterProducts?.map((product) => {
+    const productListWithQuantity: listsWithQuantity = filterProducts?.map((product) => {
         return {
             ...product,
             quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0

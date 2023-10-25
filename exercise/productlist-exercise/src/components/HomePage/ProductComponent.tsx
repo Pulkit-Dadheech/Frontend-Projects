@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import  {useProductList} from "../customHooks/ProductList";
-import {listWithQuantity, UserCart} from "../../dataTypes";
+import {listsWithQuantity, UserCart} from "../../dataTypes";
 import "./ProductComponent.css";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
@@ -47,7 +47,7 @@ export default function Product(props: ShoppingCartProps) {
         return (<h1>Error Fetching Product Catalog</h1>);
     }
 
-    const productListWithQuantity: listWithQuantity = productCatalog?.products.map((product) => {
+    const productListWithQuantity: listsWithQuantity = productCatalog?.products.map((product) => {
         return {
             ...product,
             quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0

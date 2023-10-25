@@ -21,7 +21,6 @@ export default function Header({
                                }: headerType) {
     const {categoryList, categoryError} = useCategoryList();
     const [searchTerm, setSearchTerm] = useState('')
-    const [customProducts, setCustomProducts] = useState<Product[]>([]);
     const {userDetails, userDataError} = useGetUserDetails();
 
     const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;

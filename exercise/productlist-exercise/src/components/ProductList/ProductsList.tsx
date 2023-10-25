@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction} from "react";
 import {ButtonUtils} from "../button/buttonUtils";
-import {listWithQuantity, UserCart} from "../../dataTypes"; // Import your ButtonUtils component here
+import {listsWithQuantity, UserCart} from "../../dataTypes"; // Import your ButtonUtils component here
 
 function ProductList({
                          productListWithQuantity: productListWithCartQuantity,
@@ -9,7 +9,7 @@ function ProductList({
                          loading
                      }:
                          {
-                             productListWithQuantity: listWithQuantity
+                             productListWithQuantity: listsWithQuantity
                              userCartCatalog: UserCart,
                              setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
                              loading: boolean

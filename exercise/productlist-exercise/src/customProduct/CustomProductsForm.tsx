@@ -1,11 +1,17 @@
-import React, {useState} from 'react';
-import {Link} from 'react-router-dom'; // Import the Link component
-import {Product} from "../dataTypes"
+import React, {useContext, useState} from 'react';
+import {Link} from 'react-router-dom';
+import {listWithQuantity} from "../dataTypes";
 import './ProductForm.css';
+import {UserContext} from "../context";
 
 function ProductForm() {
-    const [customProducts, setCustomProducts] = useState<Product[]>([]);
-    const [productData, setProductData] = useState<Product>({
+    const userContext = useContext(UserContext);
+    if (!userContext) {
+        throw new Error("UserContext is not provided correctly.");
+    }
+    const {customProducts,setCustomProducts} =userContext;
+    const [productData, setProductData] = useState<listWithQuantity>({
+        quantity: 0,
         id: 0,
         title: "",
         brand: "",
@@ -15,7 +21,7 @@ function ProductForm() {
         images: [],
         price: 0,
         rating: 4.5,
-        stock: 100,
+        stock: 10,
         thumbnail: "",
     });
     const [successMessage, setSuccessMessage] = useState<string>('');
@@ -31,6 +37,7 @@ function ProductForm() {
     const handleSave = () => {
         setCustomProducts([...customProducts, productData]);
         setProductData({
+            quantity: 0,
             id: productData.id+1,
             title: "",
             brand: "",
@@ -42,9 +49,11 @@ function ProductForm() {
             rating: 0,
             stock: 0,
             thumbnail: "",
+
         });
         setSuccessMessage('Submitted successfully!');
     };
+
     return (
         <div className="form-container">
             <h2>Add a Custom Product</h2>
@@ -62,8 +71,8 @@ function ProductForm() {
                 <label htmlFor="discountedPrice" className="input-label">Discounted Price:</label>
                 <input type="number" name="discountPercentage" value={productData.discountPercentage} onChange={handleChange} className="input-field"/>
 
-                {/*<label htmlFor="quantity" className="input-label">Quantity:</label>*/}
-                {/*<input type="number" name="quantity" value={productData.} onChange={handleChange} className="input-field"/>*/}
+                <label htmlFor="quantity" className="input-label">Quantity:</label>
+                <input type="number" name="quantity" value={productData.quantity} onChange={handleChange} className="input-field"/>
 
                 <label htmlFor="description" className="input-label">Description:</label>
                 <textarea name="description" value={productData.description} onChange={handleChange} className="input-field"/>

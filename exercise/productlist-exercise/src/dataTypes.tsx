@@ -47,7 +47,21 @@ export interface UserData {
     firstName: string;
     lastName: string;
 }
-export type listWithQuantity = {
+export type listWithQuantity={
+    quantity: number;
+    id: number;
+    title: string;
+    description: string;
+    price: number;
+    discountPercentage: number;
+    rating: number;
+    stock: number;
+    brand: string;
+    category: string;
+    thumbnail: string;
+    images: string[];
+}
+export type listsWithQuantity = {
     quantity: number,
     id: number;
     title: string;
@@ -61,3 +75,4 @@ export type listWithQuantity = {
     thumbnail: string;
     images: string[];
 }[] | undefined
+

@@ -1,19 +1,31 @@
-import React, {useState} from 'react';
-import Product from "../components/HomePage/ProductComponent";
+import React, {useContext} from 'react';
+import {UserContext} from "../context";
+import ProductList from "../components/ProductList/ProductsList";
 
 const Home = () => {
-    const [searchBoxResult, setSearchBoxResult] = useState<string>("");
+    // const [searchBoxResult, setSearchBoxResult] = useState<string>("");
+    const userContext = useContext(UserContext);
+
+    if (!userContext) {
+        throw new Error("UserContext is not provided correctly.");
+    }
+    const {customProducts} = userContext;
+    const {userCart, setUserCart} = userContext;
+
+    if (!userCart) {
+        return (<h1>No Items in Cart</h1>)
+    }
+
 
     return (
         <>
             {/*<CustomProductsHeader/>*/}
-            {/*<Product*/}
-            {/*    searchBoxResult={searchBoxResult}*/}
-            {/*    category={selectedCategory}*/}
-            {/*    userCartCatalog={userCart}*/}
-            {/*    setUserCartCatalog={setUserCart}*/}
-            {/*/>*/}
-            <h1>Custom Products </h1>
+            <ProductList
+                productListWithQuantity={customProducts}
+                userCartCatalog={userCart}
+                setUserCartCatalog={setUserCart}
+                loading={false}
+            />
         </>
     );
 };
