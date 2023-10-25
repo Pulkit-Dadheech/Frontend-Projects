@@ -5,7 +5,6 @@ import './cartHeader.css'
 
 export default function CartHeader({userCartCatalog}: { userCartCatalog: UserCart | null; }) {
 
-
     const {userDetails,userDataError} = useGetUserDetails();
     const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;
     if(!userCartCatalog){

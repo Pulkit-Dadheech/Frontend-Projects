@@ -12,7 +12,6 @@ export enum apiQueries {
     UserCart = 'userCart',
 }
 
-
 export function createApiUrl(queryType: apiQueries, parameter?: string | number, limit?: number, skip?: number) {
     let url = baseURL;
 

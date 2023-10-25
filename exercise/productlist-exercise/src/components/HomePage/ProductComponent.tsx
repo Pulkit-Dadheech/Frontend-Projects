@@ -24,12 +24,6 @@ export default function Product(props: ShoppingCartProps) {
 
     const {productCatalog, productError, loading} = useProductList(props.searchBoxResult, props.category, skippedProducts, itemsPerPage);
 
-    // useEffect(() => {
-    //     setQuery({p: currentPage.toString()})
-    // }, []);
-
-
-
     useEffect(() => {
         if (props.category && props.searchBoxResult) {
             setCurrentPage(1);

@@ -19,18 +19,7 @@ export default function Paginator({totalProducts, currentPage, setCurrentPage, i
         setCurrentPage(totalPages);
     }
     setItemsPerPage(5);
-    // console.log(queryPage);
 
-    // setItemsPerPage(5);
-    // useEffect(() => {
-    //     // Handle initial page based on query parameter
-    //     if (queryPage) {
-    //         const page = parseInt(queryPage, 10);
-    //         if (!isNaN(page) && page !== currentPage) {
-    //             setCurrentPage(page);
-    //         }
-    //     }
-    // }, [queryPage, currentPage, setCurrentPage]);
     useEffect(() => {
         setQuery({p: currentPage.toString()})
     }, [currentPage]);
