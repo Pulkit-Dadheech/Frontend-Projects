@@ -5,6 +5,8 @@ import App from './App';
 import Cart from "./components/cart/cart";
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
 import MyContextProvider from "./context";
+import CustomProduct from "./customProduct/CustomProduct";
+import ProductForm from "./customProduct/CustomProductsForm";
 
 
 const root = ReactDOM.createRoot(
@@ -17,6 +19,8 @@ const router = createBrowserRouter(
         <>
             <Route path="/" element={<App/>}/>
             <Route path="cart" element={<Cart/>}/>
+            <Route path="custom-product" element={<CustomProduct/>}></Route>
+            <Route path="/form" element={<ProductForm/>} />
         </>
     )
 )

@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
 import './Header.css';
 import {useCategoryList} from "../customHooks/CategoryList";
-import {useGetUserDetails} from "../customHooks/getUserDetails";
+import {useGetUserDetails} from "../customHooks/UserDetails";
 import {Link} from "react-router-dom";
+import {Product} from "../../dataTypes";
 
 type headerType =
     {
@@ -20,6 +21,7 @@ export default function Header({
                                }: headerType) {
     const {categoryList, categoryError} = useCategoryList();
     const [searchTerm, setSearchTerm] = useState('')
+    const [customProducts, setCustomProducts] = useState<Product[]>([]);
     const {userDetails, userDataError} = useGetUserDetails();
 
     const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;
@@ -76,6 +78,12 @@ export default function Header({
                             <option key={index}>{category}</option>
                         ))}
                     </select>
+                </div>
+                <div id="custom-product-listing">
+                    <Link to="/custom-product">Custom-Products</Link>
+                </div>
+                <div id="custom-form">
+                    <Link to="/form">Create-Custom-Product</Link>
                 </div>
                 <div id="cart">
                     <Link to="/cart">{userName}</Link>

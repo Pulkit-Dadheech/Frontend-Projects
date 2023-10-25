@@ -1,5 +1,5 @@
 import React from "react";
-import {useGetUserDetails} from "../customHooks/getUserDetails";
+import {useGetUserDetails} from "../customHooks/UserDetails";
 import {UserCart} from "../../dataTypes";
 import './cartHeader.css'
 import {Link} from "react-router-dom";
