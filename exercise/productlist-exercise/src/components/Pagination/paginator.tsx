@@ -22,7 +22,7 @@ export default function Paginator({totalProducts, currentPage, setCurrentPage, i
 
     useEffect(() => {
         setQuery({p: currentPage.toString()})
-    }, [currentPage]);
+    }, [currentPage, setQuery]);
 
     return (
         <>
