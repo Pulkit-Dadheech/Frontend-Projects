@@ -1,21 +1,39 @@
-import React from "react";
+import React, {useEffect} from "react";
 import './pagination.css'
-import {usePagination} from "../../customHooks";
 
 interface PaginationState {
     totalProducts: number;
     currentPage: number;
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+    itemsPerPage: number
+    setItemsPerPage: React.Dispatch<React.SetStateAction<number>>;
+    setQuery: (prevState: { p: string }) => void
 }
 
-export default function Paginator({totalProducts, currentPage, setCurrentPage}: PaginationState) {
-
-    const {itemsPerPage} = usePagination();
+export default function Paginator({totalProducts, currentPage, setCurrentPage, itemsPerPage, setItemsPerPage, setQuery}: PaginationState) {
     const totalPages = Math.ceil((totalProducts ? totalProducts : 0) / itemsPerPage);
+    setItemsPerPage(5);
+
 
     if (currentPage > totalPages && totalPages !== 0) {
         setCurrentPage(totalPages);
     }
+    setItemsPerPage(5);
+    // console.log(queryPage);
+
+    // setItemsPerPage(5);
+    // useEffect(() => {
+    //     // Handle initial page based on query parameter
+    //     if (queryPage) {
+    //         const page = parseInt(queryPage, 10);
+    //         if (!isNaN(page) && page !== currentPage) {
+    //             setCurrentPage(page);
+    //         }
+    //     }
+    // }, [queryPage, currentPage, setCurrentPage]);
+    useEffect(() => {
+        setQuery({p: currentPage.toString()})
+    }, [currentPage]);
 
     return (
         <>

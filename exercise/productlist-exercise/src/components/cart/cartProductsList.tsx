@@ -4,6 +4,7 @@ import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
 import {usePagination} from "../../customHooks";
+import {useSearchParams} from "react-router-dom";
 
 
 export default function CartProductsList({userCartCatalog, setUserCartCatalog, loading}: {
@@ -12,11 +13,14 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
     loading: boolean;
 }) {
 
+    const [query,setQuery]=useSearchParams();
+    const queryPage=(query.get('p'));
+    const initialPage = queryPage? parseInt(queryPage) : 1;
     const [userCartProducts, setUserCartProducts] = useState<Product[]>();
 
     const productsList = userCartCatalog.carts[0].products;
     const filteredproductsList = productsList.filter((product) => product.quantity !== 0);
-    const {currentPage, setCurrentPage, itemsPerPage} = usePagination()
+    const {currentPage, setCurrentPage, itemsPerPage,setItemsPerPage} = usePagination(initialPage);
 
     useEffect(() => {
         if (filteredproductsList) {
@@ -61,6 +65,9 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
             <Paginator totalProducts={filterProducts?.length ?? 0}
                        currentPage={currentPage}
                        setCurrentPage={setCurrentPage}
+                       itemsPerPage={itemsPerPage}
+                       setItemsPerPage={setItemsPerPage}
+                       setQuery={setQuery}
             />
         </>
     );

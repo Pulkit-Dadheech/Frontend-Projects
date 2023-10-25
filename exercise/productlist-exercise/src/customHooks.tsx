@@ -48,15 +48,15 @@ export function useGetUserDetails() {
 }
 
 
-export function usePagination(category?: string, search?: string) {
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 4;
-
+export function usePagination(queryPage: number) {
+    const [currentPage, setCurrentPage] = useState(queryPage);
+    const [itemsPerPage, setItemsPerPage] = useState(5);
 
     return {
         currentPage,
         setCurrentPage,
-        itemsPerPage
+        itemsPerPage,
+        setItemsPerPage
     };
 }
 

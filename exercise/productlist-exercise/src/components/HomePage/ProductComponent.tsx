@@ -4,6 +4,7 @@ import {listWithQuantity, UserCart} from "../../dataTypes";
 import "./ProductComponent.css";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
+import {useSearchParams} from "react-router-dom";
 
 interface ShoppingCartProps {
     searchBoxResult?: string;
@@ -14,15 +15,20 @@ interface ShoppingCartProps {
 
 export default function Product(props: ShoppingCartProps) {
 
-    const {currentPage, setCurrentPage, itemsPerPage} = usePagination(props.category, props.searchBoxResult);
+    const [query,setQuery]=useSearchParams();
+    const queryPage=(query.get('p'));
+    const initialPage = queryPage? parseInt(queryPage) : 1;
+
+    const {currentPage, setCurrentPage, itemsPerPage, setItemsPerPage} = usePagination(initialPage);
     const skippedProducts = (currentPage - 1) * itemsPerPage;
 
+    const {productCatalog, productError, loading} = useProductList(props.searchBoxResult, props.category, skippedProducts, itemsPerPage);
 
-    const {
-        productCatalog,
-        productError,
-        loading
-    } = useProductList(props.searchBoxResult, props.category, skippedProducts, itemsPerPage);
+    // useEffect(() => {
+    //     setQuery({p: currentPage.toString()})
+    // }, []);
+
+
 
     useEffect(() => {
         if (props.category && props.searchBoxResult) {
@@ -35,8 +41,7 @@ export default function Product(props: ShoppingCartProps) {
             setCurrentPage(1);
         }
     }, [props.category, props.searchBoxResult, setCurrentPage]);
-    
-    
+
 
     const {userCartCatalog} = props;
 
@@ -53,8 +58,7 @@ export default function Product(props: ShoppingCartProps) {
             quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0
         }
     })
-    
-    
+
 
     return (<>
             <ProductList
@@ -66,6 +70,9 @@ export default function Product(props: ShoppingCartProps) {
             <Paginator totalProducts={productCatalog?.total ?? 0}
                        currentPage={currentPage}
                        setCurrentPage={setCurrentPage}
+                       itemsPerPage={itemsPerPage}
+                       setItemsPerPage={setItemsPerPage}
+                       setQuery={setQuery}
             />
         </>
     );
