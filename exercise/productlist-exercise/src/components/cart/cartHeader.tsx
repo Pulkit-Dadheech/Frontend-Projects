@@ -1,5 +1,5 @@
 import React from "react";
-import {useGetUserDetails} from "../../customHooks";
+import {useGetUserDetails} from "../customHooks/getUserDetails";
 import {UserCart} from "../../dataTypes";
 import './cartHeader.css'
 

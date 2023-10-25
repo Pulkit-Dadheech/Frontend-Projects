@@ -1,10 +1,11 @@
 import React, {useEffect} from "react";
-import {usePagination, useProductList} from "../../customHooks";
+import  {useProductList} from "../customHooks/ProductList";
 import {listWithQuantity, UserCart} from "../../dataTypes";
 import "./ProductComponent.css";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
 import {useSearchParams} from "react-router-dom";
+import {usePagination} from "../customHooks/Pagination"
 
 interface ShoppingCartProps {
     searchBoxResult?: string;

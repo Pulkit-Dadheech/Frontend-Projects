@@ -3,7 +3,7 @@ import {listWithQuantity, Product, UserCart} from "../../dataTypes";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
-import {usePagination} from "../../customHooks";
+import {usePagination} from "../customHooks/Pagination";
 import {useSearchParams} from "react-router-dom";
 
 
