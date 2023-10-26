@@ -9,10 +9,10 @@ function ProductForm() {
     if (!userContext) {
         throw new Error("UserContext is not provided correctly.");
     }
-    const {customProducts,setCustomProducts} =userContext;
+    const {customProductId, setCustomProductId, customProducts, setCustomProducts} = userContext;
     const [productData, setProductData] = useState<listWithQuantity>({
         quantity: 0,
-        id: 101,
+        id: customProductId,
         title: "",
         brand: "",
         category: "",
@@ -36,9 +36,10 @@ function ProductForm() {
 
     const handleSave = () => {
         setCustomProducts([...customProducts, productData]);
+        setCustomProductId(customProductId + 1);
         setProductData({
             quantity: 0,
-            id: productData.id+1,
+            id: customProductId + 1,
             title: "",
             brand: "",
             category: "",

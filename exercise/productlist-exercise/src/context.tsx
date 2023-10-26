@@ -12,6 +12,8 @@ interface ContextType {
     loading: boolean
     customProducts: listWithQuantity[];
     setCustomProducts: React.Dispatch<React.SetStateAction<listWithQuantity[]>>
+    customProductId: number
+    setCustomProductId: React.Dispatch<React.SetStateAction<number>>
 }
 
 interface userCartCatalog {
@@ -25,9 +27,11 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
     const [userCart, setUserCart] = useState<UserCart | null>(null);
     const {data, error, loading} = useFetch<UserCart>(createApiUrl(apiQueries.UserCart));
     const userCartCatalog = data;
-    const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<userCartCatalog[]>([]);;
+    const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<userCartCatalog[]>([]);
 
     const initialCustomProducts = JSON.parse(localStorage.getItem("customProducts") || "[]");
+    const customId = !!userCart?.carts[0].products.length ? userCart.carts[0].products.length+1: 101;
+    const [customProductId,setCustomProductId]=useState(customId+1);
     const [customProducts, setCustomProducts] = useState<listWithQuantity[]>(initialCustomProducts);
 
     useEffect(() => {
@@ -48,7 +52,7 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
 
     return (
         <UserContext.Provider
-            value={{userCart, setUserCart, userPrevCartCatalog, setUserPrevCartCatalog, loading, customProducts, setCustomProducts}}>
+            value={{userCart, setUserCart, userPrevCartCatalog, setUserPrevCartCatalog, loading, customProducts, setCustomProducts,customProductId,setCustomProductId}}>
             {children}
         </UserContext.Provider>
     );
