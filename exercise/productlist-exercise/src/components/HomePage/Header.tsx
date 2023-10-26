@@ -3,7 +3,6 @@ import './Header.css';
 import {useCategoryList} from "../customHooks/CategoryList";
 import {useGetUserDetails} from "../customHooks/UserDetails";
 import {Link} from "react-router-dom";
-import {Product} from "../../dataTypes";
 
 type headerType =
     {
@@ -55,7 +54,7 @@ export default function Header({
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    {searchTerm &&(
+                    {searchTerm && (
                         <span
                             className="clear-button"
                             onClick={() => setSearchTerm("")}
