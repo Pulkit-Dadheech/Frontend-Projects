@@ -19,16 +19,17 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
 
     const {userPrevCartCatalog, setUserPrevCartCatalog} = userContext
     const [userCartId, setUserCartId] = useState<number>(0);
-    const {setCustomProducts} = userContext;
+    const {customProducts, setCustomProducts} = userContext;
 
     function onAdd(id: number, quantity?: number) {
-        if (id > 100) {
+        const customId = customProducts.find((product) => product.id === id);
+        if (!!customId) {
             setCustomProducts((prevProducts) => {
                 return prevProducts.map((product) => {
                     if (product.id === id) {
                         return {
                             ...product,
-                            quantity: product.quantity+1,
+                            quantity: quantity !== 0 ? +product.quantity + 1 : 1,
                         };
                     }
                     return product;
@@ -40,13 +41,14 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
     }
 
     function onDelete(id: number, quantity?: number) {
-        if (id > 100) {
+        const customId = customProducts.find((product) => product.id === id);
+        if (!!customId) {
             setCustomProducts((prevProducts) => {
                 return prevProducts.map((product) => {
                     if (product.id === id) {
                         return {
                             ...product,
-                            quantity: quantity !== 0 ? product.quantity-1 : 0,
+                            quantity: quantity !== 0 ? +product.quantity - 1 : 0,
                         };
                     }
                     return product;
