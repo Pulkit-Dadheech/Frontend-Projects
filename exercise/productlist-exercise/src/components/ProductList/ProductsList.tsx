@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction} from "react";
 import {ButtonUtils} from "../button/buttonUtils";
-import {listsWithQuantity, UserCart} from "../../dataTypes"; // Import your ButtonUtils component here
+import {listsWithQuantity, UserCart} from "../../dataTypes";
 
 function ProductList({
                          productListWithQuantity: productListWithCartQuantity,

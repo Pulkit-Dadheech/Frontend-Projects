@@ -12,7 +12,7 @@ function ProductForm() {
     const {customProducts,setCustomProducts} =userContext;
     const [productData, setProductData] = useState<listWithQuantity>({
         quantity: 0,
-        id: 0,
+        id: 101,
         title: "",
         brand: "",
         category: "",
