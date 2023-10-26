@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import {UserContext} from "../context";
 import ProductList from "../components/ProductList/ProductsList";
+import {CustomProductHeader} from "./CustomProductHeader";
 
 const Home = () => {
     // const [searchBoxResult, setSearchBoxResult] = useState<string>("");
@@ -19,7 +20,7 @@ const Home = () => {
 
     return (
         <>
-            {/*<CustomProductsHeader/>*/}
+            <CustomProductHeader/>
             <ProductList
                 productListWithQuantity={customProducts}
                 userCartCatalog={userCart}
