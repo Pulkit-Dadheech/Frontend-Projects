@@ -17,7 +17,7 @@ export default function Paginator({totalProducts, currentPage, setCurrentPage, i
     if (currentPage > totalPages && totalPages !== 0) {
         setCurrentPage(totalPages);
     }
-    setItemsPerPage(6);
+    setItemsPerPage(5);
 
     useEffect(() => {
         setQuery({p: currentPage.toString()})

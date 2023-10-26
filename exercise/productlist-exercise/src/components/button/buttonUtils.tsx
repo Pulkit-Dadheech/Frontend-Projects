@@ -3,6 +3,7 @@ import {UserCart} from "../../dataTypes";
 import {UserContext} from "../../context";
 import {CartButton} from "./CartButton";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
+import customProduct from "../../customProduct/CustomProduct";
 
 export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}: {
     id: number;
@@ -19,12 +20,43 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
 
     const {userPrevCartCatalog, setUserPrevCartCatalog} = userContext
     const [userCartId,setUserCartId]=useState<number>(0);
+    const {customProducts,setCustomProducts} =userContext;
 
     function onAdd(id:number,quantity?:number){
-        AddOrRemoveProductFromCart(id, quantity, false)
+        if(id>100){
+            setCustomProducts((prevProducts) => {
+                return prevProducts.map((product) => {
+                    if (product.id === id) {
+                        return {
+                            ...product,
+                            quantity: ++product.quantity,
+                        };
+                    }
+                    return product;
+                });
+            });
+        }
+        else{
+            AddOrRemoveProductFromCart(id, quantity, false)
+        }
     }
     function onDelete(id:number,quantity?:number){
-        AddOrRemoveProductFromCart(id, quantity, true)
+        if(id>100){
+            setCustomProducts((prevProducts) => {
+                return prevProducts.map((product) => {
+                    if (product.id === id) {
+                        return {
+                            ...product,
+                            quantity: quantity!==0 ? --product.quantity : 0,
+                        };
+                    }
+                    return product;
+                });
+            });
+        }
+        else {
+            AddOrRemoveProductFromCart(id, quantity, true)
+        }
     }
 
     useEffect(() => {

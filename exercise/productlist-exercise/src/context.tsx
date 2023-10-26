@@ -25,20 +25,10 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
     const [userCart, setUserCart] = useState<UserCart | null>(null);
     const {data, error, loading} = useFetch<UserCart>(createApiUrl(apiQueries.UserCart));
     const userCartCatalog = data;
-    const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<userCartCatalog[]>([]);
+    const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<userCartCatalog[]>([]);;
 
     const initialCustomProducts = JSON.parse(localStorage.getItem("customProducts") || "[]");
     const [customProducts, setCustomProducts] = useState<listWithQuantity[]>(initialCustomProducts);
-
-    const customProductObjects = customProducts.filter((customProduct)=> customProduct.quantity>0).map((customProduct) => ({
-        id: customProduct.id,
-        title: customProduct.title,
-        price: customProduct.price,
-        quantity: customProduct.quantity,
-        total: customProduct.price * customProduct.quantity,
-        discountPercentage: customProduct.discountPercentage,
-        discountedPrice: customProduct.price,
-    }));
 
     useEffect(() => {
         if (userCartCatalog) {
