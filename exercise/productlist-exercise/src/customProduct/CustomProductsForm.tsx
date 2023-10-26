@@ -56,7 +56,7 @@ function ProductForm() {
 
     return (
         <div className="form-container">
-            <h2>Add a Custom Product</h2>
+            <h2 className="form-header">Add a Custom Product</h2>
             <form className="product-form">
 
                 <label htmlFor="name" className="input-label">Product Name:</label>
