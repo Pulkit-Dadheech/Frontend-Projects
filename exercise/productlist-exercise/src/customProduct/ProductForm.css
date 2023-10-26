@@ -1,7 +1,9 @@
 .form-header{
-    display: block;
+    display: flex;
+    justify-content: space-evenly;
     background-color: white;
-    padding: 1.5rem;
+    padding: 1.2rem;
+    align-items: center;
     box-shadow: 0.3rem 0.2rem 0.2rem grey;
 
 }
