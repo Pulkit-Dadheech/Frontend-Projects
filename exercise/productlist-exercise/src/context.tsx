@@ -43,9 +43,6 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
         localStorage.setItem("customProducts", JSON.stringify(customProducts));
     }, [customProducts]);
 
-
-
-
     if (loading) {
         return (<h1>Loading..</h1>)
     }

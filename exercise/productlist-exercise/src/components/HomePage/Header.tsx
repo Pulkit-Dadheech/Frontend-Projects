@@ -78,10 +78,10 @@ export default function Header({
                     </select>
                 </div>
                 <div id="custom-product-listing">
-                    <Link to="/custom-product">Custom-Products</Link>
+                    <Link to="/custom-product">Custom Products</Link>
                 </div>
                 <div id="custom-form">
-                    <Link to="/form">Create-Custom-Product</Link>
+                    <Link to="/form">Add Custom Product</Link>
                 </div>
                 <div id="cart">
                     <Link to="/cart">{userName}</Link>

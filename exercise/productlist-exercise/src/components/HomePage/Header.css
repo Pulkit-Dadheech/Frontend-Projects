@@ -3,7 +3,7 @@
     flex-direction: row;
     padding: 1.5rem;
     box-shadow: 0.125rem 0.125rem 0.313rem rgba(0, 0, 0, 0.63);
-    justify-content: space-around;
+    justify-content: space-evenly;
     text-align: center;
     background-color: white;
     align-items: center;
@@ -17,18 +17,25 @@
 }
 
 .product-category {
-    padding: 1.1rem;
+    padding: 1.2rem;
     width: 10rem;
     border-radius: 1rem;
+    border: 0.09rem solid black;
 }
 
 a {
-    background-color: black;
+    background-color: white;
+    border: 0.09rem solid black;
     text-decoration: none;
-    color: white;
+    color: black;
+    font-weight: 600;
     padding: 1rem;
-    box-shadow: 0.125rem 0.125rem 0.125rem black;
-    border-radius: 0.625rem;
+    /*box-shadow: 0.125rem 0.125rem 0.125rem grey;*/
+    border-radius: 1rem;
+}
+a:hover{
+    background-color: black;
+    color: white;
 }
 
 .clear-button {
