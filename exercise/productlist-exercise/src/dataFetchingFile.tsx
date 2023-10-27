@@ -7,7 +7,6 @@ export enum apiQueries {
     Category = 'category',
     Product = 'product',
     SingleProduct = 'singleProduct',
-    UserDetails = 'userDetails',
     AddToCart = 'addToCart',
     UserCart = 'userCart',
     User ='users'
@@ -41,10 +40,6 @@ export function createApiUrl(queryType: apiQueries, parameter?: string | number,
 
         case 'users':
             url += '/users?limit=100&select=firstName,lastName';
-            break;
-
-        case 'userDetails':
-            url += '/users/5';
             break;
 
         case 'addToCart':
