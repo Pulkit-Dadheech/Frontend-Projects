@@ -1,13 +1,20 @@
-import React from "react";
+import React, {useContext} from "react";
 import {useGetUserDetails} from "../customHooks/UserDetails";
 import {UserCart} from "../../dataTypes";
 import './cartHeader.css'
 import {Link} from "react-router-dom";
+import {UserContext} from "../../context";
 
 export default function CartHeader({userCartCatalog}: { userCartCatalog: UserCart | null; }) {
+    const userContext = useContext(UserContext);
 
+    if (!userContext) {
+        throw new Error("UserContext is not provided correctly.");
+    }
+
+
+    const {selectedUser}=userContext;
     const {userDetails,userDataError} = useGetUserDetails();
-    const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;
     if(!userCartCatalog){
         return(<h1>Loading...</h1>)
     }
@@ -26,7 +33,7 @@ export default function CartHeader({userCartCatalog}: { userCartCatalog: UserCar
             <div className="homepage">
                 <Link to="/">HomePage</Link>
             </div>
-            <h1 className="cart-header-name">{userName}</h1>
+            <h1 className="cart-header-name">{selectedUser}</h1>
             <h2 className="cart-total-products">
                 Your Products({totalProductsInUserCart})
             </h2>
