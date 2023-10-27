@@ -43,9 +43,17 @@ export type UserCart = {
     limit: number
 }
 
-export interface UserData {
+export interface UserName {
     firstName: string;
     lastName: string;
+}
+export interface UserNameWithId {
+    id: number;
+    firstName: string;
+    lastName: string;
+}
+export interface UserData{
+    users: UserNameWithId[]
 }
 export type listWithQuantity={
     quantity: number;

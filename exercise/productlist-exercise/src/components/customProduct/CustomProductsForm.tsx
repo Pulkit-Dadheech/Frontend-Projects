@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {listWithQuantity} from "../dataTypes";
+import {listWithQuantity} from "../../dataTypes";
 import './ProductForm.css';
-import {UserContext} from "../context";
+import {UserContext} from "../../context";
 
 function ProductForm() {
     const userContext = useContext(UserContext);

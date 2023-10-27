@@ -5,8 +5,8 @@ import App from './App';
 import Cart from "./components/cart/cart";
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
 import MyContextProvider from "./context";
-import CustomProduct from "./customProduct/CustomProduct";
-import ProductForm from "./customProduct/CustomProductsForm";
+import CustomProduct from "./components/customProduct/CustomProduct";
+import ProductForm from "./components/customProduct/CustomProductsForm";
 
 
 const root = ReactDOM.createRoot(

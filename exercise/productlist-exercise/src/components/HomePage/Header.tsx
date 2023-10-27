@@ -1,28 +1,28 @@
 import React, {useEffect, useState} from "react";
 import './Header.css';
 import {useCategoryList} from "../customHooks/CategoryList";
-import {useGetUserDetails} from "../customHooks/UserDetails";
 import {Link} from "react-router-dom";
+import useGetAllUsers from "../customHooks/Users";
 
 type headerType =
     {
-        searchBoxResult: string;
-        selectedCategory: string;
         setSearchBoxResult: (value: string) => void;
         setSelectedCategory: (value: string) => void;
+        selectedUser: string
+        setSelectedUser: React.Dispatch<React.SetStateAction<string>>
+        setSelectedUserId: React.Dispatch<React.SetStateAction<number>>
     }
 
 export default function Header({
-                                   searchBoxResult,
-                                   selectedCategory,
                                    setSearchBoxResult,
-                                   setSelectedCategory
+                                   setSelectedCategory,
+                                   selectedUser,
+                                   setSelectedUser,
+                                   setSelectedUserId
                                }: headerType) {
     const {categoryList, categoryError} = useCategoryList();
+    const {userList, userListError} = useGetAllUsers();
     const [searchTerm, setSearchTerm] = useState('')
-    const {userDetails, userDataError} = useGetUserDetails();
-
-    const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;
 
     useEffect(() => {
         const SearchDelay = setTimeout(() => {
@@ -36,11 +36,11 @@ export default function Header({
     if (categoryError) {
         return (<h1>Failed to Fetch Category Data</h1>)
     }
-    if (!userDetails) {
+    if (!userList) {
         return (<div>Fetching User Details...</div>)
     }
-    if (userDataError) {
-        return (<h1>Error: {userDataError}</h1>)
+    if (userListError) {
+        return (<h1>Error Fetching User List</h1>)
     }
 
     return (
@@ -64,13 +64,31 @@ export default function Header({
                 </div>
                 <div>
                     <select onChange={(e) => {
+                        if (e.target.value !== 'Users') {
+                            setSelectedUser(e.target.value);
+                            if (!!userList.users.length) {
+                                const selectedUser = userList.users.find((user) => `${user.firstName} ${user.lastName}` === e.target.value);
+                                if (selectedUser) {
+                                    setSelectedUserId(selectedUser.id);
+                                }
+                            }
+                        }
+                    }} className="product-category-list">
+                        <option>Users</option>
+                        {userList.users?.map((user) => (
+                            <option key={user.id}>{`${user.firstName} ${user.lastName}`}</option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <select onChange={(e) => {
                         if (e.target.value !== 'All') {
                             setSelectedCategory(e.target.value)
                         } else {
                             setSelectedCategory("")
                         }
 
-                    }} className="product-category">
+                    }} className="users-list">
                         <option>All</option>
                         {categoryList?.map((category: string, index: number) => (
                             <option key={index}>{category}</option>
@@ -84,7 +102,7 @@ export default function Header({
                     <Link to="/form">Add Custom Product</Link>
                 </div>
                 <div id="cart">
-                    <Link to="/cart">{userName}</Link>
+                    <Link to="/cart">{selectedUser}</Link>
                 </div>
             </div>
         </>
