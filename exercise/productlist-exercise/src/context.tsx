@@ -9,16 +9,17 @@ export const UserContext = createContext<ContextType | null>(null);
 
 function MyContextProvider({children}: { children: React.ReactNode }) {
     const [userCart, setUserCart] = useState<UserCart | null>(null);
-    const {data, error, loading} = useFetch<UserCart>(createApiUrl(apiQueries.UserCart));
-    const userCartCatalog = data;
     const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<userCartCatalog[]>([]);
-    const [selectedUser,setSelectedUser]=useState("Mavis Schultz")
-    const [selectedUserId,setSelectedUserId]=useState(0);
+    const [selectedUser,setSelectedUser]=useState("Terry Medhurst")
+    const [selectedUserId,setSelectedUserId]=useState(1);
+    const {data, error, loading} = useFetch<UserCart>(createApiUrl(apiQueries.UserCart,selectedUserId));
+    const userCartCatalog = data;
 
     const initialCustomProducts = JSON.parse(localStorage.getItem("customProducts") || "[]");
     let customId = parseInt(JSON.parse(localStorage.getItem("customId") || "101"));
     const [customProductId, setCustomProductId] = useState(customId);
     const [customProducts, setCustomProducts] = useState<listWithQuantity[]>(initialCustomProducts);
+
 
     useEffect(() => {
         if (userCartCatalog) {
@@ -31,10 +32,11 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
         localStorage.setItem("customProducts", JSON.stringify(customProducts));
     }, [customProducts]);
 
+    if (error) return (<>Error: {error}</>)
+
     if (loading) {
         return (<h1>Loading..</h1>)
     }
-    if (error) return (<>Error: {error}</>)
 
     return (
         <UserContext.Provider
