@@ -1,27 +1,9 @@
 import React, {createContext, Dispatch, SetStateAction, useEffect, useState} from "react";
 import {listWithQuantity, UserCart} from "./dataTypes";
 import useFetch, {apiQueries, createApiUrl} from "./dataFetchingFile";
+import {ContextType} from "./dataTypes";
+import {userCartCatalog} from "./dataTypes";
 
-interface ContextType {
-    userCart: UserCart | null;
-    setUserCart: Dispatch<SetStateAction<UserCart | null>>;
-    userPrevCartCatalog: { id: number, quantity: number }[];
-    setUserPrevCartCatalog: Dispatch<SetStateAction<{ id: number, quantity: number }[]>>
-    loading: boolean
-    customProducts: listWithQuantity[];
-    setCustomProducts: React.Dispatch<React.SetStateAction<listWithQuantity[]>>
-    customProductId: number
-    setCustomProductId: React.Dispatch<React.SetStateAction<number>>
-    selectedUser: string
-    setSelectedUser: React.Dispatch<React.SetStateAction<string>>
-    selectedUserId: number,
-    setSelectedUserId: React.Dispatch<React.SetStateAction<number>>
-}
-
-interface userCartCatalog {
-    id: number,
-    quantity: number
-}
 
 export const UserContext = createContext<ContextType | null>(null);
 
