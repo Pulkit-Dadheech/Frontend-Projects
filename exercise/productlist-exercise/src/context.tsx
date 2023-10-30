@@ -1,36 +1,36 @@
 import React, {createContext, Dispatch, SetStateAction, useEffect, useState} from "react";
-import {ListWithQuantity, UserCart} from "./dataTypes";
+import {TSingleProductWithQuantity, TUserCart} from "./dataTypes";
 import useFetch, {apiQueries, createApiUrl} from "./dataFetchingFile";
 
-interface ContextType {
-    userCart: UserCart | null;
-    setUserCart: Dispatch<SetStateAction<UserCart | null>>;
+interface IContextType {
+    userCart: TUserCart | null;
+    setUserCart: Dispatch<SetStateAction<TUserCart | null>>;
     userPrevCartCatalog: { id: number, quantity: number }[];
     setUserPrevCartCatalog: Dispatch<SetStateAction<{ id: number, quantity: number }[]>>
     loading: boolean
-    customProducts: ListWithQuantity[];
-    setCustomProducts: React.Dispatch<React.SetStateAction<ListWithQuantity[]>>
+    customProducts: TSingleProductWithQuantity[];
+    setCustomProducts: React.Dispatch<React.SetStateAction<TSingleProductWithQuantity[]>>
     customProductId: number
     setCustomProductId: React.Dispatch<React.SetStateAction<number>>
 }
 
-interface UserCartCatalog {
+interface IUserCartCatalog {
     id: number,
     quantity: number
 }
 
-export const UserContext = createContext<ContextType | null>(null);
+export const UserContext = createContext<IContextType | null>(null);
 
 function MyContextProvider({children}: { children: React.ReactNode }) {
-    const [userCart, setUserCart] = useState<UserCart | null>(null);
-    const {data, error, loading} = useFetch<UserCart>(createApiUrl(apiQueries.UserCart));
+    const [userCart, setUserCart] = useState<TUserCart | null>(null);
+    const {data, error, loading} = useFetch<TUserCart>(createApiUrl(apiQueries.UserCart));
     const userCartCatalog = data;
-    const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<UserCartCatalog[]>([]);
+    const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<IUserCartCatalog[]>([]);
 
     const initialCustomProducts = JSON.parse(localStorage.getItem("customProducts") || "[]");
     let customId = parseInt(JSON.parse(localStorage.getItem("customId") || "101"));
     const [customProductId, setCustomProductId] = useState(customId);
-    const [customProducts, setCustomProducts] = useState<ListWithQuantity[]>(initialCustomProducts);
+    const [customProducts, setCustomProducts] = useState<TSingleProductWithQuantity[]>(initialCustomProducts);
 
     useEffect(() => {
         if (userCartCatalog) {

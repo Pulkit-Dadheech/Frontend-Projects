@@ -1,5 +1,5 @@
 import useFetch, {apiQueries, createApiUrl} from "../../dataFetchingFile";
-import {ProductCatalog} from "../../dataTypes";
+import {TProductCatalog} from "../../dataTypes";
 
 export function useProductList(search?: string, category?: string, skippedProducts?: number, limit?: number) {
     let url: string;
@@ -11,7 +11,7 @@ export function useProductList(search?: string, category?: string, skippedProduc
     } else {
         url = createApiUrl(apiQueries.Product, "", limit, skippedProducts);
     }
-    const {data, error, loading} = useFetch<ProductCatalog>(url);
+    const {data, error, loading} = useFetch<TProductCatalog>(url);
     let filteredData;
 
     if (search && category) {
@@ -22,7 +22,7 @@ export function useProductList(search?: string, category?: string, skippedProduc
                 total: newData.length,
                 skip: data?.skip,
                 limit: data?.limit,
-            } as ProductCatalog
+            } as TProductCatalog
             return {productCatalog: filteredData, productError: error, loading}
         }
     }

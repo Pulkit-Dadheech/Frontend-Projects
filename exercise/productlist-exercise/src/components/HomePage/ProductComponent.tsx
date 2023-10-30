@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import  {useProductList} from "../customHooks/ProductList";
-import {ProductListsWithQuantity, UserCart} from "../../dataTypes";
+import {TMultipleProductListWithQuantity, TUserCart} from "../../dataTypes";
 import "./ProductComponent.css";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
@@ -10,8 +10,8 @@ import {usePagination} from "../customHooks/Pagination"
 interface ShoppingCartProps {
     searchBoxResult?: string;
     category?: string;
-    userCartCatalog: UserCart;
-    setUserCartCatalog: React.Dispatch<React.SetStateAction<UserCart | null>>;
+    userCartCatalog: TUserCart;
+    setUserCartCatalog: React.Dispatch<React.SetStateAction<TUserCart | null>>;
 }
 
 export default function Product(props: ShoppingCartProps) {
@@ -47,7 +47,7 @@ export default function Product(props: ShoppingCartProps) {
         return (<h1>Error Fetching Product Catalog</h1>);
     }
 
-    const productListWithQuantity: ProductListsWithQuantity = productCatalog?.products.map((product) => {
+    const productListWithQuantity: TMultipleProductListWithQuantity = productCatalog?.products.map((product) => {
         return {
             ...product,
             quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0

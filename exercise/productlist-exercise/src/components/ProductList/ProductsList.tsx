@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction} from "react";
 import {ButtonUtils} from "../button/buttonUtils";
-import {ProductListsWithQuantity, UserCart} from "../../dataTypes";
+import {TMultipleProductListWithQuantity, TUserCart} from "../../dataTypes";
 
 function ProductList({
                          productListWithQuantity: productListWithCartQuantity,
@@ -9,9 +9,9 @@ function ProductList({
                          loading
                      }:
                          {
-                             productListWithQuantity: ProductListsWithQuantity
-                             userCartCatalog: UserCart,
-                             setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
+                             productListWithQuantity: TMultipleProductListWithQuantity
+                             userCartCatalog: TUserCart,
+                             setUserCartCatalog: Dispatch<SetStateAction<TUserCart | null>>;
                              loading: boolean
                          }) {
 
