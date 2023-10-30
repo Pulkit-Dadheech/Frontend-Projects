@@ -114,7 +114,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
                         if (product.id === id) {
                             return {
                                 ...product,
-                                quantity: quantity !== 0 ? +product.quantity - 1 : 1,
+                                quantity: +product.quantity - 1,
                             };
                         }
                         return product;
