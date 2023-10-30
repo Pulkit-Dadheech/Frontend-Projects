@@ -1,5 +1,5 @@
 import React, {createContext, Dispatch, SetStateAction, useEffect, useState} from "react";
-import {listWithQuantity, UserCart} from "./dataTypes";
+import {ListWithQuantity, UserCart} from "./dataTypes";
 import useFetch, {apiQueries, createApiUrl} from "./dataFetchingFile";
 
 interface ContextType {
@@ -8,13 +8,13 @@ interface ContextType {
     userPrevCartCatalog: { id: number, quantity: number }[];
     setUserPrevCartCatalog: Dispatch<SetStateAction<{ id: number, quantity: number }[]>>
     loading: boolean
-    customProducts: listWithQuantity[];
-    setCustomProducts: React.Dispatch<React.SetStateAction<listWithQuantity[]>>
+    customProducts: ListWithQuantity[];
+    setCustomProducts: React.Dispatch<React.SetStateAction<ListWithQuantity[]>>
     customProductId: number
     setCustomProductId: React.Dispatch<React.SetStateAction<number>>
 }
 
-interface userCartCatalog {
+interface UserCartCatalog {
     id: number,
     quantity: number
 }
@@ -25,12 +25,12 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
     const [userCart, setUserCart] = useState<UserCart | null>(null);
     const {data, error, loading} = useFetch<UserCart>(createApiUrl(apiQueries.UserCart));
     const userCartCatalog = data;
-    const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<userCartCatalog[]>([]);
+    const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<UserCartCatalog[]>([]);
 
     const initialCustomProducts = JSON.parse(localStorage.getItem("customProducts") || "[]");
     let customId = parseInt(JSON.parse(localStorage.getItem("customId") || "101"));
     const [customProductId, setCustomProductId] = useState(customId);
-    const [customProducts, setCustomProducts] = useState<listWithQuantity[]>(initialCustomProducts);
+    const [customProducts, setCustomProducts] = useState<ListWithQuantity[]>(initialCustomProducts);
 
     useEffect(() => {
         if (userCartCatalog) {

@@ -18,7 +18,7 @@ export type ProductCatalog = {
     skip: number;
     limit: number;
 };
-export type cartProduct = {
+export type CartProduct = {
     id: number;
     title: string;
     price: number;
@@ -27,9 +27,9 @@ export type cartProduct = {
     discountPercentage: number;
     discountedPrice: number;
 };
-export type carts = {
+export type Carts = {
     id: number,
-    products: cartProduct[]
+    products: CartProduct[]
     total: number,
     "discountedTotal": number,
     "userId": number,
@@ -37,7 +37,7 @@ export type carts = {
     "totalQuantity": number
 }
 export type UserCart = {
-    carts: carts[]
+    carts: Carts[]
     total: number
     skip: number
     limit: number
@@ -47,7 +47,7 @@ export interface UserData {
     firstName: string;
     lastName: string;
 }
-export type listWithQuantity={
+export type ListWithQuantity ={
     quantity: number;
     id: number;
     title: string;
@@ -61,7 +61,7 @@ export type listWithQuantity={
     thumbnail: string;
     images: string[];
 }
-export type listsWithQuantity = {
+export type ProductListsWithQuantity = {
     quantity: number,
     id: number;
     title: string;
