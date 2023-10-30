@@ -44,7 +44,7 @@ function ProductForm() {
         setCustomProductId(customProductId + 1);
     }, [customProducts]);
 
-    const handleSave = (e: { preventDefault: () => void; }) => {
+    const handleSave = (e: React.SyntheticEvent) => {
         e.preventDefault();
         setCustomProducts([...customProducts, productData]);
         setProductData({
