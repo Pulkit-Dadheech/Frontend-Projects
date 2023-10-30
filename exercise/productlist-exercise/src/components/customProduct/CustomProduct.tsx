@@ -3,7 +3,7 @@ import {UserContext} from "../../context";
 import ProductList from "../ProductList/ProductsList";
 import {CustomProductHeader} from "./CustomProductHeader";
 
-const Home = () => {
+const CustomProduct = () => {
     // const [searchBoxResult, setSearchBoxResult] = useState<string>("");
     const userContext = useContext(UserContext);
 
@@ -31,4 +31,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default CustomProduct;

@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
-import {listsWithQuantity, Product, UserCart} from "../../dataTypes";
+import {ProductListsWithQuantity, Product, UserCart} from "../../dataTypes";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
@@ -14,7 +14,6 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
     loading: boolean;
 }) {
 
-
     const [query, setQuery] = useSearchParams();
     const queryPage = (query.get('p'));
     const initialPage = queryPage ? parseInt(queryPage) : 1;
@@ -24,7 +23,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
     if (!userContext) {
         throw new Error("UserContext is not provided correctly.");
     }
-    const {customProducts, setCustomProducts} = userContext;
+    const {customProducts} = userContext;
 
 
     const productsList = userCartCatalog?.carts[0]?.products || [];
@@ -60,7 +59,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
         });
     }
 
-    const productListWithQuantity: listsWithQuantity = filterProducts?.map((product) => {
+    const productListWithQuantity: ProductListsWithQuantity = filterProducts?.map((product) => {
         return {
             ...product,
             quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0

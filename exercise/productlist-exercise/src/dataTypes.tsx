@@ -6,8 +6,8 @@ export interface ContextType {
     userPrevCartCatalog: { id: number, quantity: number }[];
     setUserPrevCartCatalog: Dispatch<SetStateAction<{ id: number, quantity: number }[]>>
     loading: boolean
-    customProducts: listWithQuantity[];
-    setCustomProducts: React.Dispatch<React.SetStateAction<listWithQuantity[]>>
+    customProducts: ListWithQuantity[];
+    setCustomProducts: React.Dispatch<React.SetStateAction<ListWithQuantity[]>>
     customProductId: number
     setCustomProductId: React.Dispatch<React.SetStateAction<number>>
     selectedUser: string
@@ -40,7 +40,7 @@ export type ProductCatalog = {
     skip: number;
     limit: number;
 };
-export type cartProduct = {
+export type CartProduct = {
     id: number;
     title: string;
     price: number;
@@ -49,9 +49,9 @@ export type cartProduct = {
     discountPercentage: number;
     discountedPrice: number;
 };
-export type carts = {
+export type Carts = {
     id: number,
-    products: cartProduct[]
+    products: CartProduct[]
     total: number,
     "discountedTotal": number,
     "userId": number,
@@ -59,7 +59,7 @@ export type carts = {
     "totalQuantity": number
 }
 export type UserCart = {
-    carts: carts[]
+    carts: Carts[]
     total: number
     skip: number
     limit: number
@@ -77,7 +77,8 @@ export interface UserNameWithId {
 export interface UserData{
     users: UserNameWithId[]
 }
-export type listWithQuantity={
+
+export type ListWithQuantity ={
     quantity: number;
     id: number;
     title: string;
@@ -91,19 +92,5 @@ export type listWithQuantity={
     thumbnail: string;
     images: string[];
 }
-export type listsWithQuantity = {
-    quantity: number,
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    discountPercentage: number;
-    rating: number;
-    stock: number;
-    brand: string;
-    category: string;
-    thumbnail: string;
-    images: string[];
-}[] | undefined
-
+export type ProductListsWithQuantity = ListWithQuantity[] | undefined
 

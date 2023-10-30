@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {listWithQuantity} from "../../dataTypes";
+import {ListWithQuantity} from "../../dataTypes";
 import './ProductForm.css';
 import {UserContext} from "../../context";
 
@@ -10,7 +10,7 @@ function ProductForm() {
         throw new Error("UserContext is not provided correctly.");
     }
     const {customProductId, setCustomProductId, customProducts, setCustomProducts} = userContext;
-    const [productData, setProductData] = useState<listWithQuantity>({
+    const [productData, setProductData] = useState<ListWithQuantity>({
         quantity: 0,
         id: customProductId + 1,
         title: "",
@@ -44,7 +44,7 @@ function ProductForm() {
         setCustomProductId(customProductId + 1);
     }, [customProducts]);
 
-    const handleSave = (e: { preventDefault: () => void; }) => {
+    const handleSave = (e: React.SyntheticEvent) => {
         e.preventDefault();
         setCustomProducts([...customProducts, productData]);
         setProductData({
