@@ -1,10 +1,10 @@
 import React, {useContext} from "react";
-import {UserCart} from "../../dataTypes";
+import {TUserCart} from "../../dataTypes";
 import './cartHeader.css'
 import {Link} from "react-router-dom";
 import {UserContext} from "../../context";
 
-export default function CartHeader({userCartCatalog}: { userCartCatalog: UserCart | null; }) {
+export default function CartHeader({userCartCatalog}: { userCartCatalog: TUserCart | null; }) {
     const userContext = useContext(UserContext);
 
     if (!userContext) {

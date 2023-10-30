@@ -1,7 +1,7 @@
 import useFetch, {apiQueries, createApiUrl} from "../../dataFetchingFile";
-import {UserData} from "../../dataTypes";
+import {IUserData} from "../../dataTypes";
 
 export default function useGetAllUsers() {
-    const {data, error} = useFetch<UserData>(createApiUrl(apiQueries.User));
+    const {data, error} = useFetch<IUserData>(createApiUrl(apiQueries.User));
     return {userList: data, userListError: error}
 }

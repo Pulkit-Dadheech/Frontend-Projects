@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {ListWithQuantity} from "../../dataTypes";
+import {TSingleProductWithQuantity} from "../../dataTypes";
 import './ProductForm.css';
 import {UserContext} from "../../context";
 
@@ -10,7 +10,7 @@ function ProductForm() {
         throw new Error("UserContext is not provided correctly.");
     }
     const {customProductId, setCustomProductId, customProducts, setCustomProducts} = userContext;
-    const [productData, setProductData] = useState<ListWithQuantity>({
+    const [productData, setProductData] = useState<TSingleProductWithQuantity>({
         quantity: 0,
         id: customProductId + 1,
         title: "",

@@ -1,13 +1,13 @@
 import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
-import {CartProduct, UserCart} from "../../dataTypes";
+import {TCartProduct, TUserCart} from "../../dataTypes";
 import {UserContext} from "../../context";
 import {CartButton} from "./CartButton";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 
 export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}: {
     id: number;
-    userCartCatalog: UserCart;
-    setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
+    userCartCatalog: TUserCart;
+    setUserCartCatalog: Dispatch<SetStateAction<TUserCart | null>>;
     quantity?: number
 }) {
 
@@ -110,7 +110,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
                 });
                 let responseReceived = await response.json();
                 if (responseReceived && isDelete && quantity === 1) {
-                    responseReceived.products = responseReceived.products.map((product: CartProduct) => {
+                    responseReceived.products = responseReceived.products.map((product: TCartProduct) => {
                         if (product.id === id) {
                             return {
                                 ...product,

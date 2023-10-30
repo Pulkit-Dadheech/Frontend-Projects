@@ -1,13 +1,13 @@
 import React, {Dispatch, SetStateAction} from "react";
 
-export interface ContextType {
-    userCart: UserCart | null;
-    setUserCart: Dispatch<SetStateAction<UserCart | null>>;
+export interface IContextType {
+    userCart: TUserCart | null;
+    setUserCart: Dispatch<SetStateAction<TUserCart | null>>;
     userPrevCartCatalog: { id: number, quantity: number }[];
     setUserPrevCartCatalog: Dispatch<SetStateAction<{ id: number, quantity: number }[]>>
     loading: boolean
-    customProducts: ListWithQuantity[];
-    setCustomProducts: React.Dispatch<React.SetStateAction<ListWithQuantity[]>>
+    customProducts: TSingleProductWithQuantity[];
+    setCustomProducts: React.Dispatch<React.SetStateAction<TSingleProductWithQuantity[]>>
     customProductId: number
     setCustomProductId: React.Dispatch<React.SetStateAction<number>>
     selectedUser: string
@@ -16,11 +16,11 @@ export interface ContextType {
     setSelectedUserId: React.Dispatch<React.SetStateAction<number>>
 }
 
-export interface userCartCatalog {
+export interface IUserCartCatalog {
     id: number,
     quantity: number
 }
-export type Product = {
+export type TProduct = {
     id: number;
     title: string;
     description: string;
@@ -34,13 +34,13 @@ export type Product = {
     images: string[];
 };
 
-export type ProductCatalog = {
-    products: Product[];
+export type TProductCatalog = {
+    products: TProduct[];
     total: number;
     skip: number;
     limit: number;
 };
-export type CartProduct = {
+export type TCartProduct = {
     id: number;
     title: string;
     price: number;
@@ -49,36 +49,36 @@ export type CartProduct = {
     discountPercentage: number;
     discountedPrice: number;
 };
-export type Carts = {
+export type TCarts = {
     id: number,
-    products: CartProduct[]
+    products: TCartProduct[]
     total: number,
     "discountedTotal": number,
     "userId": number,
     "totalProducts": number,
     "totalQuantity": number
 }
-export type UserCart = {
-    carts: Carts[]
+export type TUserCart = {
+    carts: TCarts[]
     total: number
     skip: number
     limit: number
 }
 
-export interface UserName {
+export interface IUserName {
     firstName: string;
     lastName: string;
 }
-export interface UserNameWithId {
+export interface IUserNameWithId {
     id: number;
     firstName: string;
     lastName: string;
 }
-export interface UserData{
-    users: UserNameWithId[]
+export interface IUserData {
+    users: IUserNameWithId[]
 }
 
-export type ListWithQuantity ={
+export type TSingleProductWithQuantity ={
     quantity: number;
     id: number;
     title: string;
@@ -92,5 +92,5 @@ export type ListWithQuantity ={
     thumbnail: string;
     images: string[];
 }
-export type ProductListsWithQuantity = ListWithQuantity[] | undefined
+export type TMultipleProductListWithQuantity = TSingleProductWithQuantity[] | undefined
 

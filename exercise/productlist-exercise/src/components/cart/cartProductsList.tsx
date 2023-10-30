@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
-import {ProductListsWithQuantity, Product, UserCart} from "../../dataTypes";
+import {TMultipleProductListWithQuantity, TProduct, TUserCart} from "../../dataTypes";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
@@ -9,15 +9,15 @@ import {UserContext} from "../../context";
 
 
 export default function CartProductsList({userCartCatalog, setUserCartCatalog, loading}: {
-    userCartCatalog: UserCart | null;
-    setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
+    userCartCatalog: TUserCart | null;
+    setUserCartCatalog: Dispatch<SetStateAction<TUserCart | null>>;
     loading: boolean;
 }) {
 
     const [query, setQuery] = useSearchParams();
     const queryPage = (query.get('p'));
     const initialPage = queryPage ? parseInt(queryPage) : 1;
-    const [userCartProducts, setUserCartProducts] = useState<Product[]>();
+    const [userCartProducts, setUserCartProducts] = useState<TProduct[]>();
     const userContext = useContext(UserContext);
 
     if (!userContext) {
@@ -59,7 +59,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
         });
     }
 
-    const productListWithQuantity: ProductListsWithQuantity = filterProducts?.map((product) => {
+    const productListWithQuantity: TMultipleProductListWithQuantity = filterProducts?.map((product) => {
         return {
             ...product,
             quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0
