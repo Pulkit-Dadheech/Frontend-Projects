@@ -7,14 +7,14 @@ import Paginator from "../Pagination/paginator";
 import {useSearchParams} from "react-router-dom";
 import {usePagination} from "../customHooks/Pagination"
 
-interface ShoppingCartProps {
+interface IShoppingCartProps {
     searchBoxResult?: string;
     category?: string;
     userCartCatalog: TUserCart;
     setUserCartCatalog: React.Dispatch<React.SetStateAction<TUserCart | null>>;
 }
 
-export default function Product(props: ShoppingCartProps) {
+export default function Product(props: IShoppingCartProps) {
 
     const [query,setQuery]=useSearchParams();
     const queryPage=(query.get('p'));
