@@ -9,10 +9,11 @@ import {UserContext} from "../../context";
 
 
 export default function CartProductsList({userCartCatalog, setUserCartCatalog, loading}: {
-    userCartCatalog: UserCart;
+    userCartCatalog: UserCart | null;
     setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
     loading: boolean;
 }) {
+
 
     const [query, setQuery] = useSearchParams();
     const queryPage = (query.get('p'));
@@ -25,7 +26,8 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
     }
     const {customProducts, setCustomProducts} = userContext;
 
-    const productsList = userCartCatalog.carts[0].products;
+
+    const productsList = userCartCatalog?.carts[0]?.products || [];
     const filteredproductsList = productsList.filter((product) => product.quantity !== 0);
     const {currentPage, setCurrentPage, itemsPerPage, setItemsPerPage} = usePagination(initialPage);
 
@@ -41,17 +43,23 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
             };
             fetchProductData();
         }
-    }, []);
+    }, [!!userCartCatalog?.carts.length]);
+
+    if (!userCartCatalog || !userCartCatalog.carts || userCartCatalog.carts.length === 0) {
+        return <div>User Not Selected</div>;
+    }
 
 
     let filterProducts = userCartProducts;
 
     const filteredCartWithNoProducts = userCartCatalog.carts[0].products.filter((product) => product.quantity !== 0)
+
     if (filteredCartWithNoProducts.length >= 0) {
         filterProducts = userCartProducts?.filter((product) => {
             return !!filteredCartWithNoProducts.filter((filterProduct) => filterProduct.id === product.id).length;
         });
     }
+
     const productListWithQuantity: listsWithQuantity = filterProducts?.map((product) => {
         return {
             ...product,
@@ -62,7 +70,6 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
         productListWithQuantity.push(...customProducts)
     }
     const filteredProductListWithQuantity = productListWithQuantity?.filter((productList) => productList.quantity > 0)
-    console.log("productListWithQuantity", productListWithQuantity)
     const ProductListWithQuantity = filteredProductListWithQuantity?.slice((currentPage - 1) * itemsPerPage, (currentPage) * itemsPerPage);
 
     return (

@@ -12,11 +12,14 @@ export default function CartHeader({userCartCatalog}: { userCartCatalog: UserCar
     }
 
 
-    const {selectedUser}=userContext;
-    if(!userCartCatalog){
-        return(<h1>Loading...</h1>)
+    const {selectedUser} = userContext;
+    if (!userCartCatalog) {
+        return (<h1>Loading...</h1>)
     }
-    const filteredUserCart=userCartCatalog.carts[0].products.filter((product)=>product.quantity!==0)
+
+    const cart = userCartCatalog.carts[0];
+    const products = cart ? cart.products : [];
+    const filteredUserCart = products.filter((product) => product.quantity !== 0)
     const totalProductsInUserCart = filteredUserCart?.length;
 
 
