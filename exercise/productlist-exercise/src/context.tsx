@@ -34,8 +34,7 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
 
     useEffect(() => {
         if (userCartCatalog) {
-            const updatedUserCartCatalog = {...userCartCatalog};
-            setUserCart(updatedUserCartCatalog);
+            setUserCart({...userCartCatalog});
         }
     }, [userCartCatalog]);
 
