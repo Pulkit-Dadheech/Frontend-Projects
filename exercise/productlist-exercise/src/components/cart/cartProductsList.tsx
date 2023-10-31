@@ -1,26 +1,34 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {listWithQuantity, Product, UserCart} from "../../dataTypes";
+import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
+import {TProductsWithQuantity, TProduct, TUserCart} from "../../dataTypes";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
 import {usePagination} from "../customHooks/Pagination";
 import {useSearchParams} from "react-router-dom";
+import {CustomProductContext} from "../../CustomProductContext";
 
 
 export default function CartProductsList({userCartCatalog, setUserCartCatalog, loading}: {
-    userCartCatalog: UserCart;
-    setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
+    userCartCatalog: TUserCart;
+    setUserCartCatalog: Dispatch<SetStateAction<TUserCart | null>>;
     loading: boolean;
 }) {
 
-    const [query,setQuery]=useSearchParams();
-    const queryPage=(query.get('p'));
-    const initialPage = queryPage? parseInt(queryPage) : 1;
-    const [userCartProducts, setUserCartProducts] = useState<Product[]>();
+    const [query, setQuery] = useSearchParams();
+    const queryPage = (query.get('p'));
+    const initialPage = queryPage ? parseInt(queryPage) : 1;
+    const [userCartProducts, setUserCartProducts] = useState<TProduct[]>();
+
+    const customProductContext = useContext(CustomProductContext);
+    if (!customProductContext) {
+        throw new Error("UserContext is not provided correctly.");
+    }
+
+    const {customProducts} = customProductContext;
 
     const productsList = userCartCatalog.carts[0].products;
     const filteredproductsList = productsList.filter((product) => product.quantity !== 0);
-    const {currentPage, setCurrentPage, itemsPerPage,setItemsPerPage} = usePagination(initialPage);
+    const {currentPage, setCurrentPage, itemsPerPage, setItemsPerPage} = usePagination(initialPage);
 
     useEffect(() => {
         if (filteredproductsList) {
@@ -45,14 +53,18 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
             return !!filteredCartWithNoProducts.filter((filterProduct) => filterProduct.id === product.id).length;
         });
     }
-    const productListWithQuantity: listWithQuantity = filterProducts?.map((product) => {
+    const productListWithQuantity: TProductsWithQuantity = filterProducts?.map((product) => {
         return {
             ...product,
-            quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0
+            quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0,
+            customProduct: false
         }
     })
-
-    const ProductListWithQuantity = productListWithQuantity?.slice((currentPage - 1) * itemsPerPage, (currentPage) * itemsPerPage);
+    if (customProducts && productListWithQuantity) {
+        productListWithQuantity.push(...customProducts)
+    }
+    const filteredProductListWithQuantity = productListWithQuantity?.filter((productList) => productList.quantity > 0)
+    const ProductListWithQuantity = filteredProductListWithQuantity?.slice((currentPage - 1) * itemsPerPage, (currentPage) * itemsPerPage);
 
     return (
         <>
@@ -62,7 +74,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
                 setUserCartCatalog={setUserCartCatalog}
                 loading={loading}
             />
-            <Paginator totalProducts={filterProducts?.length ?? 0}
+            <Paginator totalProducts={filteredProductListWithQuantity?.length ?? 0}
                        currentPage={currentPage}
                        setCurrentPage={setCurrentPage}
                        itemsPerPage={itemsPerPage}

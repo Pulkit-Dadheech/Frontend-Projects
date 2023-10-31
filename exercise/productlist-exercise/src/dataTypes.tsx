@@ -1,4 +1,4 @@
-export type Product = {
+export type TProduct = {
     id: number;
     title: string;
     description: string;
@@ -12,13 +12,13 @@ export type Product = {
     images: string[];
 };
 
-export type ProductCatalog = {
-    products: Product[];
+export type TProductCatalog = {
+    products: TProduct[];
     total: number;
     skip: number;
     limit: number;
 };
-export type cartProduct = {
+export type TCartProduct = {
     id: number;
     title: string;
     price: number;
@@ -27,37 +27,30 @@ export type cartProduct = {
     discountPercentage: number;
     discountedPrice: number;
 };
-export type carts = {
+export type TCarts = {
     id: number,
-    products: cartProduct[]
+    products: TCartProduct[]
     total: number,
     "discountedTotal": number,
     "userId": number,
     "totalProducts": number,
     "totalQuantity": number
 }
-export type UserCart = {
-    carts: carts[]
+export type TUserCart = {
+    carts: TCarts[]
     total: number
     skip: number
     limit: number
 }
 
-export interface UserData {
+export interface IUserData {
     firstName: string;
     lastName: string;
 }
-export type listWithQuantity = {
-    quantity: number,
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    discountPercentage: number;
-    rating: number;
-    stock: number;
-    brand: string;
-    category: string;
-    thumbnail: string;
-    images: string[];
-}[] | undefined
+export type TProductWithQuantity = TProduct & {
+    quantity: number;
+    customProduct?: boolean
+}
+
+export type TProductsWithQuantity = TProductWithQuantity[] | undefined
+

@@ -1,10 +1,10 @@
 import React from "react";
-import {useGetUserDetails} from "../customHooks/getUserDetails";
-import {UserCart} from "../../dataTypes";
+import {useGetUserDetails} from "../customHooks/UserDetails";
+import {TUserCart} from "../../dataTypes";
 import './cartHeader.css'
 import {Link} from "react-router-dom";
 
-export default function CartHeader({userCartCatalog}: { userCartCatalog: UserCart | null; }) {
+export default function CartHeader({userCartCatalog}: { userCartCatalog: TUserCart | null; }) {
 
     const {userDetails,userDataError} = useGetUserDetails();
     const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;

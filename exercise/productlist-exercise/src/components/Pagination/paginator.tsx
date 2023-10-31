@@ -12,7 +12,6 @@ interface PaginationState {
 
 export default function Paginator({totalProducts, currentPage, setCurrentPage, itemsPerPage, setItemsPerPage, setQuery}: PaginationState) {
     const totalPages = Math.ceil((totalProducts ? totalProducts : 0) / itemsPerPage);
-    setItemsPerPage(5);
 
 
     if (currentPage > totalPages && totalPages !== 0) {

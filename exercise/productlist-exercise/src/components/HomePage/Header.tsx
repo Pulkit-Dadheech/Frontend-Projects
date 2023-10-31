@@ -1,20 +1,16 @@
 import React, {useEffect, useState} from "react";
 import './Header.css';
 import {useCategoryList} from "../customHooks/CategoryList";
-import {useGetUserDetails} from "../customHooks/getUserDetails";
+import {useGetUserDetails} from "../customHooks/UserDetails";
 import {Link} from "react-router-dom";
 
 type headerType =
     {
-        searchBoxResult: string;
-        selectedCategory: string;
         setSearchBoxResult: (value: string) => void;
         setSelectedCategory: (value: string) => void;
     }
 
 export default function Header({
-                                   searchBoxResult,
-                                   selectedCategory,
                                    setSearchBoxResult,
                                    setSelectedCategory
                                }: headerType) {
@@ -54,7 +50,7 @@ export default function Header({
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    {searchTerm &&(
+                    {searchTerm && (
                         <span
                             className="clear-button"
                             onClick={() => setSearchTerm("")}
@@ -76,6 +72,12 @@ export default function Header({
                             <option key={index}>{category}</option>
                         ))}
                     </select>
+                </div>
+                <div id="custom-product-listing">
+                    <Link to="/custom-product">Custom Products</Link>
+                </div>
+                <div id="custom-form">
+                    <Link to="/form">Add Custom Product</Link>
                 </div>
                 <div id="cart">
                     <Link to="/cart">{userName}</Link>

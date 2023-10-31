@@ -23,8 +23,6 @@ function App() {
     return (
         <>
             <Header
-                searchBoxResult={searchBoxResult}
-                selectedCategory={selectedCategory}
                 setSearchBoxResult={setSearchBoxResult}
                 setSelectedCategory={setSelectedCategory}
             />

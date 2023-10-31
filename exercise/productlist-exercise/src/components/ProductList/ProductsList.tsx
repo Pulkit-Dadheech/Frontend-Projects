@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction} from "react";
 import {ButtonUtils} from "../button/buttonUtils";
-import {listWithQuantity, UserCart} from "../../dataTypes"; // Import your ButtonUtils component here
+import {TProductsWithQuantity, TUserCart} from "../../dataTypes";
 
 function ProductList({
                          productListWithQuantity: productListWithCartQuantity,
@@ -9,9 +9,9 @@ function ProductList({
                          loading
                      }:
                          {
-                             productListWithQuantity: listWithQuantity
-                             userCartCatalog: UserCart,
-                             setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
+                             productListWithQuantity: TProductsWithQuantity
+                             userCartCatalog: TUserCart,
+                             setUserCartCatalog: Dispatch<SetStateAction<TUserCart | null>>;
                              loading: boolean
                          }) {
 
@@ -20,6 +20,9 @@ function ProductList({
     }
     if (loading) {
         return <>Loading ......</>
+    }
+    if(!productListWithCartQuantity){
+        return  <h1>Fetching Product List</h1>
     }
     return (
         <div>
@@ -51,6 +54,7 @@ function ProductList({
                                 userCartCatalog={userCartCatalog}
                                 setUserCartCatalog={setUserCartCatalog}
                                 quantity={productWithQuantity.quantity}
+                                isCustom={productWithQuantity.customProduct}
                             />
                         </div>
                     </div>

@@ -1,34 +1,70 @@
 import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
-import {UserCart} from "../../dataTypes";
+import {TUserCart} from "../../dataTypes";
 import {UserContext} from "../../context";
 import {CartButton} from "./CartButton";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
+import {CustomProductContext} from "../../CustomProductContext";
 
-export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}: {
+export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,isCustom}: {
     id: number;
-    userCartCatalog: UserCart;
-    setUserCartCatalog: Dispatch<SetStateAction<UserCart | null>>;
+    userCartCatalog: TUserCart;
+    setUserCartCatalog: Dispatch<SetStateAction<TUserCart | null>>;
     quantity?: number
+    isCustom: boolean | undefined
 }) {
 
     const userContext = useContext(UserContext);
-
+    const customProductContext = useContext(CustomProductContext);
     if (!userContext) {
         throw new Error("UserContext is not provided correctly.");
     }
+    if (!customProductContext) {
+        throw new Error("UserContext is not provided correctly.");
+    }
+
 
     const {userPrevCartCatalog, setUserPrevCartCatalog} = userContext
-    const [userCartId,setUserCartId]=useState<number>(0);
+    const [userCartId, setUserCartId] = useState<number>(0);
+    const {customProducts, setCustomProducts} = customProductContext;
 
-    function onAdd(id:number,quantity?:number){
-        AddOrRemoveProductFromCart(id, quantity, false)
+    function onAdd(id: number,isCustom: boolean, quantity?: number) {
+        if (isCustom) {
+            setCustomProducts(() => {
+                return customProducts.map((product) => {
+                    if (product.id === id) {
+                        return {
+                            ...product,
+                            quantity: quantity !== 0 ? +product.quantity + 1 : 1,
+                        };
+                    }
+                    return product;
+                });
+            });
+        } else {
+            AddOrRemoveProductFromCart(id, quantity, false)
+        }
     }
-    function onDelete(id:number,quantity?:number){
-        AddOrRemoveProductFromCart(id, quantity, true)
+
+    function onDelete(id: number, isCustom: boolean,quantity?: number) {
+        if (isCustom) {
+            setCustomProducts(() => {
+                return customProducts.map((product) => {
+                    if (product.id === id) {
+                        return {
+                            ...product,
+                            quantity: quantity !== 0 ? +product.quantity - 1 : 0,
+                        };
+                    }
+                    return product;
+                });
+            });
+        } else {
+            AddOrRemoveProductFromCart(id, quantity, true)
+        }
     }
 
     useEffect(() => {
-        const userCartIdNumber=userCartCatalog.carts[0].id;
+        const userCartIdNumber = userCartCatalog.carts[0].id;
         setUserCartId(userCartIdNumber)
     }, [userCartId]);
 
@@ -58,7 +94,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
             setUserPrevCartCatalog(updatedCarts);
         }
         try {
-            const response = await fetch(createApiUrl(apiQueries.AddToCart,userCartId), {
+            const response = await fetch(createApiUrl(apiQueries.AddToCart, userCartId), {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
@@ -86,7 +122,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
 
     return (
         <>
-        <CartButton id={id} onAdd={onAdd} onDelete={onDelete} quantity={quantity} />
+            <CartButton id={id} onAdd={onAdd} onDelete={onDelete} quantity={quantity} isCustom={isCustom}/>
         </>
     );
 
