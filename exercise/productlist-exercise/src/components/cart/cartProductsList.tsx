@@ -71,6 +71,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
     const filteredProductListWithQuantity = productListWithQuantity?.filter((productList) => productList.quantity > 0)
     const ProductListWithQuantity = filteredProductListWithQuantity?.slice((currentPage - 1) * itemsPerPage, (currentPage) * itemsPerPage);
 
+
     return (
         <>
             <ProductList
