@@ -12,7 +12,7 @@ function ProductForm() {
     const {customProductId, setCustomProductId, customProducts, setCustomProducts} = customProductContext;
     const [productData, setProductData] = useState<TProductWithQuantity>({
         quantity: 0,
-        id: (customProductId * customProductId),
+        id: (customProductId),
         title: "",
         brand: "",
         category: "",
@@ -43,16 +43,16 @@ function ProductForm() {
     };
     useEffect(() => {
         localStorage.setItem("customId", JSON.stringify(customProductId));
-        setCustomProductId(customProductId * 2);
+        setCustomProductId(customProductId+1);
     }, [customProducts]);
 
     const handleSave = (e: React.SyntheticEvent) => {
         e.preventDefault();
-        setCustomProductId(customProductId * 2)
+        setCustomProductId(customProductId+1)
         setCustomProducts([...customProducts, productData]);
         setProductData({
             quantity: 0,
-            id: (customProductId * customProductId),
+            id: (customProductId),
             title: "",
             brand: "",
             category: "",

@@ -11,7 +11,7 @@ interface ICustomProductContextType {
 export const CustomProductContext = createContext<ICustomProductContextType | null>(null);
 
 function CustomProductContextProvider({children}: { children: React.ReactNode }) {
-    let customId = parseInt(JSON.parse(localStorage.getItem("customId") || "101"));
+    let customId = parseInt(JSON.parse(localStorage.getItem("customId") || "1"));
     const initialCustomProducts = JSON.parse(localStorage.getItem("customProducts") || "[]");
     const [customProductId, setCustomProductId] = useState(customId);
     const [customProducts, setCustomProducts] = useState<TProductWithQuantity[]>(initialCustomProducts);
