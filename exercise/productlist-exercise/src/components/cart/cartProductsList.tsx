@@ -1,11 +1,11 @@
 import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
-import {TMultipleProductListWithQuantity, TProduct, TUserCart} from "../../dataTypes";
+import {TProductsWithQuantity, TProduct, TUserCart} from "../../dataTypes";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
 import {usePagination} from "../customHooks/Pagination";
 import {useSearchParams} from "react-router-dom";
-import {UserContext} from "../../context";
+import {CustomProductContext} from "../../CustomProductContext";
 
 
 export default function CartProductsList({userCartCatalog, setUserCartCatalog, loading}: {
@@ -18,12 +18,12 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
     const queryPage = (query.get('p'));
     const initialPage = queryPage ? parseInt(queryPage) : 1;
     const [userCartProducts, setUserCartProducts] = useState<TProduct[]>();
-    const userContext = useContext(UserContext);
 
-    if (!userContext) {
+    const customProductContext = useContext(CustomProductContext);
+    if (!customProductContext) {
         throw new Error("UserContext is not provided correctly.");
     }
-    const {customProducts} = userContext;
+    const {customProducts} = customProductContext;
 
 
     const productsList = userCartCatalog?.carts[0]?.products || [];
@@ -58,11 +58,11 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
             return !!filteredCartWithNoProducts.filter((filterProduct) => filterProduct.id === product.id).length;
         });
     }
-
-    const productListWithQuantity: TMultipleProductListWithQuantity = filterProducts?.map((product) => {
+    const productListWithQuantity: TProductsWithQuantity = filterProducts?.map((product) => {
         return {
             ...product,
-            quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0
+            quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0,
+            customProduct: false
         }
     })
     if (customProducts && productListWithQuantity) {

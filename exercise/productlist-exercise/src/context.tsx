@@ -1,7 +1,6 @@
 import React, {createContext, useEffect, useState} from "react";
-import {IContextType, TSingleProductWithQuantity, TUserCart, IUserCartCatalog} from "./dataTypes";
+import {IContextType, TProductWithQuantity, TUserCart, IUserCartCatalog} from "./dataTypes";
 import useFetch, {apiQueries, createApiUrl} from "./dataFetchingFile";
-
 
 export const UserContext = createContext<IContextType | null>(null);
 
@@ -17,11 +16,6 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
     const [selectedUserId, setSelectedUserId] = useState(1);
     const {data, error, loading} = useFetch<TUserCart>(createApiUrl(apiQueries.UserCart, selectedUserId));
     let userCartCatalog = data;
-
-    const initialCustomProducts = JSON.parse(localStorage.getItem("customProducts") || "[]");
-    let customId = parseInt(JSON.parse(localStorage.getItem("customId") || "101"));
-    const [customProductId, setCustomProductId] = useState(customId);
-    const [customProducts, setCustomProducts] = useState<TSingleProductWithQuantity[]>(initialCustomProducts);
 
     async function fetchUserCartIfEmpty() {
         const response = await fetch('https://dummyjson.com/carts/add', {
@@ -56,10 +50,6 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
         }
     }, [userCartCatalog]);
 
-    useEffect(() => {
-        localStorage.setItem("customProducts", JSON.stringify(customProducts));
-    }, [customProducts]);
-
     if (loading) {
         return (<h1>Loading..</h1>)
     }
@@ -73,10 +63,6 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
                 userPrevCartCatalog,
                 setUserPrevCartCatalog,
                 loading,
-                customProducts,
-                setCustomProducts,
-                customProductId,
-                setCustomProductId,
                 selectedUser,
                 setSelectedUser,
                 selectedUserId,

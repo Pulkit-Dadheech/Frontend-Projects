@@ -6,10 +6,6 @@ export interface IContextType {
     userPrevCartCatalog: { id: number, quantity: number }[];
     setUserPrevCartCatalog: Dispatch<SetStateAction<{ id: number, quantity: number }[]>>
     loading: boolean
-    customProducts: TSingleProductWithQuantity[];
-    setCustomProducts: React.Dispatch<React.SetStateAction<TSingleProductWithQuantity[]>>
-    customProductId: number
-    setCustomProductId: React.Dispatch<React.SetStateAction<number>>
     selectedUser: string
     setSelectedUser: React.Dispatch<React.SetStateAction<string>>
     selectedUserId: number,
@@ -20,6 +16,7 @@ export interface IUserCartCatalog {
     id: number,
     quantity: number
 }
+
 export type TProduct = {
     id: number;
     title: string;
@@ -78,19 +75,10 @@ export interface IUserData {
     users: IUserNameWithId[]
 }
 
-export type TSingleProductWithQuantity ={
+export type TProductWithQuantity = TProduct & {
     quantity: number;
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    discountPercentage: number;
-    rating: number;
-    stock: number;
-    brand: string;
-    category: string;
-    thumbnail: string;
-    images: string[];
+    customProduct?: boolean
 }
-export type TMultipleProductListWithQuantity = TSingleProductWithQuantity[] | undefined
+
+export type TProductsWithQuantity = TProductWithQuantity[] | undefined
 

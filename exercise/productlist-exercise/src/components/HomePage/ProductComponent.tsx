@@ -1,20 +1,13 @@
 import React, {useEffect} from "react";
 import  {useProductList} from "../customHooks/ProductList";
-import {TMultipleProductListWithQuantity, TUserCart} from "../../dataTypes";
+import {IShoppingCartProps,TProductsWithQuantity, TUserCart} from "../../dataTypes";
 import "./ProductComponent.css";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
 import {useSearchParams} from "react-router-dom";
 import {usePagination} from "../customHooks/Pagination"
 
-interface ShoppingCartProps {
-    searchBoxResult?: string;
-    category?: string;
-    userCartCatalog: TUserCart;
-    setUserCartCatalog: React.Dispatch<React.SetStateAction<TUserCart | null>>;
-}
-
-export default function Product(props: ShoppingCartProps) {
+export default function Product(props: IShoppingCartProps) {
 
     const [query,setQuery]=useSearchParams();
     const queryPage=(query.get('p'));
@@ -47,13 +40,13 @@ export default function Product(props: ShoppingCartProps) {
         return (<h1>Error Fetching Product Catalog</h1>);
     }
 
-    const productListWithQuantity: TMultipleProductListWithQuantity = productCatalog?.products.map((product) => {
+    const productListWithQuantity: TProductsWithQuantity = productCatalog?.products.map((product) => {
         return {
             ...product,
-            quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0
+            quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0,
+            customProduct: false
         }
     })
-
 
     return (<>
             <ProductList

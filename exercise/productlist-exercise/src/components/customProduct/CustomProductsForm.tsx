@@ -1,18 +1,18 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {TSingleProductWithQuantity} from "../../dataTypes";
+import {TProductWithQuantity} from "../dataTypes";
 import './ProductForm.css';
-import {UserContext} from "../../context";
+import {CustomProductContext} from "../CustomProductContext";
 
 function ProductForm() {
-    const userContext = useContext(UserContext);
-    if (!userContext) {
+    const customProductContext = useContext(CustomProductContext);
+    if (!customProductContext) {
         throw new Error("UserContext is not provided correctly.");
     }
-    const {customProductId, setCustomProductId, customProducts, setCustomProducts} = userContext;
-    const [productData, setProductData] = useState<TSingleProductWithQuantity>({
+    const {customProductId, setCustomProductId, customProducts, setCustomProducts} = customProductContext;
+    const [productData, setProductData] = useState<TProductWithQuantity>({
         quantity: 0,
-        id: customProductId + 1,
+        id: (customProductId),
         title: "",
         brand: "",
         category: "",
@@ -23,8 +23,10 @@ function ProductForm() {
         rating: 4.5,
         stock: 10,
         thumbnail: "",
+        customProduct: true,
     });
     const [successMessage, setSuccessMessage] = useState<string>('');
+    const [showSuccess,setShowSuccess]=useState(false);
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -41,15 +43,16 @@ function ProductForm() {
     };
     useEffect(() => {
         localStorage.setItem("customId", JSON.stringify(customProductId));
-        setCustomProductId(customProductId + 1);
+        setCustomProductId(customProductId+1);
     }, [customProducts]);
 
     const handleSave = (e: React.SyntheticEvent) => {
         e.preventDefault();
+        setCustomProductId(customProductId+1)
         setCustomProducts([...customProducts, productData]);
         setProductData({
             quantity: 0,
-            id: customProductId + 1,
+            id: (customProductId),
             title: "",
             brand: "",
             category: "",
@@ -60,8 +63,11 @@ function ProductForm() {
             rating: 0,
             stock: 0,
             thumbnail: "",
+            customProduct: true,
 
         });
+        setTimeout(()=>setShowSuccess(false),2000);
+        setShowSuccess(true);
         setSuccessMessage('Submitted successfully!');
     };
 
@@ -98,7 +104,7 @@ function ProductForm() {
                           className="input-field"/>
 
                 <button type="submit">Save</button>
-                <div>{successMessage}</div>
+                {showSuccess && <div className="success-message">{successMessage}</div>}
             </form>
 
         </div>
