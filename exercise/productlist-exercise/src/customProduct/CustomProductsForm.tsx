@@ -25,6 +25,7 @@ function ProductForm() {
         thumbnail: "",
     });
     const [successMessage, setSuccessMessage] = useState<string>('');
+    const [showSuccess,setShowSuccess]=useState(false);
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -63,8 +64,11 @@ function ProductForm() {
             thumbnail: "",
 
         });
+        setTimeout(()=>setShowSuccess(false),2000);
+        setShowSuccess(true);
         setSuccessMessage('Submitted successfully!');
     };
+
 
     return (
         <div className="form-container">
@@ -99,7 +103,7 @@ function ProductForm() {
                           className="input-field"/>
 
                 <button type="submit">Save</button>
-                <div>{successMessage}</div>
+                {showSuccess && <div className="success-message">{successMessage}</div>}
             </form>
 
         </div>
