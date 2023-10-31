@@ -5,11 +5,12 @@ import {CartButton} from "./CartButton";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import {CustomProductContext} from "../../CustomProductContext";
 
-export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}: {
+export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,isCustom}: {
     id: number;
     userCartCatalog: TUserCart;
     setUserCartCatalog: Dispatch<SetStateAction<TUserCart | null>>;
     quantity?: number
+    isCustom: boolean | undefined
 }) {
 
     const userContext = useContext(UserContext);
@@ -26,9 +27,8 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
     const [userCartId, setUserCartId] = useState<number>(0);
     const {customProducts, setCustomProducts} = customProductContext;
 
-    function onAdd(id: number, quantity?: number) {
-        const verifyCustomProduct = customProducts.find((product) => product.id === id)?.customProduct;
-        if (!!verifyCustomProduct) {
+    function onAdd(id: number,isCustom: boolean, quantity?: number) {
+        if (isCustom) {
             setCustomProducts(() => {
                 return customProducts.map((product) => {
                     if (product.id === id) {
@@ -45,10 +45,8 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
         }
     }
 
-    function onDelete(id: number, quantity?: number) {
-        // const customId = customProducts.find((product) => product.id === id);
-        const verifyCustomProduct = customProducts.find((product) => product.id === id)?.customProduct;
-        if (!!verifyCustomProduct) {
+    function onDelete(id: number, isCustom: boolean,quantity?: number) {
+        if (isCustom) {
             setCustomProducts(() => {
                 return customProducts.map((product) => {
                     if (product.id === id) {
@@ -124,7 +122,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
 
     return (
         <>
-            <CartButton id={id} onAdd={onAdd} onDelete={onDelete} quantity={quantity}/>
+            <CartButton id={id} onAdd={onAdd} onDelete={onDelete} quantity={quantity} isCustom={isCustom}/>
         </>
     );
 

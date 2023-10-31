@@ -50,9 +50,11 @@ export default function Product(props: IShoppingCartProps) {
     const productListWithQuantity: TProductsWithQuantity = productCatalog?.products.map((product) => {
         return {
             ...product,
-            quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0
+            quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0,
+            customProduct: false
         }
     })
+
 
 
     return (<>

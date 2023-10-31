@@ -21,6 +21,9 @@ function ProductList({
     if (loading) {
         return <>Loading ......</>
     }
+    if(!productListWithCartQuantity){
+        return  <h1>Fetching Product List</h1>
+    }
     return (
         <div>
             {!!productListWithCartQuantity?.length &&
@@ -51,6 +54,7 @@ function ProductList({
                                 userCartCatalog={userCartCatalog}
                                 setUserCartCatalog={setUserCartCatalog}
                                 quantity={productWithQuantity.quantity}
+                                isCustom={productWithQuantity.customProduct}
                             />
                         </div>
                     </div>

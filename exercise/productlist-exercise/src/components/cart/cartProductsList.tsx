@@ -56,7 +56,8 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
     const productListWithQuantity: TProductsWithQuantity = filterProducts?.map((product) => {
         return {
             ...product,
-            quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0
+            quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0,
+            customProduct: false
         }
     })
     if (customProducts && productListWithQuantity) {
