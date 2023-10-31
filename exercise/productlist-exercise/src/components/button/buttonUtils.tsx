@@ -3,6 +3,7 @@ import {TUserCart} from "../../dataTypes";
 import {UserContext} from "../../context";
 import {CartButton} from "./CartButton";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
+import {CustomProductContext} from "../../CustomProductContext";
 
 export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}: {
     id: number;
@@ -12,14 +13,18 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
 }) {
 
     const userContext = useContext(UserContext);
-
+    const customProductContext = useContext(CustomProductContext);
     if (!userContext) {
         throw new Error("UserContext is not provided correctly.");
     }
+    if (!customProductContext) {
+        throw new Error("UserContext is not provided correctly.");
+    }
+
 
     const {userPrevCartCatalog, setUserPrevCartCatalog} = userContext
     const [userCartId, setUserCartId] = useState<number>(0);
-    const {customProducts, setCustomProducts} = userContext;
+    const {customProducts, setCustomProducts} = customProductContext;
 
     function onAdd(id: number, quantity?: number) {
         const customId = customProducts.find((product) => product.id === id);

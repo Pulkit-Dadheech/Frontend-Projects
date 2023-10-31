@@ -2,15 +2,21 @@ import React, {useContext} from 'react';
 import {UserContext} from "../context";
 import ProductList from "../components/ProductList/ProductsList";
 import {CustomProductHeader} from "./CustomProductHeader";
+import {CustomProductContext} from "../CustomProductContext";
 
 const CustomProduct = () => {
     // const [searchBoxResult, setSearchBoxResult] = useState<string>("");
     const userContext = useContext(UserContext);
+    const customProductContext = useContext(CustomProductContext);
 
     if (!userContext) {
         throw new Error("UserContext is not provided correctly.");
     }
-    const {customProducts} = userContext;
+    if (!customProductContext) {
+        throw new Error("UserContext is not provided correctly.");
+    }
+
+    const {customProducts} = customProductContext;
     const {userCart, setUserCart} = userContext;
 
     if (!userCart) {

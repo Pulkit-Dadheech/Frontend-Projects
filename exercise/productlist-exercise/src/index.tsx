@@ -7,6 +7,7 @@ import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} fr
 import MyContextProvider from "./context";
 import CustomProduct from "./customProduct/CustomProduct";
 import ProductForm from "./customProduct/CustomProductsForm";
+import CustomProductContextProvider from "./CustomProductContext";
 
 
 const root = ReactDOM.createRoot(
@@ -27,7 +28,9 @@ const router = createBrowserRouter(
 root.render(
     <React.StrictMode>
         <MyContextProvider>
-            <RouterProvider router={router}/>
+            <CustomProductContextProvider>
+                <RouterProvider router={router}/>
+            </CustomProductContextProvider>
         </MyContextProvider>
     </React.StrictMode>
 );

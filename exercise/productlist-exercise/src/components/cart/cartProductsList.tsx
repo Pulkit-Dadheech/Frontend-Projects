@@ -5,7 +5,7 @@ import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
 import {usePagination} from "../customHooks/Pagination";
 import {useSearchParams} from "react-router-dom";
-import {UserContext} from "../../context";
+import {CustomProductContext} from "../../CustomProductContext";
 
 
 export default function CartProductsList({userCartCatalog, setUserCartCatalog, loading}: {
@@ -18,12 +18,13 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
     const queryPage = (query.get('p'));
     const initialPage = queryPage ? parseInt(queryPage) : 1;
     const [userCartProducts, setUserCartProducts] = useState<TProduct[]>();
-    const userContext = useContext(UserContext);
 
-    if (!userContext) {
+    const customProductContext = useContext(CustomProductContext);
+    if (!customProductContext) {
         throw new Error("UserContext is not provided correctly.");
     }
-    const {customProducts, setCustomProducts} = userContext;
+
+    const {customProducts} = customProductContext;
 
     const productsList = userCartCatalog.carts[0].products;
     const filteredproductsList = productsList.filter((product) => product.quantity !== 0);
