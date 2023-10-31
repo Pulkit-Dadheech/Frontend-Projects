@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
-import {TMultipleProductListWithQuantity, TProduct, TUserCart} from "../../dataTypes";
+import {TProductsWithQuantity, TProduct, TUserCart} from "../../dataTypes";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
@@ -53,7 +53,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
             return !!filteredCartWithNoProducts.filter((filterProduct) => filterProduct.id === product.id).length;
         });
     }
-    const productListWithQuantity: TMultipleProductListWithQuantity = filterProducts?.map((product) => {
+    const productListWithQuantity: TProductsWithQuantity = filterProducts?.map((product) => {
         return {
             ...product,
             quantity: userCartCatalog.carts[0].products.find((p) => p.id === product.id)?.quantity || 0

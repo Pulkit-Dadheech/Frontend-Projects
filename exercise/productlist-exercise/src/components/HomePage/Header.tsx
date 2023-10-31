@@ -6,15 +6,11 @@ import {Link} from "react-router-dom";
 
 type headerType =
     {
-        searchBoxResult: string;
-        selectedCategory: string;
         setSearchBoxResult: (value: string) => void;
         setSelectedCategory: (value: string) => void;
     }
 
 export default function Header({
-                                   searchBoxResult,
-                                   selectedCategory,
                                    setSearchBoxResult,
                                    setSelectedCategory
                                }: headerType) {
