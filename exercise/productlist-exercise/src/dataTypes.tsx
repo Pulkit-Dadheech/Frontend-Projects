@@ -49,6 +49,7 @@ export interface IUserData {
 }
 export type TProductWithQuantity = TProduct & {
     quantity: number;
+    customProduct?: boolean
 }
 
 export type TProductsWithQuantity = TProductWithQuantity[] | undefined

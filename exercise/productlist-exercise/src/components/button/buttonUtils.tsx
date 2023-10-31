@@ -27,8 +27,8 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
     const {customProducts, setCustomProducts} = customProductContext;
 
     function onAdd(id: number, quantity?: number) {
-        const customId = customProducts.find((product) => product.id === id);
-        if (!!customId) {
+        const verifyCustomProduct = customProducts.find((product) => product.id === id)?.customProduct;
+        if (!!verifyCustomProduct) {
             setCustomProducts(() => {
                 return customProducts.map((product) => {
                     if (product.id === id) {
@@ -46,8 +46,9 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity}:
     }
 
     function onDelete(id: number, quantity?: number) {
-        const customId = customProducts.find((product) => product.id === id);
-        if (!!customId) {
+        // const customId = customProducts.find((product) => product.id === id);
+        const verifyCustomProduct = customProducts.find((product) => product.id === id)?.customProduct;
+        if (!!verifyCustomProduct) {
             setCustomProducts(() => {
                 return customProducts.map((product) => {
                     if (product.id === id) {

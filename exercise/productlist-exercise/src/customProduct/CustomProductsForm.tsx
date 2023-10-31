@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {TSingleProductWithQuantity} from "../dataTypes";
+import {TProductWithQuantity} from "../dataTypes";
 import './ProductForm.css';
 import {CustomProductContext} from "../CustomProductContext";
 
@@ -10,7 +10,7 @@ function ProductForm() {
         throw new Error("UserContext is not provided correctly.");
     }
     const {customProductId, setCustomProductId, customProducts, setCustomProducts} = customProductContext;
-    const [productData, setProductData] = useState<TSingleProductWithQuantity>({
+    const [productData, setProductData] = useState<TProductWithQuantity>({
         quantity: 0,
         id: (customProductId * customProductId),
         title: "",
@@ -23,6 +23,7 @@ function ProductForm() {
         rating: 4.5,
         stock: 10,
         thumbnail: "",
+        customProduct: true,
     });
     const [successMessage, setSuccessMessage] = useState<string>('');
     const [showSuccess,setShowSuccess]=useState(false);
@@ -62,6 +63,7 @@ function ProductForm() {
             rating: 0,
             stock: 0,
             thumbnail: "",
+            customProduct: true,
 
         });
         setTimeout(()=>setShowSuccess(false),2000);
