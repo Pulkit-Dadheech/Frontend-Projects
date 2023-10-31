@@ -47,19 +47,9 @@ export interface IUserData {
     firstName: string;
     lastName: string;
 }
-export type TSingleProductWithQuantity ={
+export type TSingleProductWithQuantity = TProduct & {
     quantity: number;
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    discountPercentage: number;
-    rating: number;
-    stock: number;
-    brand: string;
-    category: string;
-    thumbnail: string;
-    images: string[];
 }
+
 export type TMultipleProductListWithQuantity = TSingleProductWithQuantity[] | undefined
 
