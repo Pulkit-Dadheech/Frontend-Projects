@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import {TProductWithQuantity} from "../dataTypes";
+import {TProductWithQuantity} from "../../dataTypes";
 import './ProductForm.css';
-import {CustomProductContext} from "../CustomProductContext";
+import {CustomProductContext} from "../../CustomProductContext";
 
 function ProductForm() {
     const customProductContext = useContext(CustomProductContext);

@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
-import  {useProductList} from "../customHooks/ProductList";
-import {IShoppingCartProps,TProductsWithQuantity, TUserCart} from "../../dataTypes";
+import {useProductList} from "../customHooks/ProductList";
+import {IShoppingCartProps, TProductsWithQuantity} from "../../dataTypes";
 import "./ProductComponent.css";
 import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
@@ -9,9 +9,9 @@ import {usePagination} from "../customHooks/Pagination"
 
 export default function Product(props: IShoppingCartProps) {
 
-    const [query,setQuery]=useSearchParams();
-    const queryPage=(query.get('p'));
-    const initialPage = queryPage? parseInt(queryPage) : 1;
+    const [query, setQuery] = useSearchParams();
+    const queryPage = (query.get('p'));
+    const initialPage = queryPage ? parseInt(queryPage) : 1;
 
     const {currentPage, setCurrentPage, itemsPerPage, setItemsPerPage} = usePagination(initialPage);
     const skippedProducts = (currentPage - 1) * itemsPerPage;

@@ -1,5 +1,5 @@
 import React, {createContext, useEffect, useState} from "react";
-import {IContextType, TProductWithQuantity, TUserCart, IUserCartCatalog} from "./dataTypes";
+import {IContextType, IUserCartCatalog, TUserCart} from "./dataTypes";
 import useFetch, {apiQueries, createApiUrl} from "./dataFetchingFile";
 
 export const UserContext = createContext<IContextType | null>(null);

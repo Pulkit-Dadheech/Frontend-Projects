@@ -45,7 +45,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
     }, [!!userCartCatalog?.carts.length]);
 
     if (!userCartCatalog || !userCartCatalog.carts || userCartCatalog.carts.length === 0) {
-        return <div>User Not Selected</div>;
+        return <div>Loading...</div>;
     }
 
 

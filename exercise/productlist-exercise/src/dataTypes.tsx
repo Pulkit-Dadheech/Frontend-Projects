@@ -1,17 +1,29 @@
-import React, {Dispatch, SetStateAction} from "react";
+import React from "react";
 
 export interface IContextType {
     userCart: TUserCart | null;
-    setUserCart: Dispatch<SetStateAction<TUserCart | null>>;
+    setUserCart: React.Dispatch<React.SetStateAction<TUserCart | null>>;
     userPrevCartCatalog: { id: number, quantity: number }[];
-    setUserPrevCartCatalog: Dispatch<SetStateAction<{ id: number, quantity: number }[]>>
+    setUserPrevCartCatalog: React.Dispatch<React.SetStateAction<{ id: number, quantity: number }[]>>
     loading: boolean
     selectedUser: string
     setSelectedUser: React.Dispatch<React.SetStateAction<string>>
     selectedUserId: number,
     setSelectedUserId: React.Dispatch<React.SetStateAction<number>>
 }
+export interface ICustomProductContextType {
+    customProducts: TProductWithQuantity[];
+    setCustomProducts: React.Dispatch<React.SetStateAction<TProductWithQuantity[]>>
+    customProductId: number
+    setCustomProductId: React.Dispatch<React.SetStateAction<number>>
+}
 
+export interface IShoppingCartProps{
+    searchBoxResult:string
+    category: string
+    userCartCatalog: TUserCart
+    setUserCartCatalog: React.Dispatch<React.SetStateAction<TUserCart | null>>;
+}
 export interface IUserCartCatalog {
     id: number,
     quantity: number
@@ -62,22 +74,19 @@ export type TUserCart = {
     limit: number
 }
 
-export interface IUserName {
-    firstName: string;
-    lastName: string;
-}
 export interface IUserNameWithId {
     id: number;
     firstName: string;
     lastName: string;
 }
+
 export interface IUserData {
     users: IUserNameWithId[]
 }
 
 export type TProductWithQuantity = TProduct & {
     quantity: number;
-    customProduct?: boolean
+    customProduct: boolean
 }
 
 export type TProductsWithQuantity = TProductWithQuantity[] | undefined
