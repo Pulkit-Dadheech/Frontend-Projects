@@ -104,7 +104,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
             });
             if (!response.ok) {
 
-                const response = await fetch('https://dummyjson.com/carts/add', {
+                const response = await fetch(createApiUrl(apiQueries.AddANewCart), {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({

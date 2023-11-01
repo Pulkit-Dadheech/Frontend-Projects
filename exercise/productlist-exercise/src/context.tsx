@@ -20,7 +20,7 @@ function UserContextProvider({children}: { children: React.ReactNode }) {
     const {data: userList, error: userListError} = useFetch<IUserData>(createApiUrl(apiQueries.User));
 
     async function fetchUserCartIfEmpty() {
-        const response = await fetch('https://dummyjson.com/carts/add', {
+        const response = await fetch(createApiUrl(apiQueries.AddANewCart), {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

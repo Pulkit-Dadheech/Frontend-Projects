@@ -9,7 +9,8 @@ export enum apiQueries {
     SingleProduct = 'singleProduct',
     AddToCart = 'addToCart',
     UserCart = 'userCart',
-    User ='users'
+    User ='users',
+    AddANewCart = 'addANewCart'
 }
 
 export function createApiUrl(queryType: apiQueries, parameter?: string | number, limit?: number, skip?: number) {
@@ -48,6 +49,10 @@ export function createApiUrl(queryType: apiQueries, parameter?: string | number,
 
         case 'userCart':
             url += `/users/${parameter}/carts`;
+            break;
+
+        case 'addANewCart':
+            url += `/carts/add`
             break;
 
         default:
