@@ -27,13 +27,13 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
 
 
     const productsList = userCartCatalog?.carts[0]?.products || [];
-    const filteredproductsList = productsList.filter((product) => product.quantity !== 0);
+    const filteredProductsList = productsList.filter((product) => product.quantity !== 0);
     const {currentPage, setCurrentPage, itemsPerPage, setItemsPerPage} = usePagination(initialPage);
 
     useEffect(() => {
-        if (filteredproductsList) {
+        if (filteredProductsList) {
             const fetchProductData = async () => {
-                const productPromises = filteredproductsList.map(async (product) => {
+                const productPromises = filteredProductsList.map(async (product) => {
                     const response = await fetch(createApiUrl(apiQueries.SingleProduct, product.id));
                     return await response.json();
                 });
@@ -42,7 +42,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
             };
             fetchProductData();
         }
-    }, [!!userCartCatalog?.carts.length]);
+    }, [!!filteredProductsList.length]);
 
     if (!userCartCatalog || !userCartCatalog.carts || userCartCatalog.carts.length === 0) {
         return <div>Loading...</div>;
