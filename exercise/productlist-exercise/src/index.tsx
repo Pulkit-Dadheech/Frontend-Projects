@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import Cart from "./components/cart/cart";
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
-import MyContextProvider from "./context";
+import UserContextProvider from "./context";
 import CustomProduct from "./components/customProduct/CustomProduct";
 import ProductForm from "./components/customProduct/CustomProductsForm";
 import CustomProductContextProvider from "./CustomProductContext";
@@ -27,10 +27,10 @@ const router = createBrowserRouter(
 )
 root.render(
     // <React.StrictMode>
-        <MyContextProvider>
+        <UserContextProvider>
             <CustomProductContextProvider>
                 <RouterProvider router={router}/>
             </CustomProductContextProvider>
-        </MyContextProvider>
+        </UserContextProvider>
     // </React.StrictMode>
 );

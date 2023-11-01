@@ -5,7 +5,7 @@ import {useCategoryList} from "./components/customHooks/CategoryList";
 
 export const UserContext = createContext<IContextType | null>(null);
 
-function MyContextProvider({children}: { children: React.ReactNode }) {
+function UserContextProvider({children}: { children: React.ReactNode }) {
     const [userCart, setUserCart] = useState<TUserCart | null>({
         carts: [],
         total: 0,
@@ -78,4 +78,4 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
     );
 }
 
-export default MyContextProvider;
+export default UserContextProvider;
