@@ -62,11 +62,11 @@ export default function Header({
                 <div>
                     <select onChange={(e) => {
                         if (e.target.value !== 'Users') {
-                            setSelectedUserDetails({...selectedUserDetails, name: e.target.value});
+                            const selectedUserName=e.target.value;
                             if (!!userList.users.length) {
                                 const selectedUser = userList.users.find((user) => `${user.firstName} ${user.lastName}` === e.target.value);
                                 if (selectedUser) {
-                                    setSelectedUserDetails({...selectedUserDetails, id: selectedUser.id});
+                                    setSelectedUserDetails({...selectedUserDetails, id: selectedUser.id,name: selectedUserName});
                                 }
                             }
                         }
