@@ -26,11 +26,11 @@ const router = createBrowserRouter(
     )
 )
 root.render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <MyContextProvider>
             <CustomProductContextProvider>
                 <RouterProvider router={router}/>
             </CustomProductContextProvider>
         </MyContextProvider>
-    </React.StrictMode>
+    // </React.StrictMode>
 );

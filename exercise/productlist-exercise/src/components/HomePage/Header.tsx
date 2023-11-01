@@ -1,9 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import './Header.css';
-import {useCategoryList} from "../customHooks/CategoryList";
 import {Link} from "react-router-dom";
-import useFetch, {apiQueries, createApiUrl} from "../../dataFetchingFile";
-import {IUserData} from "../../dataTypes";
 import {UserContext} from "../../context";
 
 type headerType =
@@ -18,15 +15,11 @@ export default function Header({
                                }: headerType) {
 
     const userContext = useContext(UserContext);
-
     if (!userContext) {
         throw new Error("UserContext is not provided correctly.");
     }
 
-
-    const {selectedUserDetails,setSelectedUserDetails}=userContext;
-    const {categoryList, categoryError} = useCategoryList();
-    const {data: userList, error: userListError} = useFetch<IUserData>(createApiUrl(apiQueries.User));
+    const {selectedUserDetails, setSelectedUserDetails, categoryList, userList, categoryError, userListError} = userContext;
     const [searchTerm, setSearchTerm] = useState('')
 
     useEffect(() => {
@@ -35,8 +28,7 @@ export default function Header({
         }, 500)
 
         return () => clearTimeout(SearchDelay)
-    }, [searchTerm
-    ])
+    }, [searchTerm])
 
     if (categoryError) {
         return (<h1>Failed to Fetch Category Data</h1>)
@@ -70,11 +62,11 @@ export default function Header({
                 <div>
                     <select onChange={(e) => {
                         if (e.target.value !== 'Users') {
-                            setSelectedUserDetails({...selectedUserDetails,name: e.target.value});
+                            setSelectedUserDetails({...selectedUserDetails, name: e.target.value});
                             if (!!userList.users.length) {
                                 const selectedUser = userList.users.find((user) => `${user.firstName} ${user.lastName}` === e.target.value);
                                 if (selectedUser) {
-                                    setSelectedUserDetails({...selectedUserDetails,id: selectedUser.id});
+                                    setSelectedUserDetails({...selectedUserDetails, id: selectedUser.id});
                                 }
                             }
                         }

@@ -8,6 +8,10 @@ export interface IContextType {
     loading: boolean
     selectedUserDetails: {id: number,name: string}
     setSelectedUserDetails: React.Dispatch<React.SetStateAction<{id: number,name: string}>>
+    categoryList :  string[] | null
+    categoryError : string | null
+    userList : IUserData | null
+    userListError :  string | null
 }
 export interface ICustomProductContextType {
     customProducts: TProductWithQuantity[];
