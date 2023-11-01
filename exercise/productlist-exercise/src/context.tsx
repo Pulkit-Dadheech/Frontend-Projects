@@ -14,8 +14,7 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
     const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<IUserCartCatalog[]>([]);
 
     const [selectedUserDetails, setSelectedUserDetails] = useState({id: 1,name: "Terry Medhurst"})
-    const {data, error, loading} = useFetch<TUserCart>(createApiUrl(apiQueries.UserCart, selectedUserDetails.id));
-    let userCartCatalog = data;
+    const {data:userCartCatalog, error, loading} = useFetch<TUserCart>(createApiUrl(apiQueries.UserCart, selectedUserDetails.id));
 
     async function fetchUserCartIfEmpty() {
         const response = await fetch('https://dummyjson.com/carts/add', {
@@ -42,10 +41,10 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
     }
 
     useEffect(() => {
-        if (data?.total === 0) {
+        if (userCartCatalog?.total === 0) {
             fetchUserCartIfEmpty()
             setSelectedUserDetails({...selectedUserDetails,id:selectedUserDetails.id});
-        } else if (data) {
+        } else if (userCartCatalog) {
             setUserCart(userCartCatalog);
         }
     }, [userCartCatalog]);

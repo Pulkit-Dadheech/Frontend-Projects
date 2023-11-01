@@ -48,16 +48,15 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
         return <div>Loading...</div>;
     }
 
-
     let filterProducts = userCartProducts;
 
     const filteredCartWithNoProducts = userCartCatalog.carts[0].products.filter((product) => product.quantity !== 0)
-
     if (filteredCartWithNoProducts.length >= 0) {
         filterProducts = userCartProducts?.filter((product) => {
             return !!filteredCartWithNoProducts.filter((filterProduct) => filterProduct.id === product.id).length;
         });
     }
+
     const productListWithQuantity: TProductsWithQuantity = filterProducts?.map((product) => {
         return {
             ...product,

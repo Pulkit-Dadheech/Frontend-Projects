@@ -5,7 +5,6 @@ import {CustomProductHeader} from "./CustomProductHeader";
 import {CustomProductContext} from "../../CustomProductContext";
 
 const CustomProduct = () => {
-    // const [searchBoxResult, setSearchBoxResult] = useState<string>("");
     const userContext = useContext(UserContext);
     const customProductContext = useContext(CustomProductContext);
 

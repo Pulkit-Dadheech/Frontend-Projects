@@ -63,10 +63,10 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
     }
 
     useEffect(() => {
-        const userCartIdNumber = userCart?.carts[0].id;
+        const userCartIdNumber = userCart?.carts[0]?.id;
         if (userCartIdNumber)
             setUserCartId(userCartIdNumber)
-    }, [userCart]);
+    }, [userCartId]);
 
     async function AddOrRemoveProductFromCart(
         id: number,
@@ -78,7 +78,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
             quantity = 0;
         }
         const updatedProduct = {id: id, quantity: isDelete ? quantity - 1 : quantity + 1};
-        let updatedCarts = userPrevCartCatalog ? [...userPrevCartCatalog, updatedProduct] : [updatedProduct];
+        const updatedCarts = userPrevCartCatalog ? [...userPrevCartCatalog, updatedProduct] : [updatedProduct];
 
         interface LatestItems {
             [id: number]: { id: number; quantity: number };
