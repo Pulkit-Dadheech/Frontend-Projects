@@ -2,7 +2,8 @@ import React, {useEffect, useState} from "react";
 import './Header.css';
 import {useCategoryList} from "../customHooks/CategoryList";
 import {Link} from "react-router-dom";
-import useGetAllUsers from "../customHooks/Users";
+import useFetch, {apiQueries, createApiUrl} from "../../dataFetchingFile";
+import {IUserData} from "../../dataTypes";
 
 type headerType =
     {
@@ -21,7 +22,7 @@ export default function Header({
                                    setSelectedUserId
                                }: headerType) {
     const {categoryList, categoryError} = useCategoryList();
-    const {userList, userListError} = useGetAllUsers();
+    const {data: userList, error: userListError} = useFetch<IUserData>(createApiUrl(apiQueries.User));
     const [searchTerm, setSearchTerm] = useState('')
 
     useEffect(() => {
