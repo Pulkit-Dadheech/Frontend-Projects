@@ -22,7 +22,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
         throw new Error("UserContext is not provided correctly.");
     }
 
-    const {userPrevCartCatalog, setUserPrevCartCatalog, userCart, setUserCart, selectedUserId} = userContext
+    const {userPrevCartCatalog, setUserPrevCartCatalog, userCart, setUserCart, selectedUserDetails} = userContext
     const [userCartId, setUserCartId] = useState<number>(0);
     const {customProducts, setCustomProducts} = customProductContext;
 
@@ -108,7 +108,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
-                        userId: selectedUserId,
+                        userId: selectedUserDetails.id,
                         products: Object.values(filteredProducts)
                     })
                 });

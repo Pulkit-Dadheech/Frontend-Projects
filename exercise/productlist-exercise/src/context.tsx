@@ -12,9 +12,9 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
         limit: 0
     });
     const [userPrevCartCatalog, setUserPrevCartCatalog] = useState<IUserCartCatalog[]>([]);
-    const [selectedUser, setSelectedUser] = useState("Terry Medhurst")
-    const [selectedUserId, setSelectedUserId] = useState(1);
-    const {data, error, loading} = useFetch<TUserCart>(createApiUrl(apiQueries.UserCart, selectedUserId));
+
+    const [selectedUserDetails, setSelectedUserDetails] = useState({id: 1,name: "Terry Medhurst"})
+    const {data, error, loading} = useFetch<TUserCart>(createApiUrl(apiQueries.UserCart, selectedUserDetails.id));
     let userCartCatalog = data;
 
     async function fetchUserCartIfEmpty() {
@@ -22,7 +22,7 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                userId: selectedUserId,
+                userId: selectedUserDetails.id,
                 products: [
                     {
                         id: 1,
@@ -44,7 +44,7 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
     useEffect(() => {
         if (data?.total === 0) {
             fetchUserCartIfEmpty()
-            setSelectedUserId(selectedUserId);
+            setSelectedUserDetails({...selectedUserDetails,id:selectedUserDetails.id});
         } else if (data) {
             setUserCart(userCartCatalog);
         }
@@ -63,10 +63,8 @@ function MyContextProvider({children}: { children: React.ReactNode }) {
                 userPrevCartCatalog,
                 setUserPrevCartCatalog,
                 loading,
-                selectedUser,
-                setSelectedUser,
-                selectedUserId,
-                setSelectedUserId
+                selectedUserDetails,
+                setSelectedUserDetails,
             }}>
             {children}
         </UserContext.Provider>

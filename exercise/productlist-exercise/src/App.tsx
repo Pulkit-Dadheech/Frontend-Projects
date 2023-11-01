@@ -11,7 +11,7 @@ function App() {
         throw new Error("UserContext is not provided correctly.");
     }
 
-    const {userCart, setUserCart,selectedUser,setSelectedUser,setSelectedUserId} = userContext;
+    const {userCart, setUserCart} = userContext;
 
     const [searchBoxResult, setSearchBoxResult] = useState<string>("");
     const [selectedCategory, setSelectedCategory] = useState<string>("");
@@ -25,9 +25,6 @@ function App() {
             <Header
                 setSearchBoxResult={setSearchBoxResult}
                 setSelectedCategory={setSelectedCategory}
-                selectedUser={selectedUser}
-                setSelectedUser={setSelectedUser}
-                setSelectedUserId={setSelectedUserId}
             />
             <Product
                 searchBoxResult={searchBoxResult}

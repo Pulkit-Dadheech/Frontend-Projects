@@ -1,26 +1,30 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import './Header.css';
 import {useCategoryList} from "../customHooks/CategoryList";
 import {Link} from "react-router-dom";
 import useFetch, {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import {IUserData} from "../../dataTypes";
+import {UserContext} from "../../context";
 
 type headerType =
     {
         setSearchBoxResult: (value: string) => void;
         setSelectedCategory: (value: string) => void;
-        selectedUser: string
-        setSelectedUser: React.Dispatch<React.SetStateAction<string>>
-        setSelectedUserId: React.Dispatch<React.SetStateAction<number>>
     }
 
 export default function Header({
                                    setSearchBoxResult,
                                    setSelectedCategory,
-                                   selectedUser,
-                                   setSelectedUser,
-                                   setSelectedUserId
                                }: headerType) {
+
+    const userContext = useContext(UserContext);
+
+    if (!userContext) {
+        throw new Error("UserContext is not provided correctly.");
+    }
+
+
+    const {selectedUserDetails,setSelectedUserDetails}=userContext;
     const {categoryList, categoryError} = useCategoryList();
     const {data: userList, error: userListError} = useFetch<IUserData>(createApiUrl(apiQueries.User));
     const [searchTerm, setSearchTerm] = useState('')
@@ -66,11 +70,11 @@ export default function Header({
                 <div>
                     <select onChange={(e) => {
                         if (e.target.value !== 'Users') {
-                            setSelectedUser(e.target.value);
+                            setSelectedUserDetails({...selectedUserDetails,name: e.target.value});
                             if (!!userList.users.length) {
                                 const selectedUser = userList.users.find((user) => `${user.firstName} ${user.lastName}` === e.target.value);
                                 if (selectedUser) {
-                                    setSelectedUserId(selectedUser.id);
+                                    setSelectedUserDetails({...selectedUserDetails,id: selectedUser.id});
                                 }
                             }
                         }
@@ -103,7 +107,7 @@ export default function Header({
                     <Link to="/form">Add Custom Product</Link>
                 </div>
                 <div id="cart">
-                    <Link to="/cart">{selectedUser}</Link>
+                    <Link to="/cart">{selectedUserDetails.name}</Link>
                 </div>
             </div>
         </>

@@ -6,10 +6,8 @@ export interface IContextType {
     userPrevCartCatalog: { id: number, quantity: number }[];
     setUserPrevCartCatalog: React.Dispatch<React.SetStateAction<{ id: number, quantity: number }[]>>
     loading: boolean
-    selectedUser: string
-    setSelectedUser: React.Dispatch<React.SetStateAction<string>>
-    selectedUserId: number,
-    setSelectedUserId: React.Dispatch<React.SetStateAction<number>>
+    selectedUserDetails: {id: number,name: string}
+    setSelectedUserDetails: React.Dispatch<React.SetStateAction<{id: number,name: string}>>
 }
 export interface ICustomProductContextType {
     customProducts: TProductWithQuantity[];

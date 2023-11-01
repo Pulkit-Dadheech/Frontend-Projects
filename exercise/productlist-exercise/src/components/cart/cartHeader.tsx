@@ -20,7 +20,7 @@ export default function CartHeader({userCartCatalog}: { userCartCatalog: TUserCa
     const {customProducts}=customProductContext;
 
 
-    const {selectedUser} = userContext;
+    const {selectedUserDetails} = userContext;
     if (!userCartCatalog) {
         return (<h1>Loading...</h1>)
     }
@@ -37,7 +37,7 @@ export default function CartHeader({userCartCatalog}: { userCartCatalog: TUserCa
             <div className="homepage">
                 <Link to="/">HomePage</Link>
             </div>
-            <h1 className="cart-header-name">{selectedUser}</h1>
+            <h1 className="cart-header-name">{selectedUserDetails.name}</h1>
             <h2 className="cart-total-products">
                 Your Products({totalProductsInUserCart})
             </h2>
