@@ -61,20 +61,14 @@ export default function Header({
                 </div>
                 <div>
                     <select onChange={(e) => {
-                        if (e.target.value !== 'Users') {
-                            const selectedUserName=e.target.value;
-                            if (!!userList.users.length) {
-                                const selectedUser = userList.users.find((user) => `${user.firstName} ${user.lastName}` === e.target.value);
-                                if (selectedUser) {
-                                    setSelectedUserDetails({...selectedUserDetails, id: selectedUser.id,name: selectedUserName});
-                                }
-                            }
-                        }
+                        setSelectedUserDetails({...selectedUserDetails, id: parseInt(e.target.value), name: e.target.selectedOptions[0].text})
                     }} className="product-category-list">
-                        <option>Users</option>
-                        {userList.users?.map((user) => (
-                            <option key={user.id}>{`${user.firstName} ${user.lastName}`}</option>
-                        ))}
+                        <optgroup label="Select A User">
+                            <option hidden>{selectedUserDetails.name || "Users"}</option>
+                            {userList.users?.map((user) => (
+                                <option key={user.id} value={user.id}>{`${user.firstName} ${user.lastName}`}</option>
+                            ))}
+                        </optgroup>
                     </select>
                 </div>
                 <div>
@@ -84,12 +78,13 @@ export default function Header({
                         } else {
                             setSelectedCategory("")
                         }
-
                     }} className="users-list">
-                        <option>All</option>
-                        {categoryList?.map((category: string, index: number) => (
-                            <option key={index}>{category}</option>
-                        ))}
+                        <optgroup label="Select Category">
+                            <option>All</option>
+                            {categoryList?.map((category: string, index: number) => (
+                                <option key={index} value={category}>{category}</option>
+                            ))}
+                        </optgroup>
                     </select>
                 </div>
                 <div id="custom-product-listing">
