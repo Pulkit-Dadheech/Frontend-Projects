@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 import {TProductWithQuantity} from "../../dataTypes";
 import './ProductForm.css';
 import {CustomProductContext} from "../../CustomProductContext";
+import { useNavigate } from "react-router-dom";
+
 
 function ProductForm() {
     const customProductContext = useContext(CustomProductContext);
@@ -31,6 +33,8 @@ function ProductForm() {
     const [successMessage, setSuccessMessage] = useState<string>('');
     const [showSuccess, setShowSuccess] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState<string>("");
+    const navigate = useNavigate();
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const {name, value} = e.target;
@@ -80,7 +84,10 @@ function ProductForm() {
             customProduct: true,
         });
 
-        setTimeout(() => setShowSuccess(false), 2000);
+        setTimeout(() =>{
+            setShowSuccess(false)
+            navigate("/custom-product")
+        }, 400);
         setShowSuccess(true);
         setSuccessMessage('Submitted successfully!');
     };
