@@ -19,7 +19,7 @@ export default function Header({
         throw new Error("UserContext is not provided correctly.");
     }
 
-    const {selectedUserDetails, setSelectedUserDetails, categoryList, userList, categoryError, userListError} = userContext;
+    const {selectedUserDetails, setSelectedUserDetails, categoryList, userList, categoryError, userListError,} = userContext;
     const [searchTerm, setSearchTerm] = useState('')
 
     useEffect(() => {

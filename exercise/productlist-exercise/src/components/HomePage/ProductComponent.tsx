@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import {useProductList} from "../customHooks/ProductList";
 import {IShoppingCartProps, TProductsWithQuantity} from "../../dataTypes";
 import "./ProductComponent.css";
@@ -6,9 +6,16 @@ import ProductList from "../ProductList/ProductsList";
 import Paginator from "../Pagination/paginator";
 import {useSearchParams} from "react-router-dom";
 import {usePagination} from "../customHooks/Pagination"
+import {UserContext} from "../../context";
 
 export default function Product(props: IShoppingCartProps) {
 
+    const userContext = useContext(UserContext);
+    if (!userContext) {
+        throw new Error("UserContext is not provided correctly.");
+    }
+
+    const {userCart:userCartCatalog, setUserCart:setUserCartCatalog} = userContext;
     const [query, setQuery] = useSearchParams();
     const queryPage = (query.get('p'));
     const initialPage = queryPage ? parseInt(queryPage) : 1;
@@ -30,8 +37,9 @@ export default function Product(props: IShoppingCartProps) {
         }
     }, [props.category, props.searchBoxResult, setCurrentPage]);
 
-
-    const {userCartCatalog} = props;
+    if(!userCartCatalog){
+        return (<p>Loading...</p>)
+    }
 
     if (loading) {
         return (<h1>Fetching Products...</h1>)
@@ -51,8 +59,8 @@ export default function Product(props: IShoppingCartProps) {
     return (<>
             <ProductList
                 productListWithQuantity={productListWithQuantity}
-                userCartCatalog={props.userCartCatalog}
-                setUserCartCatalog={props.setUserCartCatalog}
+                userCartCatalog={userCartCatalog}
+                setUserCartCatalog={setUserCartCatalog}
                 loading={loading}
             />
             <Paginator totalProducts={productCatalog?.total ?? 0}

@@ -66,7 +66,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
         const userCartIdNumber = userCart?.carts[0]?.id;
         if (userCartIdNumber)
             setUserCartId(userCartIdNumber)
-    }, [userCartId]);
+    }, [userCart]);
 
     async function AddOrRemoveProductFromCart(
         id: number,

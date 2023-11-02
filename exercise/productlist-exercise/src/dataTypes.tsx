@@ -23,8 +23,6 @@ export interface ICustomProductContextType {
 export interface IShoppingCartProps{
     searchBoxResult:string
     category: string
-    userCartCatalog: TUserCart
-    setUserCartCatalog: React.Dispatch<React.SetStateAction<TUserCart | null>>;
 }
 export interface IUserCartCatalog {
     id: number,
