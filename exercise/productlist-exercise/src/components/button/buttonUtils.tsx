@@ -5,12 +5,13 @@ import {CartButton} from "./CartButton";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import {CustomProductContext} from "../../CustomProductContext";
 
-export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity, isCustom}: {
+export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity, isCustom,stock}: {
     id: number;
     userCartCatalog: TUserCart;
     setUserCartCatalog: Dispatch<SetStateAction<TUserCart | null>>;
     quantity?: number
     isCustom: boolean | undefined
+    stock: number
 }) {
 
     const userContext = useContext(UserContext);
@@ -26,14 +27,27 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity, 
     const [userCartId, setUserCartId] = useState<number>(0);
     const {customProducts, setCustomProducts} = customProductContext;
 
-    function onAdd(id: number, isCustom: boolean, quantity?: number) {
+    function getQuantity(stock:number,quantity:number | undefined){
+        if(quantity){
+            if(quantity === stock){
+                return quantity
+            }
+            if(quantity>=0 && quantity <stock){
+                quantity=quantity+1
+                return quantity;
+            }
+        }
+        return 1;
+    }
+
+    function onAdd(id: number, isCustom: boolean,stock:number, quantity?: number) {
         if (isCustom) {
             setCustomProducts(
                 customProducts.map((product) => {
                     if (product.id === id) {
                         return {
                             ...product,
-                            quantity: quantity !== 0 ? +product.quantity + 1 : 1,
+                            quantity: getQuantity(stock,quantity),
                         };
                     }
                     return product;
@@ -44,13 +58,13 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity, 
         }
     }
 
-    function onDelete(id: number, isCustom: boolean, quantity?: number) {
+    function onDelete(id: number, isCustom: boolean,stock:number, quantity?: number) {
         if (isCustom) {
             setCustomProducts(customProducts.map((product) => {
                     if (product.id === id) {
                         return {
                             ...product,
-                            quantity: quantity !== 0 ? +product.quantity - 1 : 0,
+                            quantity: quantity !== 0? +product.quantity - 1 : 0,
                         };
                     }
                     return product;
@@ -150,7 +164,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity, 
 
     return (
         <>
-            <CartButton id={id} onAdd={onAdd} onDelete={onDelete} quantity={quantity} isCustom={isCustom}/>
+            <CartButton id={id} onAdd={onAdd} onDelete={onDelete} quantity={quantity} isCustom={isCustom} stock={stock}/>
         </>
     );
 
