@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import './Header.css';
-import {useCategoryList} from "../customHooks/CategoryList";
-import {useGetUserDetails} from "../customHooks/UserDetails";
 import {Link} from "react-router-dom";
+import {UserContext} from "../../context";
 
 type headerType =
     {
@@ -12,13 +11,16 @@ type headerType =
 
 export default function Header({
                                    setSearchBoxResult,
-                                   setSelectedCategory
+                                   setSelectedCategory,
                                }: headerType) {
-    const {categoryList, categoryError} = useCategoryList();
-    const [searchTerm, setSearchTerm] = useState('')
-    const {userDetails, userDataError} = useGetUserDetails();
 
-    const userName = `${userDetails?.firstName} ${userDetails?.lastName}`;
+    const userContext = useContext(UserContext);
+    if (!userContext) {
+        throw new Error("UserContext is not provided correctly.");
+    }
+
+    const {selectedUserDetails, setSelectedUserDetails, categoryList, userList, categoryError, userListError,} = userContext;
+    const [searchTerm, setSearchTerm] = useState('')
 
     useEffect(() => {
         const SearchDelay = setTimeout(() => {
@@ -26,17 +28,16 @@ export default function Header({
         }, 500)
 
         return () => clearTimeout(SearchDelay)
-    }, [searchTerm
-    ])
+    }, [searchTerm])
 
     if (categoryError) {
         return (<h1>Failed to Fetch Category Data</h1>)
     }
-    if (!userDetails) {
+    if (!userList) {
         return (<div>Fetching User Details...</div>)
     }
-    if (userDataError) {
-        return (<h1>Error: {userDataError}</h1>)
+    if (userListError) {
+        return (<h1>Error Fetching User List</h1>)
     }
 
     return (
@@ -60,17 +61,30 @@ export default function Header({
                 </div>
                 <div>
                     <select onChange={(e) => {
+                        setSelectedUserDetails({...selectedUserDetails, id: parseInt(e.target.value), name: e.target.selectedOptions[0].text})
+                    }} className="product-category-list">
+                        <optgroup label="Select A User">
+                            <option hidden>{selectedUserDetails.name || "Users"}</option>
+                            {userList.users?.map((user) => (
+                                <option key={user.id} value={user.id}>{`${user.firstName} ${user.lastName}`}</option>
+                            ))}
+                        </optgroup>
+                    </select>
+                </div>
+                <div>
+                    <select onChange={(e) => {
                         if (e.target.value !== 'All') {
                             setSelectedCategory(e.target.value)
                         } else {
                             setSelectedCategory("")
                         }
-
-                    }} className="product-category">
-                        <option>All</option>
-                        {categoryList?.map((category: string, index: number) => (
-                            <option key={index}>{category}</option>
-                        ))}
+                    }} className="users-list">
+                        <optgroup label="Select Category">
+                            <option>All</option>
+                            {categoryList?.map((category: string, index: number) => (
+                                <option key={index} value={category}>{category}</option>
+                            ))}
+                        </optgroup>
                     </select>
                 </div>
                 <div id="custom-product-listing">
@@ -80,7 +94,7 @@ export default function Header({
                     <Link to="/form">Add Custom Product</Link>
                 </div>
                 <div id="cart">
-                    <Link to="/cart">{userName}</Link>
+                    <Link to="/cart">{selectedUserDetails.name}</Link>
                 </div>
             </div>
         </>

@@ -9,7 +9,7 @@ import {CustomProductContext} from "../../CustomProductContext";
 
 
 export default function CartProductsList({userCartCatalog, setUserCartCatalog, loading}: {
-    userCartCatalog: TUserCart;
+    userCartCatalog: TUserCart | null;
     setUserCartCatalog: Dispatch<SetStateAction<TUserCart | null>>;
     loading: boolean;
 }) {
@@ -23,17 +23,17 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
     if (!customProductContext) {
         throw new Error("UserContext is not provided correctly.");
     }
-
     const {customProducts} = customProductContext;
 
-    const productsList = userCartCatalog.carts[0].products;
-    const filteredproductsList = productsList.filter((product) => product.quantity !== 0);
+
+    const productsList = userCartCatalog?.carts[0]?.products || [];
+    const filteredProductsList = productsList.filter((product) => product.quantity !== 0);
     const {currentPage, setCurrentPage, itemsPerPage, setItemsPerPage} = usePagination(initialPage);
 
     useEffect(() => {
-        if (filteredproductsList) {
+        if (filteredProductsList) {
             const fetchProductData = async () => {
-                const productPromises = filteredproductsList.map(async (product) => {
+                const productPromises = filteredProductsList.map(async (product) => {
                     const response = await fetch(createApiUrl(apiQueries.SingleProduct, product.id));
                     return await response.json();
                 });
@@ -42,8 +42,11 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
             };
             fetchProductData();
         }
-    }, []);
+    }, [!!filteredProductsList.length]);
 
+    if (!userCartCatalog || !userCartCatalog.carts || userCartCatalog.carts.length === 0) {
+        return <div>Loading...</div>;
+    }
 
     let filterProducts = userCartProducts;
 
@@ -53,6 +56,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
             return !!filteredCartWithNoProducts.filter((filterProduct) => filterProduct.id === product.id).length;
         });
     }
+
     const productListWithQuantity: TProductsWithQuantity = filterProducts?.map((product) => {
         return {
             ...product,
@@ -65,6 +69,7 @@ export default function CartProductsList({userCartCatalog, setUserCartCatalog, l
     }
     const filteredProductListWithQuantity = productListWithQuantity?.filter((productList) => productList.quantity > 0)
     const ProductListWithQuantity = filteredProductListWithQuantity?.slice((currentPage - 1) * itemsPerPage, (currentPage) * itemsPerPage);
+
 
     return (
         <>

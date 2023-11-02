@@ -1,11 +1,11 @@
 import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
-import {TUserCart} from "../../dataTypes";
+import {TCartProduct, TUserCart} from "../../dataTypes";
 import {UserContext} from "../../context";
 import {CartButton} from "./CartButton";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import {CustomProductContext} from "../../CustomProductContext";
 
-export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,isCustom}: {
+export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity, isCustom}: {
     id: number;
     userCartCatalog: TUserCart;
     setUserCartCatalog: Dispatch<SetStateAction<TUserCart | null>>;
@@ -22,15 +22,14 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
         throw new Error("UserContext is not provided correctly.");
     }
 
-
-    const {userPrevCartCatalog, setUserPrevCartCatalog} = userContext
+    const {userPrevCartCatalog, setUserPrevCartCatalog, userCart, setUserCart, selectedUserDetails} = userContext
     const [userCartId, setUserCartId] = useState<number>(0);
     const {customProducts, setCustomProducts} = customProductContext;
 
-    function onAdd(id: number,isCustom: boolean, quantity?: number) {
+    function onAdd(id: number, isCustom: boolean, quantity?: number) {
         if (isCustom) {
-            setCustomProducts(() => {
-                return customProducts.map((product) => {
+            setCustomProducts(
+                customProducts.map((product) => {
                     if (product.id === id) {
                         return {
                             ...product,
@@ -38,17 +37,16 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
                         };
                     }
                     return product;
-                });
-            });
+                })
+            )
         } else {
             AddOrRemoveProductFromCart(id, quantity, false)
         }
     }
 
-    function onDelete(id: number, isCustom: boolean,quantity?: number) {
+    function onDelete(id: number, isCustom: boolean, quantity?: number) {
         if (isCustom) {
-            setCustomProducts(() => {
-                return customProducts.map((product) => {
+            setCustomProducts(customProducts.map((product) => {
                     if (product.id === id) {
                         return {
                             ...product,
@@ -56,17 +54,18 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
                         };
                     }
                     return product;
-                });
-            });
+                })
+            )
         } else {
             AddOrRemoveProductFromCart(id, quantity, true)
         }
     }
 
     useEffect(() => {
-        const userCartIdNumber = userCartCatalog.carts[0].id;
-        setUserCartId(userCartIdNumber)
-    }, [userCartId]);
+        const userCartIdNumber = userCart?.carts[0]?.id;
+        if (userCartIdNumber)
+            setUserCartId(userCartIdNumber)
+    }, [userCart]);
 
     async function AddOrRemoveProductFromCart(
         id: number,
@@ -85,7 +84,7 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
         }
 
         let filteredProducts: LatestItems = {};
-        updatedCarts.forEach((item, index) => {
+        updatedCarts.forEach((item) => {
                 filteredProducts[item.id] = item;
             }
         )
@@ -100,24 +99,53 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
                 body: JSON.stringify({
                     merge: true,
                     products: Object.values(filteredProducts),
-
                 }),
             });
-            const data = await response.json()
-            if (setUserCartCatalog && userCartCatalog) {
-                setUserCartCatalog({
-                    carts: Array(data),
-                    total: userCartCatalog.total,
-                    skip: userCartCatalog.skip,
-                    limit: userCartCatalog.limit,
+            if (!response.ok) {
+
+                const response = await fetch(createApiUrl(apiQueries.AddANewCart), {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        userId: selectedUserDetails.id,
+                        products: Object.values(filteredProducts)
+                    })
+                });
+                let responseReceived = await response.json();
+                if (responseReceived && isDelete && quantity === 1) {
+                    responseReceived.products = responseReceived.products.map((product: TCartProduct) => {
+                        if (product.id === id) {
+                            return {
+                                ...product,
+                                quantity: +product.quantity - 1,
+                            };
+                        }
+                        return product;
+                    });
+                }
+                setUserCart({
+                    carts: [responseReceived],
+                    total: 1,
+                    skip: 0,
+                    limit: 100
                 });
             } else {
-                console.error("userCartCatalog is undefined or setUserCartCatalog is not available");
+                const data = await response.json();
+                if (setUserCartCatalog && userCartCatalog) {
+                    setUserCartCatalog({
+                        carts: Array(data),
+                        total: userCartCatalog.total,
+                        skip: userCartCatalog.skip,
+                        limit: userCartCatalog.limit,
+                    });
+                } else {
+                    console.error("userCartCatalog is undefined or setUserCartCatalog is not available");
+                }
             }
-
         } catch (error) {
             console.error("An error occurred while updating the cart:", error);
         }
+
     }
 
     return (

@@ -7,9 +7,10 @@ export enum apiQueries {
     Category = 'category',
     Product = 'product',
     SingleProduct = 'singleProduct',
-    UserDetails = 'userDetails',
     AddToCart = 'addToCart',
     UserCart = 'userCart',
+    User ='users',
+    AddANewCart = 'addANewCart'
 }
 
 export function createApiUrl(queryType: apiQueries, parameter?: string | number, limit?: number, skip?: number) {
@@ -38,8 +39,8 @@ export function createApiUrl(queryType: apiQueries, parameter?: string | number,
             }
             break;
 
-        case 'userDetails':
-            url += '/users/5';
+        case 'users':
+            url += '/users?limit=100&select=firstName,lastName';
             break;
 
         case 'addToCart':
@@ -47,9 +48,12 @@ export function createApiUrl(queryType: apiQueries, parameter?: string | number,
             break;
 
         case 'userCart':
-            url += '/users/5/carts';
+            url += `/users/${parameter}/carts`;
             break;
 
+        case 'addANewCart':
+            url += `/carts/add`
+            break;
 
         default:
             throw new Error('Invalid action');

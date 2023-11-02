@@ -3,7 +3,7 @@
     flex-direction: row;
     padding: 1.5rem;
     box-shadow: 0.125rem 0.125rem 0.313rem rgba(0, 0, 0, 0.63);
-    justify-content: space-evenly;
+    justify-content: space-between;
     text-align: center;
     background-color: white;
     align-items: center;
@@ -11,14 +11,22 @@
 
 .search-box {
     padding: 1.1rem;
-    width: 30rem;
+    width: 20rem;
     border-radius: 1rem;
     background-color: white;
 }
 
-.product-category {
+.product-category-list {
+    display: inline;
     padding: 1.2rem;
-    width: 10rem;
+    width: auto;
+    border-radius: 1rem;
+    border: 0.09rem solid black;
+}
+.users-list {
+    display: inline;
+    padding: 1.2rem;
+    /*width: auto;*/
     border-radius: 1rem;
     border: 0.09rem solid black;
 }
