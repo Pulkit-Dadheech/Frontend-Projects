@@ -5,7 +5,7 @@ import {CartButton} from "./CartButton";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import {CustomProductContext} from "../../CustomProductContext";
 
-export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,isCustom}: {
+export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity, isCustom}: {
     id: number;
     userCartCatalog: TUserCart;
     setUserCartCatalog: Dispatch<SetStateAction<TUserCart | null>>;
@@ -26,10 +26,10 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
     const [userCartId, setUserCartId] = useState<number>(0);
     const {customProducts, setCustomProducts} = customProductContext;
 
-    function onAdd(id: number,isCustom: boolean, quantity?: number) {
+    function onAdd(id: number, isCustom: boolean, quantity?: number) {
         if (isCustom) {
-            setCustomProducts(() => {
-                return customProducts.map((product) => {
+            setCustomProducts(
+                customProducts.map((product) => {
                     if (product.id === id) {
                         return {
                             ...product,
@@ -37,17 +37,16 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
                         };
                     }
                     return product;
-                });
-            });
+                })
+            )
         } else {
             AddOrRemoveProductFromCart(id, quantity, false)
         }
     }
 
-    function onDelete(id: number, isCustom: boolean,quantity?: number) {
+    function onDelete(id: number, isCustom: boolean, quantity?: number) {
         if (isCustom) {
-            setCustomProducts(() => {
-                return customProducts.map((product) => {
+            setCustomProducts(customProducts.map((product) => {
                     if (product.id === id) {
                         return {
                             ...product,
@@ -55,8 +54,8 @@ export function ButtonUtils({id, userCartCatalog, setUserCartCatalog, quantity,i
                         };
                     }
                     return product;
-                });
-            });
+                })
+            )
         } else {
             AddOrRemoveProductFromCart(id, quantity, true)
         }
