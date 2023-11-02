@@ -21,12 +21,12 @@ function ProductForm() {
         images: [],
         price: 0,
         rating: 4.5,
-        stock: 10,
+        stock: 1,
         thumbnail: "",
         customProduct: true,
     });
     const [successMessage, setSuccessMessage] = useState<string>('');
-    const [showSuccess,setShowSuccess]=useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -36,6 +36,10 @@ function ProductForm() {
                 return
             }
         }
+        if(name === 'stock'){
+            setProductData({...productData,[name]:parseInt(value)})
+            return
+        }
         setProductData({
             ...productData,
             [name]: value,
@@ -43,12 +47,12 @@ function ProductForm() {
     };
     useEffect(() => {
         localStorage.setItem("customId", JSON.stringify(customProductId));
-        setCustomProductId(customProductId+1);
+        setCustomProductId(customProductId + 1);
     }, [customProducts]);
 
     const handleSave = (e: React.SyntheticEvent) => {
         e.preventDefault();
-        setCustomProductId(customProductId+1)
+        setCustomProductId(customProductId + 1)
         setCustomProducts([...customProducts, productData]);
         setProductData({
             quantity: 0,
@@ -61,16 +65,16 @@ function ProductForm() {
             images: [],
             price: 0,
             rating: 0,
-            stock: 0,
+            stock: productData.stock,
             thumbnail: "",
             customProduct: true,
 
         });
-        setTimeout(()=>setShowSuccess(false),2000);
+        setTimeout(() => setShowSuccess(false), 2000);
         setShowSuccess(true);
         setSuccessMessage('Submitted successfully!');
     };
-
+    console.log(productData.stock);
     return (
         <div className="form-container">
             <div className={"form-header"}>
@@ -98,6 +102,14 @@ function ProductForm() {
                 <label htmlFor="discountedPrice" className="input-label">Discounted Percentage:</label>
                 <input type="number" name="discountPercentage" value={productData.discountPercentage}
                        onChange={handleChange} placeholder={"Write value between 1 to 100"} className="input-field"/>
+
+                <label htmlFor="stock" className="input-label">Quantity:</label>
+                <div className="product-form-stock">
+                    <button type="button" onClick={() =>setProductData({...productData,"stock": productData.stock+1})}>+</button>
+                    <input type="number" name="stock" value={productData.stock}
+                           onChange={handleChange} className="input-field"/>
+                    <button type="button" onClick={() =>setProductData({...productData,"stock": productData.stock!==0? productData.stock-1: 0})}>-</button>
+                </div>
 
                 <label htmlFor="description" className="input-label">Description:</label>
                 <textarea name="description" value={productData.description} onChange={handleChange}
