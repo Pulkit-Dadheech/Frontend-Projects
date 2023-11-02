@@ -56,5 +56,7 @@ input::-webkit-inner-spin-button {
     height: 2.5rem;
     margin-inline: 0.3rem;
     align-items: center;
-
+}
+.error-message{
+    color: red;
 }
