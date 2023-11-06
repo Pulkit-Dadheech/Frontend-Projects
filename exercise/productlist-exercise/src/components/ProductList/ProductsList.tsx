@@ -54,6 +54,7 @@ function ProductList({
                                 userCartCatalog={userCartCatalog}
                                 setUserCartCatalog={setUserCartCatalog}
                                 quantity={productWithQuantity.quantity}
+                                stock={productWithQuantity.stock}
                                 isCustom={productWithQuantity.customProduct}
                             />
                         </div>

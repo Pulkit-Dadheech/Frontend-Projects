@@ -1,3 +1,7 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    display: none;
+}
 .form-header{
     display: flex;
     justify-content: space-evenly;
@@ -40,4 +44,19 @@
 .success-message {
     color: green;
     margin-top: 0.625rem;
+}
+.product-form-stock{
+    display: flex;
+    flex-direction: row;
+    /*height: auto;*/
+}
+.product-form-stock>button{
+    display: flex;
+    padding: 0.5rem;
+    height: 2.5rem;
+    margin-inline: 0.3rem;
+    align-items: center;
+}
+.error-message{
+    color: red;
 }
