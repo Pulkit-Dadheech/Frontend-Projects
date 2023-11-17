@@ -7,7 +7,7 @@ export class FormStore<T> {
         this.formData = initialData;
         makeObservable(this, {
             formData: observable,
-            getValue: computed,
+            // getValue: computed,
             updateFormData: action,
         });
     }

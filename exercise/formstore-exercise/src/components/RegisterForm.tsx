@@ -3,6 +3,7 @@ import {observer} from "mobx-react-lite";
 import {Button, Form, FormGroup, FormText, Input, Label} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {FormStore} from "../store/FormStore";
+import {useRouterStore} from "mobx-state-router";
 
 export interface IRegisterFormProps {
     username: string;
@@ -17,9 +18,16 @@ const registerFormStore = new FormStore<IRegisterFormProps>({
 });
 
 export const RegisterForm = observer(() => {
+    const routerStore = useRouterStore();
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
         registerFormStore.updateFormData(name as keyof IRegisterFormProps, value);
+    };
+    const handleContactClick = () => {
+        routerStore.goTo('contact', {
+            params: { id: 'contact' },
+        });
     };
 
 
@@ -73,6 +81,7 @@ export const RegisterForm = observer(() => {
                 </FormGroup>
                 <Button>Submit</Button>
             </Form>
+            <button onClick={handleContactClick}>Go to TodoList</button>
         </div>
     )
 });

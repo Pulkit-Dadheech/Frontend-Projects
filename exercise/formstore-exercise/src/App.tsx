@@ -1,13 +1,15 @@
 import React from 'react';
 import './App.css';
-import {RegisterForm} from "./components/RegisterForm";
-
+import {RouterContext, RouterView} from 'mobx-state-router';
+import {viewMap} from './viewMap';
+import {initRouter} from "./initRouter";
 
 function App() {
+    const routerStore = initRouter();
     return (
-        <div className="App">
-            <RegisterForm/>
-        </div>
+        <RouterContext.Provider value={routerStore}>
+            <RouterView viewMap={viewMap}/>
+        </RouterContext.Provider>
     );
 }
 

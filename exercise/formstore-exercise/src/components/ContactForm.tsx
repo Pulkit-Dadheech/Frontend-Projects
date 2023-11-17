@@ -25,7 +25,7 @@ export const ContactForm = observer(() => {
 
     return (
         <div className="Register-Form">
-            <h2>Sign In</h2>
+            <h2>Contact-Us</h2>
             <Form className="form">
                 <FormGroup>
                     <Label
@@ -59,19 +59,21 @@ export const ContactForm = observer(() => {
                     <Label
                         for="examplePassword"
                     >
-                        Password
+                        Message
                     </Label>
                     <Input
                         id="examplePassword"
                         type={"textarea"}
-                        name={"textarea"}
+                        name={"message"}
                         placeholder={"Message"}
                         value={contactFormStore.getValue('message')}
                         onChange={handleChange}
                     />
+
                 </FormGroup>
                 <Button>Submit</Button>
             </Form>
+
         </div>
     )
 });
