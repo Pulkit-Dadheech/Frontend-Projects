@@ -1,17 +1,16 @@
 import React from "react";
-import {FormStore} from "../store/FormStore";
 import {observer} from "mobx-react-lite";
-import {Button,Form, FormGroup, FormText, Input, Label} from 'reactstrap';
+import {Button, Form, FormGroup, FormText, Input, Label} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {IRegisterFormProps} from "../App";
+import {IRegisterFormProps, registerFormStore} from "../App";
 
-interface IRegisterForm{
-    RegisterForm:FormStore<IRegisterFormProps>;
+interface IRegisterForm {
+    RegisterForm: typeof registerFormStore;
 }
 
-export const RegisterForm:React.FC<IRegisterForm> = observer(({RegisterForm}) => {
+export const RegisterForm: React.FC<IRegisterForm> = observer(({RegisterForm}) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         RegisterForm.updateFormData(name as keyof IRegisterFormProps, value);
     };
 
@@ -19,7 +18,7 @@ export const RegisterForm:React.FC<IRegisterForm> = observer(({RegisterForm}) =>
     return (
         <div className="Register-Form">
             <h2>Sign In</h2>
-            <Form className="form" >
+            <Form className="form">
                 <FormGroup>
                     <Label
                         for="exampleEmail" hidden
