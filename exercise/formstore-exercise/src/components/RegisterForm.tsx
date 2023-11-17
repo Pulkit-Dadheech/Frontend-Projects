@@ -11,7 +11,6 @@ interface IRegisterForm{
 
 export const RegisterForm:React.FC<IRegisterForm> = observer(({RegisterForm}) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log("handleChange called");
         const { name, value } = e.target;
         RegisterForm.updateFormData(name as keyof IRegisterFormProps, value);
     };
