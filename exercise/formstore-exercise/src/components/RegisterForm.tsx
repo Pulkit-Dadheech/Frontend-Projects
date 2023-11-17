@@ -36,7 +36,7 @@ export const RegisterForm = observer(() => {
                         type={"text"}
                         name={"username"}
                         placeholder={"Name"}
-                        value={registerFormStore.formData.username}
+                        value={registerFormStore.getValue('username')}
                         onChange={handleChange}
                     />
                 </FormGroup>
@@ -51,7 +51,7 @@ export const RegisterForm = observer(() => {
                         type={"email"}
                         name={"email"}
                         placeholder={"Email"}
-                        value={registerFormStore.formData.email}
+                        value={registerFormStore.getValue('email')}
                         onChange={handleChange}
                     />
                 </FormGroup>
@@ -66,7 +66,7 @@ export const RegisterForm = observer(() => {
                         type={"password"}
                         name={"password"}
                         placeholder={"Password"}
-                        value={registerFormStore.formData.password}
+                        value={registerFormStore.getValue('password')}
                         onChange={handleChange}
                     />
                     <FormText>Your password must be unique.</FormText>

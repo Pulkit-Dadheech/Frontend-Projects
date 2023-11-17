@@ -1,14 +1,19 @@
-import {action, makeObservable, observable} from "mobx";
+import {action, computed, makeObservable, observable} from "mobx";
 
 export class FormStore<T> {
-    formData :T;
+    formData: T;
 
-    constructor(initialData:T) {
+    constructor(initialData: T) {
         this.formData = initialData;
-        makeObservable(this,{
+        makeObservable(this, {
             formData: observable,
+            getValue: computed,
             updateFormData: action,
         });
+    }
+
+    getValue(entity: keyof T) {
+        return this.formData[entity]
     }
 
     updateFormData<K extends keyof T>(entity: K, value: T[K]) {
