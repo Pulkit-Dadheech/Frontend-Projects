@@ -1,24 +1,14 @@
 import {makeAutoObservable} from "mobx";
 
-class FormStore{
-    contactFormData={
-        name:"",
-        email: "",
-        message: "",
-    };
-    registerFormData={
-        username:"",
-        email:"",
-        password:"",
-    }
+export class FormStore<T> {
+    formData :T;
 
-    constructor() {
+    constructor(initialData:T) {
+        this.formData = initialData;
         makeAutoObservable(this);
     }
 
-    updateFormData(formName:string,entity:string,value:string){
-        this[`${formName}FormData`][entity]=value;
+    updateFormData<K extends keyof T>(entity: K, value: T[K]) {
+        this.formData[entity] = value;
     }
 }
-const formStore=new FormStore();
-export default formStore;
