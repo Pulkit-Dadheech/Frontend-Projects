@@ -28,6 +28,7 @@ export const RegisterForm:React.FC<IRegisterForm> = observer(({RegisterForm}) =>
                     <Input
                         type={"text"}
                         name={"username"}
+                        placeholder={"Name"}
                         value={RegisterForm.formData.username}
                         onChange={handleChange}
                     />
@@ -35,7 +36,6 @@ export const RegisterForm:React.FC<IRegisterForm> = observer(({RegisterForm}) =>
                 <FormGroup>
                     <Label
                         for="exampleEmail"
-                        hidden
                     >
                         Email
                     </Label>
@@ -51,7 +51,6 @@ export const RegisterForm:React.FC<IRegisterForm> = observer(({RegisterForm}) =>
                 <FormGroup>
                     <Label
                         for="examplePassword"
-                        hidden
                     >
                         Password
                     </Label>
