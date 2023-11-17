@@ -2,16 +2,24 @@ import React from "react";
 import {observer} from "mobx-react-lite";
 import {Button, Form, FormGroup, FormText, Input, Label} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {IRegisterFormProps, registerFormStore} from "../App";
+import {FormStore} from "../store/FormStore";
 
-interface IRegisterForm {
-    RegisterForm: typeof registerFormStore;
+export interface IRegisterFormProps {
+    username: string;
+    email: string;
+    password: string;
 }
 
-export const RegisterForm: React.FC<IRegisterForm> = observer(({RegisterForm}) => {
+const registerFormStore = new FormStore<IRegisterFormProps>({
+    username: "",
+    email: "",
+    password: "",
+});
+
+export const RegisterForm = observer(() => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
-        RegisterForm.updateFormData(name as keyof IRegisterFormProps, value);
+        registerFormStore.updateFormData(name as keyof IRegisterFormProps, value);
     };
 
 
@@ -21,14 +29,14 @@ export const RegisterForm: React.FC<IRegisterForm> = observer(({RegisterForm}) =
             <Form className="form">
                 <FormGroup>
                     <Label
-                        for="exampleEmail" hidden
+                        for="exampleEmail"
                     >Username
                     </Label>
                     <Input
                         type={"text"}
                         name={"username"}
                         placeholder={"Name"}
-                        value={RegisterForm.formData.username}
+                        value={registerFormStore.formData.username}
                         onChange={handleChange}
                     />
                 </FormGroup>
@@ -43,7 +51,7 @@ export const RegisterForm: React.FC<IRegisterForm> = observer(({RegisterForm}) =
                         type={"email"}
                         name={"email"}
                         placeholder={"Email"}
-                        value={RegisterForm.formData.email}
+                        value={registerFormStore.formData.email}
                         onChange={handleChange}
                     />
                 </FormGroup>
@@ -58,7 +66,7 @@ export const RegisterForm: React.FC<IRegisterForm> = observer(({RegisterForm}) =
                         type={"password"}
                         name={"password"}
                         placeholder={"Password"}
-                        value={RegisterForm.formData.password}
+                        value={registerFormStore.formData.password}
                         onChange={handleChange}
                     />
                     <FormText>Your password must be unique.</FormText>
