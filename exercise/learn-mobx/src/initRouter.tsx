@@ -25,8 +25,8 @@ export const routes = [
     },
     {
         name: 'todoList',
-        pattern: "/",
-        // beforeEnter: checkForUserSignedIn,
+        pattern: "/todoList",
+        queryParams: ['q'],
 
     },
     {

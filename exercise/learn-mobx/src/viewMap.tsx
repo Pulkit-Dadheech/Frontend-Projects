@@ -1,5 +1,7 @@
 import React from 'react';
-import { DepartmentPage, HomePage, NotFoundPage } from './pages';
+import { DepartmentPage} from './pages/DepartmentPage';
+import {HomePage} from "./pages/HomePage";
+import {NotFoundPage} from "./pages/NotFoundPage";
 import {TodoList} from "./store/TodoList";
 import {TodoStore} from "./store/TodoStore";
 

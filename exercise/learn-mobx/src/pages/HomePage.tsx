@@ -11,7 +11,7 @@ export const HomePage = () => {
     };
     const handleTodoClick = () =>{
         routerStore.goTo('todoList',{
-            params: {q: 'todoList'},
+            queryParams: {q: 'todoList'},
         })
     }
 
