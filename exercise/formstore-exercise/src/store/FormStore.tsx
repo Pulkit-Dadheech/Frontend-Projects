@@ -1,4 +1,4 @@
-import {action, computed, makeObservable, observable} from "mobx";
+import {action, makeObservable, observable} from "mobx";
 
 export class FormStore<T> {
     formData: T;
@@ -7,7 +7,6 @@ export class FormStore<T> {
         this.formData = initialData;
         makeObservable(this, {
             formData: observable,
-            // getValue: computed,
             updateFormData: action,
         });
     }
