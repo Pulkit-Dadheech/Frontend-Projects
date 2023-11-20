@@ -87,8 +87,17 @@ export const ContactForm = observer(() => {
                             onChange={handleChange}
                         />
                     </FormGroup>
-                    <button className={"btn-outline-primary p-2 rounded-pill w-25 mt-3 float-left"} type="submit">Submit</button>
-                    <button className={"btn-outline-danger p-2 rounded-pill w-25 mt-3 float-right"} type="button" onClick={handleReset}>Reset</button>
+                    <button
+                        className={"btn-outline-primary p-2 rounded-pill w-25 mt-3 float-left"}
+                        type="submit"
+                    >Submit
+                    </button>
+                    <button
+                        className={"btn-outline-danger p-2 rounded-pill w-25 mt-3 float-right"}
+                        type="button"
+                        onClick={handleReset}
+                    >Reset
+                    </button>
                 </Form>
 
             </div>

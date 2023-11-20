@@ -24,7 +24,6 @@ const registerFormStore = new FormStore<IRegisterFormProps>({
 export const RegisterForm = observer(() => {
     const routerStore = useRouterStore();
 
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
         registerFormStore.updateFormData(name as keyof IRegisterFormProps, value);
@@ -33,7 +32,6 @@ export const RegisterForm = observer(() => {
         routerStore.goTo('contact', {
             params: {id: 'contact'},
         });
-
     };
 
     function handleSubmit(e: React.SyntheticEvent) {
@@ -41,6 +39,10 @@ export const RegisterForm = observer(() => {
         console.log(toJS(registerFormStore.formData));
     }
 
+    function handleReset(e: React.SyntheticEvent) {
+        e.preventDefault();
+        registerFormStore.resetFormData();
+    }
 
     return (
         <div className={"Register-Form-Container"}>
@@ -95,15 +97,30 @@ export const RegisterForm = observer(() => {
                             />
                             <FormText>Your password must be unique.</FormText>
                         </FormGroup>
-                        <button className="d-block w-100 rounded-pill btn-outline-primary p-2 mt-4 rounded"
-                                type={"submit"}>Submit
+                        <button
+                            className="d-block w-25 rounded-pill btn-outline-primary p-2 mt-1 rounded float-left"
+                            type={"submit"}
+                        >Submit
                         </button>
-                        <Button onClick={handleContactClick} className="bg-primary fixed-bottom">Go to
-                            ContactForm</Button>
+                        <button
+                            className={"btn-outline-danger p-2 rounded-pill w-25 p-2 mt-1 float-right"}
+                            type="button"
+                            onClick={handleReset}
+                        >Reset
+                        </button>
+                        <Button
+                            onClick={handleContactClick}
+                            className="bg-primary fixed-bottom"
+                        >Go to ContactForm
+                        </Button>
                     </Form>
                 </div>
                 <div className="right-column">
-                    <img src={require("../img/SignIn.jpg")} alt="Sign In" width="100%" height="auto"/>
+                    <img
+                        src={require("../img/SignIn.jpg")}
+                        alt="Sign In"
+                        width="100%"
+                        height="auto"/>
                 </div>
             </div>
         </div>

@@ -1,8 +1,9 @@
-import {action, makeObservable, observable, toJS} from "mobx";
+import {action, makeObservable, observable} from "mobx";
 
 export class FormStore<T> {
     @observable formData: T;
     initialData: T;
+
     constructor(initialData: T) {
         this.formData = initialData;
         this.initialData = initialData;
