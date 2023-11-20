@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {FormStore} from "../store/FormStore";
 import {useRouterStore} from "mobx-state-router";
 import "./RegisterForm.css";
+import {toJS} from "mobx";
+
 
 export interface IRegisterFormProps {
     username: string;
@@ -18,8 +20,10 @@ const registerFormStore = new FormStore<IRegisterFormProps>({
     password: "",
 });
 
+
 export const RegisterForm = observer(() => {
     const routerStore = useRouterStore();
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -29,14 +33,20 @@ export const RegisterForm = observer(() => {
         routerStore.goTo('contact', {
             params: {id: 'contact'},
         });
+
     };
+
+    function handleSubmit(e: React.SyntheticEvent) {
+        e.preventDefault();
+        console.log(toJS(registerFormStore.formData));
+    }
 
 
     return (
         <div className={"Register-Form-Container"}>
             <div className={"Register-Form"}>
                 <div className=" left-column text-center d-flex flex-column bg-white p-4">
-                    <Form className="register-form-content p-4 mt-3 mb-5">
+                    <Form className="register-form-content p-4 mt-3 mb-5" onSubmit={(e) => handleSubmit(e)}>
                         <h2 className={"text-uppercase font-weight-bolder text-center mb-3"}>Sign In</h2>
                         <FormGroup className="mt-4 mb-4">
                             <Label className="font-weight-bold"
@@ -85,8 +95,11 @@ export const RegisterForm = observer(() => {
                             />
                             <FormText>Your password must be unique.</FormText>
                         </FormGroup>
-                        <button className="d-block w-100 rounded-pill btn-outline-primary p-2 mt-4 rounded">Submit</button>
-                    <Button onClick={handleContactClick} className="bg-primary fixed-bottom" >Go to TodoList</Button>
+                        <button className="d-block w-100 rounded-pill btn-outline-primary p-2 mt-4 rounded"
+                                type={"submit"}>Submit
+                        </button>
+                        <Button onClick={handleContactClick} className="bg-primary fixed-bottom">Go to
+                            ContactForm</Button>
                     </Form>
                 </div>
                 <div className="right-column">
@@ -96,4 +109,3 @@ export const RegisterForm = observer(() => {
         </div>
     )
 });
-
