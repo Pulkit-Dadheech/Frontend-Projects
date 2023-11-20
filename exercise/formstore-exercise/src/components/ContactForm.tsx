@@ -29,6 +29,10 @@ export const ContactForm = observer(() => {
         console.log(toJS(contactFormStore.formData));
 
     }
+    function handleReset(e:React.SyntheticEvent){
+        e.preventDefault();
+        contactFormStore.resetFormData();
+    }
 
     return (
         <div className="Contact-Form-Container">
@@ -83,7 +87,8 @@ export const ContactForm = observer(() => {
                             onChange={handleChange}
                         />
                     </FormGroup>
-                    <button className={"btn-outline-primary p-2 rounded-pill w-100 mt-3"}>Submit</button>
+                    <button className={"btn-outline-primary p-2 rounded-pill w-25 mt-3 float-left"} type="submit">Submit</button>
+                    <button className={"btn-outline-danger p-2 rounded-pill w-25 mt-3 float-right"} type="button" onClick={handleReset}>Reset</button>
                 </Form>
 
             </div>
