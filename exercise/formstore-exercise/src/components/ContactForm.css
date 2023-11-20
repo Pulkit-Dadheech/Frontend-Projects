@@ -1,0 +1,14 @@
+.Contact-Form-Container{
+    width: 100%;
+    height: 100vh;
+    background-color: #3992ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.Contact-Form{
+    width: 70%;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+}
