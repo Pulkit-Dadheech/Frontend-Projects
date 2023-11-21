@@ -1,11 +1,13 @@
 import React from "react";
 import {observer} from "mobx-react-lite";
-import {Button, Form, FormGroup, FormText, Input, Label} from 'reactstrap';
+import {Button, Input} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {FormStore} from "../store/FormStore";
 import {useRouterStore} from "mobx-state-router";
 import "./RegisterForm.css";
 import {toJS} from "mobx";
+import FormField from "./FieldComponent";
+import FormComponent from "./FormComponent";
 
 
 export interface IRegisterFormProps {
@@ -28,6 +30,7 @@ export const RegisterForm = observer(() => {
         const {name, value} = e.target;
         registerFormStore.updateFormData(name as keyof IRegisterFormProps, value);
     };
+
     const handleContactClick = () => {
         routerStore.goTo('contact', {
             params: {id: 'contact'},
@@ -48,72 +51,46 @@ export const RegisterForm = observer(() => {
         <div className={"Register-Form-Container"}>
             <div className={"Register-Form"}>
                 <div className=" left-column text-center d-flex flex-column bg-white p-4">
-                    <Form className="register-form-content p-4 mt-3 mb-5" onSubmit={(e) => handleSubmit(e)}>
-                        <h2 className={"text-uppercase font-weight-bolder text-center mb-3"}>Sign In</h2>
-                        <FormGroup className="mt-4 mb-4">
-                            <Label className="font-weight-bold"
-                                   for="exampleEmail"
-                            >Username
-                            </Label>
-                            <Input
-                                className={"p-3 rounded-pill"}
+                    <FormComponent<IRegisterFormProps> formStore={registerFormStore} onSubmit={handleSubmit}
+                                                       onReset={handleReset}>
+                        <div className="register-form-content p-4 mt-3 mb-5">
+                            <h2 className="text-uppercase font-weight-bolder text-center mb-3">Sign In</h2>
+
+                            <FormField
+                                name="username"
                                 type={"text"}
-                                name={"username"}
-                                placeholder={"Name"}
-                                value={registerFormStore.getValue('username')}
+                                label="Username"
+                                isRequired={true}
                                 onChange={handleChange}
+                                InputComponent={Input}
+                                InputStyleProps="p-3 rounded-pill"
                             />
-                        </FormGroup>
-                        <FormGroup className="my-4">
-                            <Label className="font-weight-bold"
-                                   for="exampleEmail"
-                            >
-                                Email
-                            </Label>
-                            <Input
-                                className={"p-3 rounded-pill"}
-                                id="exampleEmail"
+
+                            <FormField
+                                name="email"
                                 type={"email"}
-                                name={"email"}
-                                placeholder={"Email"}
-                                value={registerFormStore.getValue('email')}
+                                label="Email"
+                                isRequired={true}
                                 onChange={handleChange}
+                                InputComponent={Input}
+                                InputStyleProps="p-3 rounded-pill"
                             />
-                        </FormGroup>
-                        <FormGroup className="my-4">
-                            <Label className="font-weight-bold"
-                                   for="examplePassword"
-                            >
-                                Password
-                            </Label>
-                            <Input
-                                className="p-3 rounded-pill"
-                                id="examplePassword"
-                                type={"password"}
-                                name={"password"}
-                                placeholder={"Password"}
-                                value={registerFormStore.getValue('password')}
+
+                            <FormField
+                                name="password"
+                                type="password"
+                                label="Password"
+                                isRequired={true}
                                 onChange={handleChange}
+                                InputComponent={Input}
+                                InputStyleProps="p-3 rounded-pill"
                             />
-                            <FormText>Your password must be unique.</FormText>
-                        </FormGroup>
-                        <button
-                            className="d-block w-25 rounded-pill btn-outline-primary p-2 mt-1 rounded float-left"
-                            type={"submit"}
-                        >Submit
-                        </button>
-                        <button
-                            className={"btn-outline-danger p-2 rounded-pill w-25 p-2 mt-1 float-right"}
-                            type="button"
-                            onClick={handleReset}
-                        >Reset
-                        </button>
-                        <Button
-                            onClick={handleContactClick}
-                            className="bg-primary fixed-bottom"
-                        >Go to ContactForm
-                        </Button>
-                    </Form>
+
+                            <Button onClick={handleContactClick} className="bg-primary fixed-bottom">
+                                Go to ContactForm
+                            </Button>
+                        </div>
+                    </FormComponent>
                 </div>
                 <div className="right-column">
                     <img
@@ -124,5 +101,6 @@ export const RegisterForm = observer(() => {
                 </div>
             </div>
         </div>
+
     )
 });
