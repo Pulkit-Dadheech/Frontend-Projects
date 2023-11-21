@@ -2,35 +2,30 @@ import React from "react";
 import {FormGroup, Input, Label} from "reactstrap";
 import {IRegisterFormProps} from "./RegisterForm";
 import {observer} from "mobx-react-lite";
+import {useFormContext} from "./FormContext";
 import {InputType} from "reactstrap/types/lib/Input";
-import {FormStore} from "../store/FormStore";
 
-interface IFormData {
-    [key: string]: string;
-}
 
-type TFieldProps<T extends IFormData> = {
+type TFieldProps = {
     name: string;
     type: InputType;
     label: string;
     isRequired: boolean;
-    store: FormStore<IRegisterFormProps>
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     InputComponent: typeof Input;
     InputStyleProps: string;
 };
 
-const FormField = observer(
-    <T extends IFormData>({
+const FormField = observer(({
                               name,
                               type,
                               label,
                               isRequired,
                               onChange,
-                              store,
                               InputComponent,
                               InputStyleProps
-                          }: TFieldProps<T>) => {
+                          }: TFieldProps) => {
+        const {formStore: store} = useFormContext();
 
         return (
             <FormGroup className="mt-4 mb-4">

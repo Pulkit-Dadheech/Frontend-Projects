@@ -1,4 +1,5 @@
 import React, {ReactNode, SyntheticEvent} from 'react';
+import {FormProvider} from './FormContext';
 import {FormStore} from "../store/FormStore";
 
 interface IFormComponentProps<T> {
@@ -8,8 +9,9 @@ interface IFormComponentProps<T> {
     children: ReactNode;
 }
 
-function FormComponent<T>({onSubmit, onReset, children}: IFormComponentProps<T>) {
+function FormComponent<T>({formStore, onSubmit, onReset, children}: IFormComponentProps<T>) {
     return (
+        <FormProvider<T> formStore={formStore}>
             <form onSubmit={(e) => onSubmit(e)}>
                 {children}
                 <button
@@ -26,6 +28,7 @@ function FormComponent<T>({onSubmit, onReset, children}: IFormComponentProps<T>)
                     Reset
                 </button>
             </form>
+        </FormProvider>
     );
 };
 
