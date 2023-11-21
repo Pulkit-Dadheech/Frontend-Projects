@@ -30,7 +30,7 @@ const FormField = observer(({
         return (
             <FormGroup className="mt-4 mb-4">
                 <Label className="ml-2 font-weight-bold" for="example">
-                    {label}
+                    {label}{isRequired && <span className={"text-danger"}>*</span>}
                 </Label>
                 <InputComponent
                     type={type}
