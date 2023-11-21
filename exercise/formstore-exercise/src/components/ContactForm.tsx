@@ -1,10 +1,12 @@
 import React from "react";
 import {observer} from "mobx-react-lite";
-import {Form, FormGroup, Input, Label} from 'reactstrap';
+import {Input} from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {FormStore} from "../store/FormStore";
 import "./ContactForm.css";
 import {toJS} from "mobx";
+import FormComponent from "./FormComponent";
+import FormField from "./FieldComponent";
 
 export interface IContactFormProps {
     name: string;
@@ -29,7 +31,8 @@ export const ContactForm = observer(() => {
         console.log(toJS(contactFormStore.formData));
 
     }
-    function handleReset(e:React.SyntheticEvent){
+
+    function handleReset(e: React.SyntheticEvent) {
         e.preventDefault();
         contactFormStore.resetFormData();
     }
@@ -38,68 +41,37 @@ export const ContactForm = observer(() => {
         <div className="Contact-Form-Container">
             <div className="Contact-Form">
                 <h2 className={"text-center font-weight-bolder text-uppercase mb-3"}>Contact-Us</h2>
-                <Form className="form" onSubmit={(e) => handleSubmit(e)}>
-                    <FormGroup>
-                        <Label
-                            className={"font-weight-bolder text-uppercase"}
-                            for="exampleName"
-                        >Name
-                        </Label>
-                        <Input
-                            type={"text"}
-                            name={"name"}
-                            placeholder={"Name"}
-                            value={contactFormStore.getValue('name')}
-                            onChange={handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label
-                            className={"font-weight-bold text-uppercase"}
-                            for="exampleEmail"
-                        >
-                            Email
-                        </Label>
-                        <Input
+                <FormComponent<IContactFormProps> formStore={contactFormStore} onSubmit={handleSubmit}
+                                                  onReset={handleReset}>
 
-                            id="exampleEmail"
-                            type={"email"}
-                            name={"email"}
-                            placeholder={"Email"}
-                            value={contactFormStore.getValue('email')}
-                            onChange={handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label
-                            className={"font-weight-bold text-uppercase"}
-                            for="examplePassword"
-                        >
-                            Message
-                        </Label>
-                        <Input
-                            className={"mb-4 rounded p-2"}
-                            id="examplePassword"
-                            type={"textarea"}
-                            name={"message"}
-                            placeholder={"Message"}
-                            value={contactFormStore.getValue('message')}
-                            onChange={handleChange}
-                        />
-                    </FormGroup>
-                    <button
-                        className={"btn-outline-primary p-2 rounded-pill w-25 mt-3 float-left"}
-                        type="submit"
-                    >Submit
-                    </button>
-                    <button
-                        className={"btn-outline-danger p-2 rounded-pill w-25 mt-3 float-right"}
-                        type="button"
-                        onClick={handleReset}
-                    >Reset
-                    </button>
-                </Form>
-
+                    <FormField
+                        name="name"
+                        type={"text"}
+                        label="Name"
+                        isRequired={true}
+                        onChange={handleChange}
+                        InputComponent={Input}
+                        InputStyleProps="p-3 rounded-pill"
+                    />
+                    <FormField
+                        name="email"
+                        type={"email"}
+                        label="Email"
+                        isRequired={true}
+                        onChange={handleChange}
+                        InputComponent={Input}
+                        InputStyleProps="p-3 rounded-pill"
+                    />
+                    <FormField
+                        name="message"
+                        type={"textarea"}
+                        label="Message"
+                        isRequired={true}
+                        onChange={handleChange}
+                        InputComponent={Input}
+                        InputStyleProps="mb-4 rounded p-2"
+                    />
+                </FormComponent>
             </div>
         </div>
     )
