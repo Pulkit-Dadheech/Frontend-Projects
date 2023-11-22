@@ -5,7 +5,7 @@ import {FormStore} from "../store/FormStore";
 import "./ContactForm.css";
 import {toJS} from "mobx";
 import FormWrapper from "./FormWrapper";
-import FormField from "./FormField";
+import FormField, {TRenderProps} from "./FormField";
 import {CustomInput} from "./InputComponent";
 
 export interface IContactFormProps {
@@ -22,14 +22,19 @@ const contactFormStore = new FormStore<IContactFormProps>({
 
 export const ContactForm = observer(() => {
 
-    function handleSubmit<T>(formStore:FormStore<T>) {
-        console.log(toJS(formStore.formData));
+    function handleSubmit<T>(formData: T) {
+        console.log(toJS(formData));
     }
 
     function handleReset(e: React.SyntheticEvent) {
         e.preventDefault();
         contactFormStore.resetFormData();
     }
+
+    interface FormFieldRendererProps {
+        fieldProps: TRenderProps;
+    }
+
 
     return (
         <div className="Contact-Form-Container">
@@ -41,28 +46,40 @@ export const ContactForm = observer(() => {
                     onReset={handleReset}
                 >
                     <FormField
-                        name="name"
-                        type={"text"}
+                        name={"name"}
                         label="Name"
                         isRequired={true}
-                        InputComponent={CustomInput}
-                        InputStyleProps="p-3 rounded-pill"
+                        render={({fieldProps}) => (
+                            <CustomInput
+                                type="text"
+                                className="p-3 rounded-pill"
+                                {...fieldProps}
+                            />
+                        )}
                     />
                     <FormField
-                        name="email"
-                        type={"email"}
-                        label="Email"
+                        name={"email"}
+                        label={"Email"}
                         isRequired={true}
-                        InputComponent={CustomInput}
-                        InputStyleProps="p-3 rounded-pill"
+                        render={({fieldProps}) => (
+                            <CustomInput
+                                type="email"
+                                className="p-3 rounded-pill"
+                                {...fieldProps}
+                            />
+                        )}
                     />
                     <FormField
-                        name="message"
-                        type={"textarea"}
-                        label="Message"
+                        name={"message"}
+                        label={"Message"}
                         isRequired={true}
-                        InputComponent={CustomInput}
-                        InputStyleProps="mb-4 rounded-pill p-2"
+                        render={({fieldProps}) => (
+                            <CustomInput
+                                type="textarea"
+                                className="p-3 rounded-pill"
+                                {...fieldProps}
+                            />
+                        )}
                     />
                 </FormWrapper>
             </div>
