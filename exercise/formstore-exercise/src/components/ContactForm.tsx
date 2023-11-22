@@ -4,8 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {FormStore} from "../store/FormStore";
 import "./ContactForm.css";
 import {toJS} from "mobx";
-import FormComponent from "./FormComponent";
-import FormField from "./FieldComponent";
+import FormWrapper from "./FormWrapper";
+import FormField from "./FormField";
 import {CustomInput} from "./InputComponent";
 
 export interface IContactFormProps {
@@ -35,7 +35,7 @@ export const ContactForm = observer(() => {
         <div className="Contact-Form-Container">
             <div className="Contact-Form">
                 <h2 className={"text-center font-weight-bolder text-uppercase mb-3"}>Contact-Us</h2>
-                <FormComponent<IContactFormProps>
+                <FormWrapper<IContactFormProps>
                     formStore={contactFormStore}
                     onSubmit={handleSubmit}
                     onReset={handleReset}
@@ -64,7 +64,7 @@ export const ContactForm = observer(() => {
                         InputComponent={CustomInput}
                         InputStyleProps="mb-4 rounded-pill p-2"
                     />
-                </FormComponent>
+                </FormWrapper>
             </div>
         </div>
     )

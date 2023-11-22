@@ -6,8 +6,8 @@ import {FormStore} from "../store/FormStore";
 import {useRouterStore} from "mobx-state-router";
 import "./RegisterForm.css";
 import {toJS} from "mobx";
-import FormField from "./FieldComponent";
-import FormComponent from "./FormComponent";
+import FormField from "./FormField";
+import FormWrapper from "./FormWrapper";
 import {CustomInput} from "./InputComponent";
 
 
@@ -47,7 +47,7 @@ export const RegisterForm = observer(() => {
         <div className={"Register-Form-Container"}>
             <div className={"Register-Form"}>
                 <div className=" left-column text-center d-flex flex-column bg-white p-4">
-                    <FormComponent<IRegisterFormProps>
+                    <FormWrapper<IRegisterFormProps>
                         formStore={registerFormStore}
                         onSubmit={handleSubmit}
                         onReset={handleReset}
@@ -86,7 +86,7 @@ export const RegisterForm = observer(() => {
                                 Go to ContactForm
                             </Button>
                         </div>
-                    </FormComponent>
+                    </FormWrapper>
                 </div>
                 <div className="right-column">
                     <img
