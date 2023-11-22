@@ -4,7 +4,7 @@
 
     interface IFormComponentProps<T> {
         formStore: FormStore<T>;
-        onSubmit: (formStore: FormStore<T>) => void;
+        onSubmit: (formData:T) => void;
         onReset: (e: SyntheticEvent) => void;
         children: ReactNode;
     }
@@ -17,10 +17,15 @@
 
         const handleSubmit = (e: React.SyntheticEvent) => {
             e.preventDefault();
-            onSubmit(formStore);
+            onSubmit(formStore.formData);
         };
+        const handleReset = (e: React.SyntheticEvent) => {
+            formStore.resetFormData();
+            onReset(e);
+        };
+
         return (
-            <FormContext.Provider value={{formStore}}>
+            <FormContext.Provider value={{ formStore }}>
                 <form onSubmit={(e) => handleSubmit(e)}>
                     {children}
                     <button
@@ -32,13 +37,13 @@
                     <button
                         className="btn-outline-danger p-2 rounded-pill w-25 p-2 mt-1 float-right"
                         type="button"
-                        onClick={onReset}
+                        onClick={(e) => handleReset(e)}
                     >
                         Reset
                     </button>
                 </form>
             </FormContext.Provider>
         );
-    };
+    }
 
     export default FormWrapper;
