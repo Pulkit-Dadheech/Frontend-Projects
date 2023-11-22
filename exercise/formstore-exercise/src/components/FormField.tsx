@@ -16,16 +16,9 @@ export type TFieldProps = {
     InputStyleProps: string;
 };
 
-const FormField = observer(({
-                                name,
-                                type,
-                                label,
-                                isRequired,
-                                InputComponent,
-                                InputStyleProps
-                            }: TFieldProps) => {
+const FormField = observer((props: TFieldProps) => {
     const {formStore: store} = useFormContext();
-
+    const {InputComponent}=props;
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
         store.updateFormData(name as keyof IRegisterFormProps, value);
@@ -34,16 +27,12 @@ const FormField = observer(({
     return (
         <FormGroup className="mt-4 mb-4">
             <Label className="ml-2 font-weight-bold" for="example">
-                {label}{isRequired && <span className={"text-danger"}>*</span>}
+                {props.label}{props.isRequired && <span className={"text-danger"}>*</span>}
             </Label>
             <InputComponent
-                name={name}
-                type={type}
-                label={label}
-                className={InputStyleProps}
-                value={store.getValue(name as keyof IRegisterFormProps)}
+                {...props}
+                value={store.getValue(props.name as keyof IRegisterFormProps)}
                 onChange={handleChange}
-                required={isRequired}
             />
         </FormGroup>
     );
