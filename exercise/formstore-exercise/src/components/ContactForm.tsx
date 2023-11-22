@@ -21,15 +21,9 @@ const contactFormStore = new FormStore<IContactFormProps>({
 });
 
 export const ContactForm = observer(() => {
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        contactFormStore.updateFormData(name as keyof IContactFormProps, value);
-    };
 
-    function handleSubmit(e: React.SyntheticEvent) {
-        e.preventDefault();
-        console.log(toJS(contactFormStore.formData));
-
+    function handleSubmit<T>(formStore:FormStore<T>) {
+        console.log(toJS(formStore.formData));
     }
 
     function handleReset(e: React.SyntheticEvent) {
@@ -51,7 +45,6 @@ export const ContactForm = observer(() => {
                         type={"text"}
                         label="Name"
                         isRequired={true}
-                        onChange={handleChange}
                         InputComponent={CustomInput}
                         InputStyleProps="p-3 rounded-pill"
                     />
@@ -60,7 +53,6 @@ export const ContactForm = observer(() => {
                         type={"email"}
                         label="Email"
                         isRequired={true}
-                        onChange={handleChange}
                         InputComponent={CustomInput}
                         InputStyleProps="p-3 rounded-pill"
                     />
@@ -69,7 +61,6 @@ export const ContactForm = observer(() => {
                         type={"textarea"}
                         label="Message"
                         isRequired={true}
-                        onChange={handleChange}
                         InputComponent={CustomInput}
                         InputStyleProps="mb-4 rounded-pill p-2"
                     />
