@@ -8,6 +8,7 @@ import "./RegisterForm.css";
 import {toJS} from "mobx";
 import FormField from "./FormField";
 import FormWrapper from "./FormWrapper";
+import {InputType} from "reactstrap/types/lib/Input";
 import {CustomInput} from "./InputComponent";
 
 
@@ -16,6 +17,12 @@ export interface IRegisterFormProps {
     email: string;
     password: string;
 }
+
+export type TInputRendererProps = {
+    name: string;
+    type: InputType;
+    className: string
+};
 
 
 const registerFormStore = new FormStore<IRegisterFormProps>({
@@ -34,14 +41,14 @@ export const RegisterForm = observer(() => {
         });
     };
 
-    function handleSubmit<T>(formStore:FormStore<T> ) {
-        console.log(toJS(formStore.formData));
+    function handleSubmit<T>(formData: T) {
+        console.log(toJS(formData));
     }
 
     function handleReset(e: React.SyntheticEvent) {
         e.preventDefault();
-        registerFormStore.resetFormData();
     }
+
 
     return (
         <div className={"Register-Form-Container"}>
@@ -56,32 +63,41 @@ export const RegisterForm = observer(() => {
                             <h2 className="text-uppercase font-weight-bolder text-center mb-3">Sign In</h2>
 
                             <FormField
-                                name="username"
-                                type={"text"}
+                                name={"username"}
                                 label="Username"
                                 isRequired={true}
-                                InputComponent={CustomInput}
-                                InputStyleProps="p-3 rounded-pill"
+                                render={({fieldProps}) => (
+                                    <CustomInput
+                                        type="text"
+                                        className="p-3 rounded-pill"
+                                        {...fieldProps}
+                                    />
+                                )}
                             />
-
                             <FormField
-                                name="email"
-                                type={"email"}
-                                label="Email"
+                                name={"email"}
+                                label={"Email"}
                                 isRequired={true}
-                                InputComponent={CustomInput}
-                                InputStyleProps="p-3 rounded-pill"
+                                render={({fieldProps}) => (
+                                    <CustomInput
+                                        type="email"
+                                        className="p-3 rounded-pill"
+                                        {...fieldProps}
+                                    />
+                                )}
                             />
-
                             <FormField
-                                name="password"
-                                type="password"
+                                name={"password"}
                                 label="Password"
                                 isRequired={true}
-                                InputComponent={CustomInput}
-                                InputStyleProps="p-3 rounded-pill"
+                                render={({fieldProps}) => (
+                                    <CustomInput
+                                        type="password"
+                                        className="p-3 rounded-pill"
+                                        {...fieldProps}
+                                    />
+                                )}
                             />
-
                             <Button onClick={handleContactClick} className="bg-primary fixed-bottom">
                                 Go to ContactForm
                             </Button>
