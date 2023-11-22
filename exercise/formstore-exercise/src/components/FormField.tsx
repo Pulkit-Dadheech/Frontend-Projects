@@ -40,8 +40,8 @@ export type TFieldPropsWithRender = {
 const FormField = observer((props: TFieldPropsWithRender) => {
     const {formStore: store} = useFormContext();
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        store.updateFormData(name as keyof IRegisterFormProps, value);
+        const { value} = e.target;
+        store.updateFormData(props.name as keyof IRegisterFormProps, value);
     };
 
 
