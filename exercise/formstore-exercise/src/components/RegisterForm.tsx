@@ -28,21 +28,14 @@ const registerFormStore = new FormStore<IRegisterFormProps>({
 export const RegisterForm = observer(() => {
     const routerStore = useRouterStore();
 
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        registerFormStore.updateFormData(name as keyof IRegisterFormProps, value);
-    };
-
     const handleContactClick = () => {
         routerStore.goTo('contact', {
             params: {id: 'contact'},
         });
     };
 
-    function handleSubmit(e: React.SyntheticEvent) {
-        e.preventDefault();
-        console.log(toJS(registerFormStore.formData));
+    function handleSubmit<T>(formStore:FormStore<T> ) {
+        console.log(toJS(formStore.formData));
     }
 
     function handleReset(e: React.SyntheticEvent) {
@@ -67,7 +60,6 @@ export const RegisterForm = observer(() => {
                                 type={"text"}
                                 label="Username"
                                 isRequired={true}
-                                onChange={handleChange}
                                 InputComponent={CustomInput}
                                 InputStyleProps="p-3 rounded-pill"
                             />
@@ -77,7 +69,6 @@ export const RegisterForm = observer(() => {
                                 type={"email"}
                                 label="Email"
                                 isRequired={true}
-                                onChange={handleChange}
                                 InputComponent={CustomInput}
                                 InputStyleProps="p-3 rounded-pill"
                             />
@@ -87,7 +78,6 @@ export const RegisterForm = observer(() => {
                                 type="password"
                                 label="Password"
                                 isRequired={true}
-                                onChange={handleChange}
                                 InputComponent={CustomInput}
                                 InputStyleProps="p-3 rounded-pill"
                             />
