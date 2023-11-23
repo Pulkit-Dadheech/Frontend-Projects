@@ -2,11 +2,11 @@ import {action, makeObservable, observable} from "mobx";
 
 export class FormStore<T> {
     @observable formData: T;
-    @observable initialData: T;
+    initialData: T;
 
     constructor(initialData: T) {
-        this.initialData = initialData;
         this.formData = initialData;
+        this.initialData = initialData;
         makeObservable(this);
     }
 
