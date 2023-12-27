@@ -4,6 +4,7 @@ export class ListTableStore<T> {
     @observable data: T;
     @observable skip: number=0;
     total: number=0;
+    @observable title: string="";
 
     constructor(promiseData: T) {
         this.data = promiseData;
@@ -14,6 +15,7 @@ export class ListTableStore<T> {
         return this.data;
     }
 
+    @action
     nextPage(){
        if(this.skip<this.total-10){
            this.skip=this.skip+10;
@@ -21,6 +23,7 @@ export class ListTableStore<T> {
        console.log(this.skip,this.total);
     }
 
+    @action
     prevPage(){
         if(this.skip>=10)
         this.skip=this.skip-10;
@@ -28,5 +31,9 @@ export class ListTableStore<T> {
 
     @action updateData(data: T){
         this.data=data;
+    }
+
+    @action SearchData(title: string){
+        this.title=title;
     }
 }

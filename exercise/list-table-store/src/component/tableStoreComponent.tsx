@@ -30,12 +30,28 @@ export const TableStoreComponent = observer(() => {
         store.prevPage();
     }
 
+    const handleSearch=(e: React.ChangeEvent<HTMLInputElement>,store: any)=>{
+        store.search(e.target.value);
+    }
+
     return (
         <>
-            <CustomTable<Product> store={product} allHeaders={["id", "title", "price"]} data={product.productList.data?.products}
-                                  handlePrev={handlePrev} handleNext={handleNext}/>
-            <CustomTable<Post> store={posts} allHeaders={["id", "title", "body"]} data={posts.postList.data?.posts} handlePrev={handlePrev}
-                               handleNext={handleNext}/>
+            <CustomTable<Product>
+                store={product}
+                allHeaders={["id", "title", "price"]}
+                data={product.productList.data?.products}
+                handlePrev={handlePrev}
+                handleNext={handleNext}
+                handleSearch={handleSearch}
+            />
+            <CustomTable<Post>
+                store={posts}
+                allHeaders={["id", "title", "body"]}
+                data={posts.postList.data?.posts}
+                handlePrev={handlePrev}
+                handleNext={handleNext}
+                handleSearch={handleSearch}
+            />
         </>
     );
 });

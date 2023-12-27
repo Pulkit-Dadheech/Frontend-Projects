@@ -31,7 +31,14 @@ export class PostStore {
 
     fetchPost = async () => {
         try {
-            const response = await fetch(`https://dummyjson.com/posts?limit=10&skip=${this.postList.skip}`);
+            let response;
+            if(this.postList.title){
+                response=await fetch(`https://dummyjson.com/posts/search?q=${this.postList.title}`)
+            }
+            else{
+
+                response = await fetch(`https://dummyjson.com/posts?limit=10&skip=${this.postList.skip}`);
+            }
             const data = await response.json();
             this.postList.total = data.total;
             return data;
@@ -48,6 +55,11 @@ export class PostStore {
 
     @action prevPage() {
         this.postList.prevPage();
+        this.fetch();
+    }
+
+    @action search(title: string){
+        this.postList.SearchData(title);
         this.fetch();
     }
 }

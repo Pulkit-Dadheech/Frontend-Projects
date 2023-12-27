@@ -30,9 +30,17 @@ export class ProductStore {
         this.productList.updateData(await fetchedData);
     }
 
+
     async fetchData() {
         try {
-            const response = await fetch(`https://dummyjson.com/products?limit=10&skip=${this.productList.skip}`);
+            let response;
+            if(this.productList.title){
+                response=await fetch(`https://dummyjson.com/products/search?q=${this.productList.title}`)
+            }
+            else{
+
+                response = await fetch(`https://dummyjson.com/products?limit=10&skip=${this.productList.skip}`);
+            }
             const data = await response.json();
             this.productList.total = data.total;
             return data;
@@ -49,6 +57,11 @@ export class ProductStore {
 
     @action prevPage() {
         this.productList.prevPage();
+        this.fetch();
+    }
+
+    @action search(title: string){
+        this.productList.SearchData(title);
         this.fetch();
     }
 
