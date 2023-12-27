@@ -1,14 +1,14 @@
 import React from "react";
-import {observer} from "mobx-react-lite";
 
 type TCustomTableProps<T> = {
+    store: any;
     data: T[] | undefined;
     allHeaders: string[];
-    handlePrev: (e: React.MouseEvent<HTMLElement>) => void;
-    handleNext: (e: React.MouseEvent<HTMLElement>) => void;
+    handlePrev: (e: React.MouseEvent<HTMLElement>, store: any) => void;
+    handleNext: (e: React.MouseEvent<HTMLElement>, store: any) => void;
 }
 
-export const CustomTable=observer(<T, >({data, allHeaders, handlePrev, handleNext}: TCustomTableProps<T>) =>{
+export function CustomTable<T>({store, data, allHeaders, handlePrev, handleNext}: TCustomTableProps<T>) {
     const allDataInfo = data?.map((dataEntity: T, index: number) => {
         return (
             <tbody>
@@ -36,7 +36,7 @@ export const CustomTable=observer(<T, >({data, allHeaders, handlePrev, handleNex
         );
     });
     return (
-        <div>
+        <>
             <table>
                 <thead>
                 <tr>
@@ -45,8 +45,8 @@ export const CustomTable=observer(<T, >({data, allHeaders, handlePrev, handleNex
                 </thead>
                 {allDataInfo}
             </table>
-            <button onClick={(e) => handlePrev(e)}>Prev</button>
-            <button onClick={(e) => handleNext(e)}>Next</button>
-        </div>
+            <button onClick={(e) => handlePrev(e, store)}>Prev</button>
+            <button onClick={(e) => handleNext(e, store)}>Next</button>
+        </>
     )
-})
+}
