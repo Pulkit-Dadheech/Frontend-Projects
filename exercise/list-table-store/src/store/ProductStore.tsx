@@ -19,18 +19,22 @@ export class ProductStore {
     @observable dataLoading: boolean = true;
 
     constructor() {
-        this.productList = new ListTableStore<ProductList>(this.fetchData());
+        this.productList = new ListTableStore<ProductList>({products: [], total: 0, skip: 0, limit: 0});
+        this.fetch();
         makeObservable(this);
     }
 
-    @action async fetch(){
-        const fetchedData=this.fetchData();
-        this.productList.data=await fetchedData;
+    @action
+    async fetch() {
+        const fetchedData = this.fetchData();
+        this.productList.updateData(await fetchedData);
     }
+
     async fetchData() {
         try {
-            const response = await fetch(`https://dummyjson.com/products?limit=10&skip=${this.skip}`);
+            const response = await fetch(`https://dummyjson.com/products?limit=10&skip=${this.productList.skip}`);
             const data = await response.json();
+            this.productList.total = data.total;
             return data;
         } catch (error) {
             console.error("Error loading data", error);
@@ -38,23 +42,19 @@ export class ProductStore {
         }
     }
 
-    @action updateLoading(){
-        this.dataLoading=!this.dataLoading;
+    @action nextPage() {
+        this.productList.nextPage();
+        this.fetch();
     }
-    // @action
-    // addProduct(product: Product) {
-    //     this.productList.products.push(product);
-    // }
-    //
-    // @action
-    // removeProduct(productName?: string, productId?: number) {
-    //     if (productName) {
-    //         this.productList.products = this.productList.products.filter((singleProduct: any) => singleProduct.title === productName);
-    //     }
-    //     if (productId) {
-    //         this.productList.products = this.productList.products.filter((singleProduct: any) => singleProduct.id === productId);
-    //     }
-    // }
+
+    @action prevPage() {
+        this.productList.prevPage();
+        this.fetch();
+    }
+
+    @action updateLoading() {
+        this.dataLoading = !this.dataLoading;
+    }
 }
 
 

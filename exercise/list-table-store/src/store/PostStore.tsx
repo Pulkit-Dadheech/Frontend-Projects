@@ -1,5 +1,5 @@
 import {ListTableStore} from "./ListTableStore";
-import {action, makeObservable, observable, toJS} from "mobx";
+import {action, makeObservable} from "mobx";
 
 export interface Post {
     id: number;
@@ -16,12 +16,9 @@ export interface PostsList {
 
 export class PostStore {
     postList: ListTableStore<PostsList>;
-    @observable dataLoading: boolean = true;
-    @observable skip: number = 0;
 
     constructor() {
-        this.postList = new ListTableStore<PostsList>("", this.skip);
-        this.skip = this.postList.skip;
+        this.postList = new ListTableStore<PostsList>({posts: [], total: 0, skip: 0, limit: 0});
         this.fetch();
         makeObservable(this);
     }
@@ -29,15 +26,14 @@ export class PostStore {
     @action
     async fetch() {
         const fetchedData = this.fetchPost();
-        this.postList.data = await fetchedData;
-        console.log(toJS(this.postList.data));
+        this.postList.updateData(await fetchedData);
     }
 
     fetchPost = async () => {
         try {
             const response = await fetch(`https://dummyjson.com/posts?limit=10&skip=${this.postList.skip}`);
             const data = await response.json();
-            this.updateLoading();
+            this.postList.total = data.total;
             return data;
         } catch (error) {
             console.error("Error fetching Posts", error);
@@ -47,12 +43,11 @@ export class PostStore {
 
     @action nextPage() {
         this.postList.nextPage();
-        this.skip = this.postList.skip;
         this.fetch();
-        console.log(this.skip);
     }
 
-    @action updateLoading() {
-        this.dataLoading = !this.dataLoading;
+    @action prevPage() {
+        this.postList.prevPage();
+        this.fetch();
     }
 }
