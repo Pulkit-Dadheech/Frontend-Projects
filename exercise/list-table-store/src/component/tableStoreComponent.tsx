@@ -20,18 +20,20 @@ export interface ProductList {
 const posts = new PostStore();
 const product = new ProductStore();
 export const TableStoreComponent = observer(() => {
-    const handleNext = (e: React.MouseEvent<HTMLElement>,store: any) => {
+    const handleNext = (e: React.MouseEvent<HTMLElement>, store: any) => {
         e.preventDefault();
         store.nextPage();
     }
 
-    const handlePrev = (e: React.MouseEvent<HTMLElement>,store: any) => {
+    const handlePrev = (e: React.MouseEvent<HTMLElement>, store: any) => {
         e.preventDefault();
         store.prevPage();
     }
 
-    const handleSearch=(e: React.ChangeEvent<HTMLInputElement>,store: any)=>{
-        store.search(e.target.value);
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>, store: any) => {
+        clearTimeout(store.searchTimeout);
+        const x = setTimeout(() => store.search(e.target.value), 500);
+        store.searchTimeout = x;
     }
 
     return (

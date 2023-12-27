@@ -9,11 +9,11 @@ type TCustomTableProps<T> = {
     handleSearch: (e: React.ChangeEvent<HTMLInputElement>, store: any) => void;
 }
 
-export function CustomTable<T>({store, data, allHeaders, handlePrev, handleNext,handleSearch}: TCustomTableProps<T>) {
+export function CustomTable<T>({store, data, allHeaders, handlePrev, handleNext, handleSearch}: TCustomTableProps<T>) {
     const allDataInfo = data?.map((dataEntity: T, index: number) => {
         return (
             <tbody key={index}>
-            <tr>
+            <tr key={index}>
                 {
                     Object.keys(dataEntity as Record<string, any>).map((singleEntity, innerIndex) => {
                         let found = false;
@@ -28,7 +28,7 @@ export function CustomTable<T>({store, data, allHeaders, handlePrev, handleNext,
                         if (found) {
                             return <td key={innerIndex}>{(dataEntity as Record<string, any>)[singleEntity]}</td>;
                         } else {
-                            return;
+                            return null;
                         }
                     })
                 }
@@ -38,11 +38,11 @@ export function CustomTable<T>({store, data, allHeaders, handlePrev, handleNext,
     });
     return (
         <>
-            <input onChange={(e)=>handleSearch(e,store)}/>
+            <input onChange={(e) => handleSearch(e, store)}/>
             <table>
                 <thead>
                 <tr>
-                    {allHeaders.map((entity,index) => <th key={index}>{entity.toUpperCase()}</th>)}
+                    {allHeaders.map((entity, index) => <th key={index}>{entity.toUpperCase()}</th>)}
                 </tr>
                 </thead>
                 {allDataInfo}

@@ -20,7 +20,6 @@ export class ListTableStore<T> {
        if(this.skip<this.total-10){
            this.skip=this.skip+10;
        }
-       console.log(this.skip,this.total);
     }
 
     @action

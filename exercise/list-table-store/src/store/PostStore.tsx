@@ -16,7 +16,7 @@ export interface PostsList {
 
 export class PostStore {
     postList: ListTableStore<PostsList>;
-
+    searchTimeout: number=0;
     constructor() {
         this.postList = new ListTableStore<PostsList>({posts: [], total: 0, skip: 0, limit: 0});
         this.fetch();

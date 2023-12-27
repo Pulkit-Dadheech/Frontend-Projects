@@ -17,6 +17,7 @@ interface ProductList {
 export class ProductStore {
     productList: ListTableStore<ProductList>;
     @observable dataLoading: boolean = true;
+    searchTimeout: number=0;
 
     constructor() {
         this.productList = new ListTableStore<ProductList>({products: [], total: 0, skip: 0, limit: 0});
