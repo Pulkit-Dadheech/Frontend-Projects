@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {ProductStore} from '../store/ProductStore';
 import {observer} from 'mobx-react-lite';
+import {Post, PostStore} from "../store/PostStore";
 import {CustomTable} from "./CustomTable";
 
 export interface Product {
@@ -16,32 +17,25 @@ export interface ProductList {
     limit: number;
 }
 
+const posts = new PostStore();
 const product = new ProductStore();
 export const TableStoreComponent = observer(() => {
-    const [productsList, setProductList] = useState<ProductList>();
-
-
-    const getData = async () => {
-        setProductList(await product.productList.data);
-    };
-    getData();
-
-    if (!productsList || !productsList.products) {
-        return <p>No data available.</p>;
+    const handleNext = (e: React.MouseEvent<HTMLElement>,store: any) => {
+        e.preventDefault();
+        store.nextPage();
     }
 
-    const handleNext = (e: React.MouseEvent<HTMLElement>) => {
+    const handlePrev = (e: React.MouseEvent<HTMLElement>,store: any) => {
         e.preventDefault();
-    }
-
-    const handlePrev = (e: React.MouseEvent<HTMLElement>) => {
-        e.preventDefault();
+        store.prevPage();
     }
 
     return (
         <>
-            <CustomTable<Product> allHeaders={["id", "title", "price"]} data={product.productList.data?.products}
+            <CustomTable<Product> store={product} allHeaders={["id", "title", "price"]} data={product.productList.data?.products}
                                   handlePrev={handlePrev} handleNext={handleNext}/>
+            <CustomTable<Post> store={posts} allHeaders={["id", "title", "body"]} data={posts.postList.data?.posts} handlePrev={handlePrev}
+                               handleNext={handleNext}/>
         </>
     );
 });
