@@ -32,8 +32,7 @@ export const TableStoreComponent = observer(() => {
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>, store: any) => {
         clearTimeout(store.searchTimeout);
-        const x = setTimeout(() => store.search(e.target.value), 500);
-        store.searchTimeout = x;
+        store.searchTimeout= setTimeout(() => store.search(e.target.value), 500);
     }
 
     return (
