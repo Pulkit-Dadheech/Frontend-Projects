@@ -20,56 +20,28 @@ export class ProductStore {
     searchTimeout: number=0;
 
     constructor() {
-        this.productList = new ListTableStore<ProductList>({products: [], total: 0, skip: 0, limit: 0});
-        this.fetch();
+        this.productList = new ListTableStore<ProductList>(this.fetchData);
         makeObservable(this);
     }
 
-    @action
-    async fetch() {
-        const fetchedData = this.fetchData();
-        this.productList.updateData(await fetchedData);
-    }
-
-
-    async fetchData() {
+    fetchData=async (skip: number,search?: string,)=> {
         try {
             let response;
-            if(this.productList.title){
-                response=await fetch(`https://dummyjson.com/products/search?q=${this.productList.title}`)
+            if(search){
+                response=await fetch(`https://dummyjson.com/products/search?q=${search}`)
             }
             else{
-
-                response = await fetch(`https://dummyjson.com/products?limit=10&skip=${this.productList.skip}`);
+                response = await fetch(`https://dummyjson.com/products?limit=10&skip=${skip}`);
             }
             const data = await response.json();
-            this.productList.total = data.total;
             return data;
         } catch (error) {
             console.error("Error loading data", error);
-            throw error;
         }
     }
-
-    @action nextPage() {
-        this.productList.nextPage();
-        this.fetch();
-    }
-
-    @action prevPage() {
-        this.productList.prevPage();
-        this.fetch();
-    }
-
-    @action search(title: string){
-        this.productList.SearchData(title);
-        this.fetch();
-    }
-
     @action updateLoading() {
         this.dataLoading = !this.dataLoading;
     }
 }
-
 
 

@@ -1,38 +1,41 @@
 import {action, makeObservable, observable} from "mobx";
 
 export class ListTableStore<T> {
-    @observable data: T;
+    @observable fetchedData: any;
     @observable skip: number=0;
     total: number=0;
-    @observable title: string="";
+    @observable search: string | undefined;
 
-    constructor(promiseData: T) {
-        this.data = promiseData;
+    constructor(promiseData:any) {
+        this.fetchedData = promiseData;
         makeObservable(this);
     }
 
-    getData() {
-        return this.data;
+    fetchData(){
+        return this.fetchedData(this.skip,this.search);
     }
 
     @action
     nextPage(){
+        console.log(this.total);
        if(this.skip<this.total-10){
            this.skip=this.skip+10;
        }
+        console.log(this.skip);
     }
 
     @action
     prevPage(){
+        console.log(this.skip)
         if(this.skip>=10)
         this.skip=this.skip-10;
     }
 
     @action updateData(data: T){
-        this.data=data;
+        this.fetchedData=data;
     }
 
     @action SearchData(title: string){
-        this.title=title;
+        this.search=title;
     }
 }
