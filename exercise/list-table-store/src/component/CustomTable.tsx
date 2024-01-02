@@ -1,4 +1,6 @@
 import React from "react";
+import {Table} from "reactstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 type TCustomTableProps<T> = {
     store: any;
@@ -12,7 +14,7 @@ type TCustomTableProps<T> = {
 export function CustomTable<T>({store, data, allHeaders, handlePrev, handleNext, handleSearch}: TCustomTableProps<T>) {
     const allDataInfo = data?.map((dataEntity: T, index: number) => {
         return (
-            <tbody key={index}>
+            <tbody className={"text-center"} key={index}>
             <tr key={index}>
                 {
                     Object.keys(dataEntity as Record<string, any>).map((singleEntity, innerIndex) => {
@@ -38,17 +40,26 @@ export function CustomTable<T>({store, data, allHeaders, handlePrev, handleNext,
     });
     return (
         <>
-            <input onChange={(e) => handleSearch(e, store)}/>
-            <table>
+            <div className={"d-flex align-items-center justify-content-center"}>
+            <input placeholder={"Search..."} onChange={(e) => handleSearch(e, store)} className={"m-lg-2 px-4 py-2"} />
+            </div>
+            <Table
+                bordered
+                responsive
+                striped
+            >
                 <thead>
-                <tr>
+                <tr className={"text-center"}>
                     {allHeaders.map((entity, index) => <th key={index}>{entity.toUpperCase()}</th>)}
                 </tr>
                 </thead>
                 {allDataInfo}
-            </table>
-            <button onClick={(e) => handlePrev(e, store)}>Prev</button>
-            <button onClick={(e) => handleNext(e, store)}>Next</button>
+            </Table>
+            <span className={"d-flex align-content-center justify-content-center"}>
+            <button disabled={store.skip === 0} onClick={(e) => handlePrev(e, store)}>Prev</button>
+            <span className={"p-2"}> {(store.skip/10)+1} </span>
+            <button disabled={store.skip+ 10 === store.total } onClick={(e) => handleNext(e, store)}>Next</button>
+            </span>
             <br/>
             <br/>
         </>
