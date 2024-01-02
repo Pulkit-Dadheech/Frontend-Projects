@@ -1,5 +1,5 @@
 import {ListTableStore} from "./ListTableStore";
-import {action, makeObservable} from "mobx";
+import {makeObservable} from "mobx";
 
 export interface Post {
     id: number;
@@ -16,19 +16,19 @@ export interface PostsList {
 
 export class PostStore {
     postList: ListTableStore<PostsList>;
-    searchTimeout: number=0;
+    searchTimeout: number = 0;
+
     constructor() {
         this.postList = new ListTableStore<PostsList>(this.fetchPost);
         makeObservable(this);
     }
 
-    async fetchPost(skip: number,search?: string){
+    async fetchPost(skip: number, search?: string) {
         try {
             let response;
-            if(search){
-                response=await fetch(`https://dummyjson.com/posts/search?q=${search}`)
-            }
-            else{
+            if (search) {
+                response = await fetch(`https://dummyjson.com/posts/search?q=${search}`)
+            } else {
                 response = await fetch(`https://dummyjson.com/posts?limit=10&skip=${skip}`);
             }
             const data = await response.json();

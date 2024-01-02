@@ -3,19 +3,7 @@ import {ProductStore} from '../store/ProductStore';
 import {observer} from 'mobx-react-lite';
 import {Post, PostsList, PostStore} from "../store/PostStore";
 import {CustomTable} from "./CustomTable";
-
-export interface Product {
-    id: number;
-    title: string;
-    price: number;
-}
-
-export interface ProductList {
-    products: Product[];
-    total: number;
-    skip: number;
-    limit: number;
-}
+import {ProductList,Product} from "../store/ProductStore";
 
 const posts = new PostStore();
 const product = new ProductStore();

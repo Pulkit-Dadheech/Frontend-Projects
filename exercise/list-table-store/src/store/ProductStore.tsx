@@ -1,13 +1,12 @@
 import {action, makeObservable, observable} from "mobx";
 import {ListTableStore} from "./ListTableStore";
-
-interface Product {
+export interface Product {
     id: number;
     title: string;
     price: number;
 }
 
-interface ProductList {
+export interface ProductList {
     products: Product[];
     total: number;
     skip: number;
