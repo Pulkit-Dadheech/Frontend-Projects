@@ -1,22 +1,23 @@
 import {action, makeObservable, observable} from "mobx";
 import {ListTableStore} from "./ListTableStore";
 import {apiQueries, createApiUrl} from "../dataFetchingFile";
+import {TUserCart} from "../types/allTypes";
 
 
 
 
 export class CartStore {
-    productStore: ListTableStore<any>;
+    cartStore: ListTableStore<any>;
     @observable dataLoading: boolean = false;
     @observable searchTimeout: NodeJS.Timeout | undefined
     searchText: string | null = null;
 
     constructor() {
-        this.productStore = new ListTableStore<any>(this.fetchData);
+        this.cartStore = new ListTableStore<TUserCart>(this.fetchCartData);
         makeObservable(this);
     }
 
-    fetchData = async (userID: number) => {
+    fetchCartData = async (userID: number) => {
         try {
             this.updateLoading();
             const response = await fetch(createApiUrl(
