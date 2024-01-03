@@ -1,34 +1,29 @@
-import React, {useEffect, useState} from 'react';
-import {ProductStore} from '../store/ProductStore';
+import React, {useEffect} from 'react';
+import {Product, ProductStore} from '../store/ProductStore';
 import {observer} from 'mobx-react-lite';
-import {Post, PostsList, PostStore} from "../store/PostStore";
+import {Post, PostStore} from "../store/PostStore";
 import {CustomTable} from "./CustomTable";
-import {ProductList,Product} from "../store/ProductStore";
+import {toJS} from "mobx";
 
 const posts = new PostStore();
 const product = new ProductStore();
 
 export const TableStoreComponent = observer(() => {
-    const [productData, setProductData] = useState<ProductList>();
-    const [postData, setPostData] = useState<PostsList>();
 
     useEffect(() => {
         const getProductData = async () => {
-            const productData = await product.productList.fetchData()
-            setProductData(productData);
-            product.productList.total = productData.total;
+            await product.productList.fetchData()
+            console.log(toJS(product.productList.data));
         };
         getProductData();
-    }, [product.productList.skip, product.productList.search]);
+    }, []);
 
     useEffect(() => {
         const getPostData = async () => {
-            const postData = await posts.postList.fetchData();
-            setPostData(postData);
-            posts.postList.total = postData.total;
+            await posts.postList.fetchData();
         };
         getPostData();
-    }, [posts.postList.skip, posts.postList.search]);
+    }, []);
 
     const handleNext = (e: React.MouseEvent<HTMLElement>, store: any) => {
         e.preventDefault();
@@ -51,7 +46,7 @@ export const TableStoreComponent = observer(() => {
             <CustomTable<Product>
                 store={product.productList}
                 allHeaders={["title", "price"]}
-                data={productData?.products}
+                data={product.productList.data?.products}
                 handlePrev={handlePrev}
                 handleNext={handleNext}
                 handleSearch={handleSearch}
@@ -60,7 +55,7 @@ export const TableStoreComponent = observer(() => {
             <CustomTable<Post>
                 store={posts.postList}
                 allHeaders={["title", "body"]}
-                data={postData?.posts}
+                data={posts.postList.data?.posts}
                 handlePrev={handlePrev}
                 handleNext={handleNext}
                 handleSearch={handleSearch}

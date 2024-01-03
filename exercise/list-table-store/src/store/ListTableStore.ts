@@ -2,7 +2,8 @@ import {action, makeObservable, observable} from "mobx";
 
 export class ListTableStore<T> {
     @observable fetchedData: any;
-    @observable skip: number=0;
+    @observable data: any;
+    @observable skip: number=10;
     total: number=0;
     @observable search: string | undefined;
 
@@ -11,8 +12,14 @@ export class ListTableStore<T> {
         makeObservable(this);
     }
 
-    fetchData(){
-        return this.fetchedData(this.skip,this.search);
+   async fetchData(){
+       const result = await this.fetchedData(this.skip,this.search);
+       this.setData(result)
+    }
+    @action
+    setData(result: any){
+        this.total=result.total;
+        this.data=result;
     }
 
     @action
@@ -21,6 +28,7 @@ export class ListTableStore<T> {
        if(this.skip<this.total-10){
            this.skip=this.skip+10;
        }
+        this.fetchData()
         console.log(this.skip);
     }
 
@@ -29,6 +37,7 @@ export class ListTableStore<T> {
         console.log(this.skip)
         if(this.skip>=10)
         this.skip=this.skip-10;
+        this.fetchData()
     }
 
     @action updateData(data: T){
@@ -37,5 +46,6 @@ export class ListTableStore<T> {
 
     @action SearchData(title: string){
         this.search=title;
+        this.fetchData();
     }
 }
