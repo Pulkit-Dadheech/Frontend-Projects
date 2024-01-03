@@ -18,7 +18,22 @@ export const ProductComponent = observer(({products}: { products: any }) => {
         const getProductData = async () => {
 
             const productCatalogDataReceived = await products.productStore.fetchData();
-            setProductsList(productCatalogDataReceived.products);
+            let filteredProductsWithCategory;
+
+            if (products.productStore.category !== "" && products.productStore.search && products.productStore.search !== ""){
+                filteredProductsWithCategory=productCatalogDataReceived.products.filter((product:TProduct)=>{
+                    {
+                        if( product.title.toUpperCase().includes(products.productStore.search.toUpperCase()) && product.category === products.productStore.category) return product
+                    }
+                })
+            }
+
+            if(filteredProductsWithCategory){
+                setProductsList(filteredProductsWithCategory);
+            }
+            else{
+                setProductsList(productCatalogDataReceived.products);
+            }
             products.productStore.updateTotal(productCatalogDataReceived.total);
         }
 
@@ -65,7 +80,7 @@ export const ProductComponent = observer(({products}: { products: any }) => {
                     </div>
                 ))
             }
-
+            {productsList && <PaginationComponent<any> store={products.productStore}/>}
         </div>
     );
 })
