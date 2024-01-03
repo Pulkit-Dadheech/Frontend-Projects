@@ -11,7 +11,7 @@ export const ProductComponent = observer(({products}: { products: any }) => {
     const [productsList, setProductsList] = useState<TProduct[]>();
 
     useEffect(() => {
-        if (products.productStore.category) {
+        if (products.productStore.category || products.productStore.search) {
             products.productStore.resetSkip();
         }
 
