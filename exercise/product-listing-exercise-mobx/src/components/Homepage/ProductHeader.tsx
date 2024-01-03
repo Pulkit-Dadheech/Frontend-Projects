@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import '../../styles/ProductHeader.css';
-import {ProductStore} from "../../store/ProductStore";
 import {observer} from "mobx-react-lite";
 import {CategoryStore} from "../../store/CategoryStore";
 
@@ -18,7 +17,7 @@ export const ProductHeader = observer(({products}: { products: any }) => {
             setCategoriesData(await categories.categoryList.fetchData());
         }
         getCategoryData();
-    }, [categories.categoryList.category]);
+    }, []);
 
     const handleClear = () => {
         setSearchText("");

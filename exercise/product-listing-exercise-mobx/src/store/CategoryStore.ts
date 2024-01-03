@@ -12,7 +12,7 @@ export class CategoryStore {
         makeObservable(this);
     }
 
-    fetchCategoryData = async (skip: number,category?: string, limit?: number, search?: string,) => {
+    fetchCategoryData = async (skip: number,category?: string, limit?: number, search?: string) => {
         try {
             this.updateLoading();
             const response = await fetch("https://dummyjson.com/products/categories")
