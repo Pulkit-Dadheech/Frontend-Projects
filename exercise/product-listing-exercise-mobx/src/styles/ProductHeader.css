@@ -1,0 +1,58 @@
+.header-elements {
+    display: flex;
+    flex-direction: row;
+    padding: 1.5rem;
+    box-shadow: 0.125rem 0.125rem 0.313rem rgba(0, 0, 0, 0.63);
+    justify-content: space-between;
+    text-align: center;
+    background-color: white;
+    align-items: center;
+}
+
+.search-box {
+    padding: 1.1rem;
+    width: 20rem;
+    border-radius: 1rem;
+    background-color: white;
+}
+
+.product-category-list {
+    display: inline;
+    padding: 1.2rem;
+    width: auto;
+    border-radius: 1rem;
+    border: 0.09rem solid black;
+}
+.users-list {
+    display: inline;
+    padding: 1.2rem;
+    /*width: auto;*/
+    border-radius: 1rem;
+    border: 0.09rem solid black;
+}
+
+a {
+    background-color: white;
+    border: 0.09rem solid black;
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+    padding: 1rem;
+    /*box-shadow: 0.125rem 0.125rem 0.125rem grey;*/
+    border-radius: 1rem;
+}
+a:hover{
+    background-color: black;
+    color: white;
+}
+
+.clear-button {
+    display: inline-block;
+    position: relative;
+    right: 2.5rem;
+    top: 0.1rem;
+    cursor: pointer;
+    padding: 0.625rem;
+}
+
+
