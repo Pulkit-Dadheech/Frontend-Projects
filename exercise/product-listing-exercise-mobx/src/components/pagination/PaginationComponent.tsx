@@ -10,7 +10,6 @@ export const PaginationComponent=observer(<T,>({store}:{store: any})=>{
         e.preventDefault();
         store.prevPage();
     }
-    console.log("total",store.total)
     return (
         <div className="pagination">
             <span className="pagination-button-block">

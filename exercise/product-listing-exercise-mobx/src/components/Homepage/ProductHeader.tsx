@@ -7,14 +7,13 @@ const categories = new CategoryStore();
 
 export const ProductHeader = observer(({products}: { products: any }) => {
     const [searchText, setSearchText] = useState("");
-    const [categoriesData, setCategoriesData] = useState<string[]>();
 
 
     // const [productCatalog, setProductCatalog] = useState<TProductCatalog>()
 
     useEffect(() => {
         const getCategoryData = async () => {
-            setCategoriesData(await categories.categoryList.fetchData());
+            await categories.categoryList.fetchData();
         }
         getCategoryData();
     }, []);
@@ -22,7 +21,7 @@ export const ProductHeader = observer(({products}: { products: any }) => {
     const handleClear = () => {
         setSearchText("");
         if (products.searchTimeout) clearTimeout(products.searchTimeout)
-        products.productStore.SearchData(null);
+        products.productStore.SearchData("");
     }
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +75,7 @@ export const ProductHeader = observer(({products}: { products: any }) => {
                 }} className="users-list">
                     <optgroup label="Select Category">
                         <option>All</option>
-                        {categoriesData?.map((category: string, index: number) => (
+                        {categories.categoryList.data?.map((category: string, index: number) => (
                             <option key={index} value={category}>{category}</option>
                         ))}
                     </optgroup>

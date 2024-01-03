@@ -1,54 +1,93 @@
 import {action, makeObservable, observable} from "mobx";
 
-export class ListTableStore<T> {
-    @observable fetchedData: any;
-    @observable skip: number=0;
-    @observable total: number=0;
-    limit: number=5;
-    @observable search: string | null = null;
+export class ListTableStore<T extends Record<string, any>> {
+    @observable fetchedDataFunction;
+    @observable data: T | undefined;
+    @observable skip: number = 0;
+    @observable total: number = 0;
+    limit: number = 5;
+    @observable search: string = "";
     @observable category: string = "";
+    @observable userId: number = 1;
 
-    constructor(promiseData:any) {
-        this.fetchedData = promiseData;
+    constructor(promiseData: any) {
+        this.fetchedDataFunction = promiseData;
         makeObservable(this);
     }
 
-    fetchData(){
-        return this.fetchedData(this.skip,this.category,this.limit,this.search);
+    fetchCartData() {
+        return this.fetchedDataFunction(this.userId);
+    }
+
+    async fetchData() {
+        const result = await this.fetchedDataFunction(this.skip, this.category, this.limit, this.search);
+        this.setData(result);
+    }
+
+    @action setData(result: T) {
+        this.total = result.total;
+
+        let filteredProductsWithCategory;
+        if (this.category !== "" && this.search && this.search !== "") {
+            filteredProductsWithCategory = result?.products.filter((product: T) => {
+                {
+                    if (product.title.toUpperCase().includes(this.search.toUpperCase()) && product.category === this.category) return product
+                }
+            })
+        }
+        const filteredProducts = {
+            products: filteredProductsWithCategory,
+            total: result.total,
+            skip: this.skip,
+            limit: this.limit
+        }
+        if (filteredProductsWithCategory) {
+            this.data = filteredProducts as unknown as T;
+
+        } else {
+            this.data = result;
+        }
     }
 
     @action
-    nextPage(){
+    nextPage() {
         console.log(this.total);
-        if(this.skip<this.total-this.limit){
-            this.skip=this.skip+this.limit;
+        if (this.skip < this.total - this.limit) {
+            this.skip = this.skip + this.limit;
+            this.fetchData();
         }
         console.log(this.skip);
     }
 
     @action
-    prevPage(){
+    prevPage() {
         console.log(this.skip)
-        if(this.skip>=this.limit)
-            this.skip=this.skip-this.limit;
+        if (this.skip !== 0)
+            this.skip = this.skip - this.limit;
+        this.fetchData();
     }
 
-    @action updateData(data: T){
-        this.fetchedData=data;
+    @action updateData(data: T) {
+        this.fetchedDataFunction = data;
     }
 
-    @action SearchData(title: string){
-        this.search=title;
+    @action SearchData(title: string) {
+        this.resetSkip();
+        this.search = title;
+        this.fetchData();
     }
 
-    @action setSelectedCategory(category: string){
-        this.category=category;
-    }
-    @action resetSkip(){
-        this.skip=0;
+    @action setSelectedCategory(category: string) {
+        this.resetSkip();
+        this.category = category;
+        this.fetchData();
     }
 
-    @action updateTotal(newTotal: number){
-        this.total=newTotal;
+    @action resetSkip() {
+        this.skip = 0;
+    }
+
+    @action updateTotal(newTotal: number) {
+        this.total = newTotal;
     }
 }

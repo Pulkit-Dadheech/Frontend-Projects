@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {TProduct} from "../../types/allTypes";
+import React, {useEffect} from "react";
+import {TProduct, TProductCatalog} from "../../types/allTypes";
 import {observer} from "mobx-react-lite";
 import "../../styles/ProductList.css"
 import Loader from "../LoadingPage/Loader";
@@ -8,53 +8,30 @@ import NoResultFound from "../NoSearchResultFound/NoResultFound";
 
 
 export const ProductComponent = observer(({products}: { products: any }) => {
-    const [productsList, setProductsList] = useState<TProduct[]>();
 
     useEffect(() => {
-        if (products.productStore.category || products.productStore.search) {
-            products.productStore.resetSkip();
-        }
-
         const getProductData = async () => {
-
-            const productCatalogDataReceived = await products.productStore.fetchData();
-            let filteredProductsWithCategory;
-
-            if (products.productStore.category !== "" && products.productStore.search && products.productStore.search !== ""){
-                filteredProductsWithCategory=productCatalogDataReceived.products.filter((product:TProduct)=>{
-                    {
-                        if( product.title.toUpperCase().includes(products.productStore.search.toUpperCase()) && product.category === products.productStore.category) return product
-                    }
-                })
-            }
-
-            if(filteredProductsWithCategory){
-                setProductsList(filteredProductsWithCategory);
-            }
-            else{
-                setProductsList(productCatalogDataReceived.products);
-            }
-            products.productStore.updateTotal(productCatalogDataReceived.total);
+            await products.productStore.fetchData();
         }
-
         getProductData();
-
-    }, [products.productStore.skip, products.productStore.search, products.productStore.category]);
+    }, []);
 
     if (products.dataLoading) {
         return <Loader/>
-    } else if (!!productsList && !productsList?.length) {
+
+    }
+    else if (products.productStore.data?.products.length===0) {
         return <NoResultFound/>
     }
+
 
     const fetchDiscountPrice = (discount: number, price: number) => {
         return Math.round(price - (discount / 100) * price);
     }
-
     return (
         <div>
-            {productsList &&
-                productsList.map((productWithQuantity) => (
+            {products.productStore.data && products.productStore.data.products &&
+                products.productStore.data.products.map((productWithQuantity: TProduct) => (
                     <div key={productWithQuantity.id} className="product-information">
                         <div className={"product-image"}>
                             <img src={productWithQuantity.images[0]} alt="Product List" height="170"/>
@@ -80,7 +57,8 @@ export const ProductComponent = observer(({products}: { products: any }) => {
                     </div>
                 ))
             }
-            {productsList && <PaginationComponent<any> store={products.productStore}/>}
+            {products.productStore.data && products.productStore.data.products &&
+                <PaginationComponent<any> store={products.productStore}/>}
         </div>
     );
 })
