@@ -26,6 +26,7 @@ export type TCartProduct = {
     total: number;
     discountPercentage: number;
     discountedPrice: number;
+    thumbnail: string;
 };
 export type TCarts = {
     id: number,
@@ -50,7 +51,10 @@ export interface IUserNameWithId {
 }
 
 export interface IUserData {
-    users: IUserNameWithId[]
+    users: IUserNameWithId[];
+    total: number;
+    skip: number;
+    limit: number;
 }
 
 export type TProductWithQuantity = TProduct & {
@@ -59,4 +63,6 @@ export type TProductWithQuantity = TProduct & {
 }
 
 export type TProductsWithQuantity = TProductWithQuantity[] | undefined
+
+
 
