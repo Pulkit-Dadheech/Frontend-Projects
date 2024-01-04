@@ -13,13 +13,23 @@ export const CartProducts = observer(() => {
         return Math.round(price - (discount / 100) * price);
     }
 
-    if (!cart.cartStore.data?.carts[0]?.products.length) {
+    const NotFoundComponent=()=>{
         return (
             <div className={"cart-no-product-found"}>
                 <h1>No Product Found</h1>
                 <button onClick={() => router.goTo('home')}>Add New Products</button>
-            </div>)
+            </div>
+        )
     }
+
+    const cartTotalProducts=cart.cartStore.data?.carts[0]?.products.filter((product: TCartProduct)=>product.quantity === 0).length;
+
+    if (!cart.cartStore.data?.carts[0]?.products.length || cartTotalProducts) {
+        return (
+            <NotFoundComponent/>
+        )
+    }
+
     return (
         <>
             {cart.cartStore.data &&
