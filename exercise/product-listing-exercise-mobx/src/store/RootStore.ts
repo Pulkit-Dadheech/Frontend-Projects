@@ -15,4 +15,4 @@ export class RootStore  {
         this.users=new UsersStore();
         this.category=new CategoryStore();
     }
-};
+}
