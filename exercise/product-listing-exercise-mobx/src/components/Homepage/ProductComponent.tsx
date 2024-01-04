@@ -1,37 +1,51 @@
 import React, {useEffect} from "react";
-import {TProduct, TProductCatalog} from "../../types/allTypes";
+import {TCartProduct, TProductsWithQuantity, TProductWithQuantity} from "../../types/allTypes";
 import {observer} from "mobx-react-lite";
 import "../../styles/ProductList.css"
 import Loader from "../LoadingPage/Loader";
 import {PaginationComponent} from "../pagination/PaginationComponent";
 import NoResultFound from "../NoSearchResultFound/NoResultFound";
+import {CartQuantityButton} from "../cartQuantityButton/cartQuantityButton";
+import {useRootStore} from "../../Context/RootContext";
+import {ProductStore} from "../../store/ProductStore";
+import {CartStore} from "../../store/cartStore";
 
+const product=new ProductStore();
+const cart=new CartStore();
 
-export const ProductComponent = observer(({products}: { products: any }) => {
+export const ProductComponent = observer(() => {
+    const rootStore = useRootStore();
 
     useEffect(() => {
         const getProductData = async () => {
-            await products.productStore.fetchData();
+            await product.productStore.fetchData();
         }
         getProductData();
     }, []);
 
-    if (products.dataLoading) {
+    if (product.dataLoading) {
         return <Loader/>
 
-    }
-    else if (products.productStore.data?.products.length===0) {
+    } else if (product.productStore.data?.products.length === 0) {
         return <NoResultFound/>
     }
-
 
     const fetchDiscountPrice = (discount: number, price: number) => {
         return Math.round(price - (discount / 100) * price);
     }
+
+    const productListWithQuantity: TProductsWithQuantity = product.productStore.data?.products.map((product: any) => {
+        return {
+            ...product,
+            quantity: cart.cartStore.data?.carts[0]?.products.find((p: TCartProduct) => p.id === product.id)?.quantity || 0,
+            customProduct: false
+        }
+    })
+
     return (
         <div>
-            {products.productStore.data && products.productStore.data.products &&
-                products.productStore.data.products.map((productWithQuantity: TProduct) => (
+            {product.productStore.data && product.productStore.data.products &&
+                productListWithQuantity?.map((productWithQuantity: TProductWithQuantity) => (
                     <div key={productWithQuantity.id} className="product-information">
                         <div className={"product-image"}>
                             <img src={productWithQuantity.images[0]} alt="Product List" height="170"/>
@@ -53,12 +67,14 @@ export const ProductComponent = observer(({products}: { products: any }) => {
                         </div>
                         <div className={"product-rating"}>
                             <p>Rating: {productWithQuantity.rating}</p>
+                            <CartQuantityButton stock={productWithQuantity.stock} id={productWithQuantity.id}
+                                                quantity={productWithQuantity.quantity}/>
                         </div>
                     </div>
                 ))
             }
-            {products.productStore.data && products.productStore.data.products &&
-                <PaginationComponent<any> store={products.productStore}/>}
+            {product.productStore.data && product.productStore.data.products &&
+                <PaginationComponent<any> store={product.productStore}/>}
         </div>
     );
 })
