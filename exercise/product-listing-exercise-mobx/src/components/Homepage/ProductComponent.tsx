@@ -7,14 +7,10 @@ import {PaginationComponent} from "../pagination/PaginationComponent";
 import NoResultFound from "../NoSearchResultFound/NoResultFound";
 import {CartQuantityButton} from "../cartQuantityButton/cartQuantityButton";
 import {useRootStore} from "../../Context/RootContext";
-import {ProductStore} from "../../store/ProductStore";
-import {CartStore} from "../../store/cartStore";
-
-const product=new ProductStore();
-const cart=new CartStore();
 
 export const ProductComponent = observer(() => {
     const rootStore = useRootStore();
+    const {cart, product} = useRootStore();
 
     useEffect(() => {
         const getProductData = async () => {
@@ -22,6 +18,17 @@ export const ProductComponent = observer(() => {
         }
         getProductData();
     }, []);
+
+    useEffect(() => {
+        const getCartData = async () => {
+            await rootStore?.cart.cartStore.fetchCartData();
+        }
+        if (!cart.cartStore.data || cart.cartStore.prevUserId !== cart.cartStore.userId) {
+            cart.cartStore.prevUserId = cart.cartStore.userId;
+            getCartData();
+        }
+    }, [cart.cartStore.userId]);
+
 
     if (product.dataLoading) {
         return <Loader/>

@@ -1,34 +1,39 @@
 import React, {useEffect, useState} from "react";
 import '../../styles/ProductHeader.css';
 import {observer} from "mobx-react-lite";
-import {CategoryStore} from "../../store/CategoryStore";
+import {useRouterStore} from "mobx-state-router";
+import {useRootStore} from "../../Context/RootContext";
 
-const categories = new CategoryStore();
-
-export const ProductHeader = observer(({products}: { products: any }) => {
+export const ProductHeader = observer(() => {
     const [searchText, setSearchText] = useState("");
-
+    const routerStore = useRouterStore();
+    const {category, users, cart, product} = useRootStore();
 
     // const [productCatalog, setProductCatalog] = useState<TProductCatalog>()
 
     useEffect(() => {
         const getCategoryData = async () => {
-            await categories.categoryList.fetchData();
+            await category.categoryList.fetchData();
+            await users.userList.fetchData();
         }
         getCategoryData();
     }, []);
 
     const handleClear = () => {
         setSearchText("");
-        if (products.searchTimeout) clearTimeout(products.searchTimeout)
-        products.productStore.SearchData("");
+        if (product.searchTimeout) clearTimeout(product.searchTimeout)
+        product.productStore.SearchData("");
     }
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchText(e.target.value)
-        if (products.searchTimeout) clearTimeout(products.searchTimeout);
-        products.setSearchTimeout(setTimeout(() => products.productStore.SearchData(e.target.value), 400));
+        if (product.searchTimeout) clearTimeout(product.searchTimeout);
+        product.setSearchTimeout(setTimeout(() => product.productStore.SearchData(e.target.value), 400));
     };
+
+    const handleNavigation = () => {
+        routerStore.goTo('cart');
+    }
 
 
     return (
@@ -40,7 +45,7 @@ export const ProductHeader = observer(({products}: { products: any }) => {
                     value={searchText}
                     onChange={(e) => handleSearch(e)}
                 />
-                {products.productStore.search && (
+                {product.productStore.search && (
                     <span
                         className="clear-button"
                         onClick={() => handleClear()}
@@ -49,34 +54,31 @@ export const ProductHeader = observer(({products}: { products: any }) => {
                 )}
             </div>
 
-            {/*    <div>*/}
-            {/*        <select onChange={(e) => {*/}
-            {/*            setSelectedUserDetails({*/}
-            {/*                ...selectedUserDetails,*/}
-            {/*                id: parseInt(e.target.value),*/}
-            {/*                name: e.target.selectedOptions[0].text*/}
-            {/*            })*/}
-            {/*        }} className="product-category-list">*/}
-            {/*            <optgroup label="Select A User">*/}
-            {/*                <option hidden>{selectedUserDetails.name || "Users"}</option>*/}
-            {/*                {userList.users?.map((user) => (*/}
-            {/*                    <option key={user.id} value={user.id}>{`${user.firstName} ${user.lastName}`}</option>*/}
-            {/*                ))}*/}
-            {/*            </optgroup>*/}
-            {/*        </select>*/}
-            {/*    </div>*/}
+            <div>
+                <select
+                    onChange={((e) => cart.cartStore.setUserId(Number(e.target.value)))}
+                    className="product-category-list">
+                    <optgroup label="Select A User">
+                        <option
+                            hidden>{users.userList.data?.users.find((user) => user.id === cart.cartStore.userId)?.firstName || "Users"}</option>
+                        {users.userList.data?.users.map((user) => (
+                            <option key={user.id} value={user.id}>{`${user.firstName} ${user.lastName}`}</option>
+                        ))}
+                    </optgroup>
+                </select>
+            </div>
             <div>
                 <select onChange={(e) => {
                     if (e.target.value !== 'All') {
-                        products.productStore.setSelectedCategory(e.target.value)
+                        product.productStore.setSelectedCategory(e.target.value)
                     } else {
-                        products.productStore.setSelectedCategory("")
+                        product.productStore.setSelectedCategory("")
                     }
                 }} className="users-list">
                     <optgroup label="Select Category">
                         <option>All</option>
-                        {categories.categoryList.data?.map((category: string, index: number) => (
-                            <option key={index} value={category}>{category}</option>
+                        {category.categoryList.data?.map((singleCategory: string, index: number) => (
+                            <option key={index} value={singleCategory}>{singleCategory}</option>
                         ))}
                     </optgroup>
                 </select>
@@ -87,9 +89,9 @@ export const ProductHeader = observer(({products}: { products: any }) => {
             {/*    <div id="custom-form">*/}
             {/*        <Link to="/form">Add Custom Product</Link>*/}
             {/*    </div>*/}
-            {/*    <div id="cart">*/}
-            {/*        <Link to="/cart">{selectedUserDetails.name}</Link>*/}
-            {/*    </div>*/}
+            <div className="cart">
+                <button onClick={handleNavigation}>Cart</button>
+            </div>
             {/*</div>*/}
             {/*</>*/}
         </div>
