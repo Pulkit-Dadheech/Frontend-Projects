@@ -9,12 +9,10 @@ export const ProductHeader = observer(() => {
     const routerStore = useRouterStore();
     const {category, users, cart, product} = useRootStore();
 
-    // const [productCatalog, setProductCatalog] = useState<TProductCatalog>()
-
     useEffect(() => {
         const getCategoryData = async () => {
             await category.categoryList.fetchData();
-            await users.userList.fetchData();
+            await users.userStore.fetchData();
         }
         getCategoryData();
     }, []);
@@ -35,6 +33,7 @@ export const ProductHeader = observer(() => {
         routerStore.goTo('cart');
     }
 
+    const userInfo = users.userStore.data?.users.find((user) => user.id === cart.cartStore.userId);
 
     return (
         <div className={"header-elements"}>
@@ -60,8 +59,8 @@ export const ProductHeader = observer(() => {
                     className="product-category-list">
                     <optgroup label="Select A User">
                         <option
-                            hidden>{users.userList.data?.users.find((user) => user.id === cart.cartStore.userId)?.firstName || "Users"}</option>
-                        {users.userList.data?.users.map((user) => (
+                            hidden>{`${userInfo?.firstName} ${userInfo?.lastName}` || "Users"}</option>
+                        {users.userStore.data?.users.map((user) => (
                             <option key={user.id} value={user.id}>{`${user.firstName} ${user.lastName}`}</option>
                         ))}
                     </optgroup>

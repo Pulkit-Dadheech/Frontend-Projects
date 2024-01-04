@@ -8,18 +8,20 @@ import {useRootStore} from "../../Context/RootContext";
 export const CartHeader = observer(() => {
 
     const routerStore = useRouterStore();
-    const {cart}=useRootStore();
+    const {cart,users}=useRootStore();
 
     const handleNavigation = () => {
         routerStore.goTo('home');
     }
+
+    const userInfo=users.userStore.data?.users.find((user)=>user.id === cart.cartStore.userId);
 
     return (
         <div className="cart-header">
             <div className="homepage">
                 <button onClick={handleNavigation}>HomePage</button>
             </div>
-            <h1 className="cart-header-name">{"name"}</h1>
+            <h1 className="cart-header-name">{`${userInfo?.firstName} ${userInfo?.lastName}`}</h1>
             <h2 className="cart-total-products">
                 Your
                 Products({cart.cartStore.data?.carts[0]?.products.filter((product: TCartProduct) => product.quantity > 0).length || 0})

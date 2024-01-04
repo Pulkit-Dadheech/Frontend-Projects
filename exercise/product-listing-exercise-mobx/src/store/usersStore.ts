@@ -5,12 +5,12 @@ import {IUserData} from "../types/allTypes";
 
 
 export class UsersStore {
-    userList: ListTableStore<IUserData>;
+    userStore: ListTableStore<IUserData>;
     @observable dataLoading: boolean = false;
     @observable searchTimeout: NodeJS.Timeout | undefined
 
     constructor() {
-        this.userList = new ListTableStore<IUserData>(this.fetchUserData);
+        this.userStore = new ListTableStore<IUserData>(this.fetchUserData);
         makeObservable(this);
     }
 
