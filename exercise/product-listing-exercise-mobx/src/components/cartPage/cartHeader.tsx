@@ -1,12 +1,14 @@
+import {useRouterStore} from "mobx-state-router";
 import "./cartHeader.css"
 import {observer} from "mobx-react-lite";
 import {TCartProduct} from "../../types/allTypes";
-import {CartStore} from "../../store/cartStore";
-import {useRouterStore} from "mobx-state-router";
+import {useRootStore} from "../../Context/RootContext";
 
-const cart = new CartStore();
+
 export const CartHeader = observer(() => {
-    const routerStore=useRouterStore();
+
+    const routerStore = useRouterStore();
+    const {cart}=useRootStore();
 
     const handleNavigation = () => {
         routerStore.goTo('home');
@@ -20,7 +22,7 @@ export const CartHeader = observer(() => {
             <h1 className="cart-header-name">{"name"}</h1>
             <h2 className="cart-total-products">
                 Your
-                Products({cart.cartStore.data?.carts[0]?.products.filter((product: TCartProduct) => product.quantity > 0).length})
+                Products({cart.cartStore.data?.carts[0]?.products.filter((product: TCartProduct) => product.quantity > 0).length || 0})
             </h2>
 
         </div>
