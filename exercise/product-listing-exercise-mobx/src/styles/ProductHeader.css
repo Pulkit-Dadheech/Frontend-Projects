@@ -31,21 +31,6 @@
     border: 0.09rem solid black;
 }
 
-a {
-    background-color: white;
-    border: 0.09rem solid black;
-    text-decoration: none;
-    color: black;
-    font-weight: 600;
-    padding: 1rem;
-    /*box-shadow: 0.125rem 0.125rem 0.125rem grey;*/
-    border-radius: 1rem;
-}
-a:hover{
-    background-color: black;
-    color: white;
-}
-
 .clear-button {
     display: inline-block;
     position: relative;
@@ -53,6 +38,49 @@ a:hover{
     top: 0.1rem;
     cursor: pointer;
     padding: 0.625rem;
+}
+
+.cart-no-product-found{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+.cart-no-product-found>h1{
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+.cart>button{
+    padding: 1rem;
+    background-color: black;
+    border: 0.09rem solid black;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 1rem;
+}
+.cart>button:hover{
+    background-color: white;
+    color: black;
+}
+
+.cart-no-product-found>button{
+    padding: 1rem;
+    background-color: black;
+    border: 0.09rem solid black;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0.125rem 0.125rem 0.125rem grey;
+    border-radius: 1rem;
+}
+.cart-no-product-found>button:hover{
+    background-color: white;
+    color: black;
 }
 
 
