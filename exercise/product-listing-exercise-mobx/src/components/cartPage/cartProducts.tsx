@@ -1,14 +1,13 @@
 import React from "react";
 import {TCartProduct} from "../../types/allTypes";
 import {observer} from "mobx-react-lite";
-import {useRouterStore} from "mobx-state-router";
+import {CartQuantityButton} from "../cartQuantityButton/cartQuantityButton";
 import {CartStore} from "../../store/cartStore";
+import {useRouterStore} from "mobx-state-router";
 
 const cart = new CartStore();
 export const CartProducts = observer(() => {
     const router = useRouterStore();
-
-
     const fetchDiscountPrice = (discount: number, price: number) => {
         return Math.round(price - (discount / 100) * price);
     }
@@ -40,11 +39,10 @@ export const CartProducts = observer(() => {
                                 )
                             </>
                             </h4>
-                            {/*<h4>Category: {cartProduct.category}</h4>*/}
-                            {/*<p>Description: {cartProduct.description}</p>*/}
                         </div>
                         <div className={"product-rating"}>
-                            {/*<p>Rating: {cartProduct.rating}</p>*/}
+                            <CartQuantityButton quantity={cartProduct.quantity} id={cartProduct.id}
+                                                stock={cartProduct.total}/>
                         </div>
                     </div>
                 ))
