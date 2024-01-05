@@ -19,7 +19,6 @@ export class UsersStore {
             this.updateLoading();
             const response = await fetch(createApiUrl(apiQueries.User));
             const data = await response.json();
-            console.log("userData", data)
             return data;
         } catch (error) {
             console.error("Error loading data", error);

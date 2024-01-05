@@ -16,7 +16,6 @@ export const CartProducts = observer(() => {
         const userIdBeforeRefresh=SessionStorageGetter('userId');
         cart.cartStore.setUserId(userIdBeforeRefresh);
         const data=SessionStorageGetter('cartProducts'+cart.cartStore.userId)
-        console.log(data);
 
         const getCartData = async () => {
             await cart.cartStore.fetchCartData();
