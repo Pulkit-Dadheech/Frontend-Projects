@@ -4,9 +4,9 @@ import {observer} from "mobx-react-lite";
 import {CartQuantityButton} from "../../cartQuantityButton/cartQuantityButton";
 import {useRootStore} from "../../../Context/RootContext";
 import {useRouterStore} from "mobx-state-router";
+import {NotFoundComponent} from "../../NoSearchResultFound/NotFoundComponent";
 
 export const CustomProductList = observer(() => {
-    const router = useRouterStore();
     const {customProduct} = useRootStore();
     const store = customProduct.customProductStore;
     const fetchDiscountPrice = (discount: number, price: number) => {
@@ -15,10 +15,8 @@ export const CustomProductList = observer(() => {
 
     if (!store.data) {
         return (
-            <div className={"cart-no-product-found"}>
-                <h1>No Product Found</h1>
-                <button onClick={() => router.goTo('home')}>Add New Products</button>
-            </div>)
+            <NotFoundComponent route={'customForm'}/>
+        )
     }
 
     return (
@@ -44,7 +42,7 @@ export const CustomProductList = observer(() => {
                         </div>
                         <div className={"product-rating"}>
                             <CartQuantityButton quantity={cartProduct.quantity} id={cartProduct.id}
-                                                stock={cartProduct.total}/>
+                                                stock={cartProduct.total} isCustom={true}/>
                         </div>
                     </div>
                 ))

@@ -11,14 +11,14 @@ export const CustomCartPage = () => {
 
     if (!customProduct.customProductStore.data || cartTotalProducts === 0) {
         return (
-            <NotFoundComponent/>
+            <NotFoundComponent route={'customProduct'}/>
         )
     }
     return (
         <>
             <CustomCartHeader/>
             <Cart<TSingleCustomProduct>
-                data={customProduct.customProductStore.data?.filter((product) => product.quantity > 0)}/>
+                data={customProduct.customProductStore.data?.filter((product) => product.quantity > 0)} isCustom={true}/>
         </>
     )
 }

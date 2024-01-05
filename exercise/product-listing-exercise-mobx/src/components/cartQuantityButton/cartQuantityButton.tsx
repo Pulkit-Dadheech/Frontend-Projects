@@ -7,7 +7,7 @@ import {useRootStore} from "../../Context/RootContext";
 interface userCartItemsWithQuantity {
     [id: number]: { id: number; quantity: number };
 }
-export const CartQuantityButton = observer(({quantity, id, stock}: { quantity: number, id: number, stock: number }) => {
+export const CartQuantityButton = observer(({quantity, id, stock,isCustom}: { quantity: number, id: number, stock: number ,isCustom:boolean}) => {
 
     const {cart} = useRootStore();
     const store = cart.cartStore;
@@ -152,10 +152,10 @@ export const CartQuantityButton = observer(({quantity, id, stock}: { quantity: n
 
     return (<>
         {<div key={id} className="product-quantity-button">
-            <button onClick={() => onAdd(id, false, stock, quantity)}>{!quantity ? "Add to Cart" : "+"}</button>
+            <button onClick={() => onAdd(id, isCustom, stock, quantity)}>{!quantity ? "Add to Cart" : "+"}</button>
             <span className={!!quantity ? 'display-inline' : 'display-none'}>
                 <span className="product-quantity-button-text">{quantity}</span>
-                <button onClick={() => onDelete(id, false, stock, quantity)}>-</button>
+                <button onClick={() => onDelete(id, isCustom, stock, quantity)}>-</button>
             </span>
         </div>
         }

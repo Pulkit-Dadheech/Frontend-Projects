@@ -70,7 +70,6 @@ export const CustomProductForm=observer(()=> {
 
     return (
         <div className="form-container">
-
             <div className={"form-header"}>
                 <h2 className="form-header-text">Add a Custom Product</h2>
                 <button onClick={() => routerStore.goTo('customProduct')}>View Custom Products</button>

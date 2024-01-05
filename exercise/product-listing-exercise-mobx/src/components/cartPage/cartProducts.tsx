@@ -2,18 +2,16 @@ import React from "react";
 import {TCartProduct} from "../../types/allTypes";
 import {observer} from "mobx-react-lite";
 import {useRootStore} from "../../Context/RootContext";
-import {useRouterStore} from "mobx-state-router";
 import {Cart} from "../GenericCart/Cart";
 import {NotFoundComponent} from "../NoSearchResultFound/NotFoundComponent";
 
 export const CartProducts = observer(() => {
-    const router = useRouterStore();
     const {cart} = useRootStore();
     const cartTotalProducts = cart.cartStore.data?.carts[0]?.products.filter((product: TCartProduct) => product.quantity > 0).length;
 
     if (!cart.cartStore.data?.carts[0]?.products.length || cartTotalProducts === 0) {
         return (
-            <NotFoundComponent/>
+            <NotFoundComponent route={'home'}/>
         )
     }
 
@@ -21,7 +19,7 @@ export const CartProducts = observer(() => {
         <>
             {cart.cartStore.data &&
                 <Cart<TCartProduct>
-                    data={cart.cartStore.data?.carts[0].products.filter((product: TCartProduct) => product.quantity > 0)}/>
+                    data={cart.cartStore.data?.carts[0].products.filter((product: TCartProduct) => product.quantity > 0)} isCustom={false}/>
             }
         </>
     )
