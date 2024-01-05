@@ -64,5 +64,21 @@ export type TProductWithQuantity = TProduct & {
 
 export type TProductsWithQuantity = TProductWithQuantity[] | undefined
 
+export type TSingleCustomProduct={
+    id: number,
+    title: string,
+    category: string,
+    quantity: number,
+    description: string,
+    discountPercentage: number,
+    images: any[],
+    price: number,
+    rating: number,
+    total: number,
+    customProduct: boolean,
+}
+
+export type TCustomProduct = TSingleCustomProduct[]
+
 
 
