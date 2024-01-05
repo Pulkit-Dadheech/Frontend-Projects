@@ -16,6 +16,10 @@ export class ListTableStore<T extends Record<string, any>> {
         makeObservable(this);
     }
 
+    fetchCustomProductData() {
+        this.setData(this.fetchedDataFunction());
+    }
+
     async fetchCartData() {
         const result = await this.fetchedDataFunction(this.userId);
         this.setData(result);
@@ -27,12 +31,13 @@ export class ListTableStore<T extends Record<string, any>> {
     }
 
     @action setData(result: T) {
-        this.total = result.total;
+        if (result.total)
+            this.total = result.total;
 
         let filteredProductsWithCategory;
         if (this.category !== "" && this.search && this.search !== "") {
             filteredProductsWithCategory = result?.products.filter((product: T) => {
-                    if (product.title.toUpperCase().includes(this.search.toUpperCase()) && product.category === this.category) return product
+                if (product.title.toUpperCase().includes(this.search.toUpperCase()) && product.category === this.category) return product
             })
         }
         const filteredProducts = {
