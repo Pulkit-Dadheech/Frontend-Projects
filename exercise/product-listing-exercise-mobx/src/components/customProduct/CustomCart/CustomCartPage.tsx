@@ -14,6 +14,11 @@ export const CustomCartPage = observer(() => {
 
     useEffect(() => {
         const customProductDataBeforeRefresh=SessionStorageGetter('customProducts');
+        const customProductIdBeforeRefresh=SessionStorageGetter('customProductId')
+
+        if(customProductIdBeforeRefresh){
+            customProduct.updateCustomProductId(+customProductIdBeforeRefresh+1);
+        }
         if(!customProduct.customProductStore.data && customProductDataBeforeRefresh){
             customProduct.customProductStore.setData(customProductDataBeforeRefresh);
         }

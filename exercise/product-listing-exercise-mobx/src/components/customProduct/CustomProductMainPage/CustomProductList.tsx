@@ -12,6 +12,12 @@ export const CustomProductList = observer(() => {
     const store = customProduct.customProductStore;
     useEffect(() => {
         const customProductDataBeforeRefresh=SessionStorageGetter('customProducts');
+        const customProductIdBeforeRefresh=SessionStorageGetter('customProductId')
+
+        if(customProductIdBeforeRefresh){
+            customProduct.updateCustomProductId(+customProductIdBeforeRefresh+1);
+        }
+
         if(!store.data && customProductDataBeforeRefresh){
             customProduct.customProductStore.setData(customProductDataBeforeRefresh);
         }

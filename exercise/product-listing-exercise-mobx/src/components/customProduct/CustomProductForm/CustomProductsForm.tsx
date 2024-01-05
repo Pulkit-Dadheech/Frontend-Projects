@@ -17,12 +17,16 @@ export const CustomProductForm = observer(() => {
 
     useEffect(() => {
         const customProductData = SessionStorageGetter('customProducts');
+        const customProductIdBeforeRefresh=SessionStorageGetter('customProductId');
+
         if (customProductData) {
             customProduct.customProductStore.setData(customProductData)
         } else if (!customProduct.customProductStore.data) {
-
             customProduct.customProductStore.fetchCustomProductData();
+        }
 
+        if(customProductIdBeforeRefresh){
+            customProduct.updateCustomProductId(+customProductIdBeforeRefresh+1)
         }
     }, []);
 
@@ -46,7 +50,15 @@ export const CustomProductForm = observer(() => {
     };
     const handleSave = (e: React.SyntheticEvent) => {
         e.preventDefault();
-        customProduct.customProductId = customProduct.customProductId + 1;
+        const customProductIdBeforeRefresh=SessionStorageGetter('customProductId')
+
+        if(customProductIdBeforeRefresh){
+            customProduct.updateCustomProductId(+customProductIdBeforeRefresh+1);
+        }
+        else{
+            customProduct.updateCustomProductId(customProduct.customProductId+1)
+        }
+
         if (customProduct.customProductStore.data) {
             customProduct.customProductStore.setData([...customProduct.customProductStore.data, customProduct.customProductData]);
             SessionStorageSetter('customProducts', customProduct.customProductStore.data)
