@@ -82,9 +82,9 @@ export const ProductHeader = observer(() => {
                     </optgroup>
                 </select>
             </div>
-            {/*    <div id="custom-product-listing">*/}
-            {/*        <Link to="/custom-product">Custom Products</Link>*/}
-            {/*    </div>*/}
+            <div className="cart">
+                <button onClick={()=>routerStore.goTo('customForm')}>CustomForm</button>
+            </div>
             {/*    <div id="custom-form">*/}
             {/*        <Link to="/form">Add Custom Product</Link>*/}
             {/*    </div>*/}
