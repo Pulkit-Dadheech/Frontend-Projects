@@ -4,6 +4,8 @@ import {observer} from "mobx-react-lite";
 import {useRootStore} from "../../Context/RootContext";
 import {Cart} from "../GenericCart/Cart";
 import {NotFoundComponent} from "../NoSearchResultFound/NotFoundComponent";
+import {CartStore} from "../../store/cartStore";
+import {ListTableStore} from "../../store/ListTableStore";
 
 export const CartProducts = observer(() => {
     const {cart} = useRootStore();
@@ -18,8 +20,8 @@ export const CartProducts = observer(() => {
     return (
         <>
             {cart.cartStore.data &&
-                <Cart<TCartProduct>
-                    data={cart.cartStore.data?.carts[0].products.filter((product: TCartProduct) => product.quantity > 0)} isCustom={false}/>
+                <Cart<ListTableStore<CartStore>>
+                    data={cart.cartStore.data?.carts[0].products.filter((product: TCartProduct) => product.quantity > 0)} isCustom={false} store={cart.cartStore}/>
             }
         </>
     )

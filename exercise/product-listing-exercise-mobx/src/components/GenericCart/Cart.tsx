@@ -14,14 +14,14 @@ type TCart = {
     image?: string
 }
 
-export const Cart = observer(<T extends TCart, >({data,isCustom}: { data: Array<T>,isCustom:boolean }) => {
+export const Cart = observer(<T, >({data, isCustom, store}: { data: Array<TCart>, isCustom: boolean, store: T }) => {
     const fetchDiscountPrice = (discount: number, price: number) => {
         return Math.round(price - (discount / 100) * price);
     }
 
     return (
         <>
-            {data.map((cartProduct: T) => (
+            {data.map((cartProduct: TCart) => (
                 <div key={cartProduct.id} className="product-information">
                     <div className={"product-image"}>
                         <img src={cartProduct.thumbnail || cartProduct.image} alt="Cart List" height="170"/>
@@ -40,8 +40,9 @@ export const Cart = observer(<T extends TCart, >({data,isCustom}: { data: Array<
                         </h4>
                     </div>
                     <div className={"product-rating"}>
-                        <CartQuantityButton quantity={cartProduct.quantity} id={cartProduct.id}
-                                            stock={cartProduct.total} isCustom={isCustom}/>
+                        <CartQuantityButton<any> quantity={cartProduct.quantity} id={cartProduct.id}
+                                                 stock={cartProduct.total} isCustom={isCustom} data={data}
+                                                 store={store}/>
                     </div>
                 </div>))}
         </>

@@ -4,21 +4,21 @@ import {TCartProduct} from "../../types/allTypes";
 import {toJS} from "mobx";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import {useRootStore} from "../../Context/RootContext";
+import {ListTableStore} from "../../store/ListTableStore";
 interface userCartItemsWithQuantity {
     [id: number]: { id: number; quantity: number };
 }
-export const CartQuantityButton = observer(({quantity, id, stock,isCustom}: { quantity: number, id: number, stock: number ,isCustom:boolean}) => {
+export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({quantity, id, stock,isCustom,data,store}: { quantity: number, id: number, stock: number ,isCustom:boolean,data: any,store:T}) => {
 
     const {cart} = useRootStore();
-    const store = cart.cartStore;
 
 
     function onAdd(id: number, isCustom: boolean, stock: number, quantity: number) {
-        const isProduct=store.data?.carts[0]?.products.find((product:any)=>product.id === id);
+        const isProduct=data?.find((product:any)=>product.id === id);
 
         if (isCustom || isProduct) {
             console.log(toJS(store.data));
-            const result = store.data?.carts[0].products.map((product: TCartProduct) => {
+            const result = data.map((product: TCartProduct) => {
                 if (product.id === id && quantity<=stock) {
                     return {
                         ...product,
@@ -27,28 +27,32 @@ export const CartQuantityButton = observer(({quantity, id, stock,isCustom}: { qu
                 }
                 return {...product};
             })
-
-            const newStore = {
-                carts: [{
-                    ...store.data.carts[0],
-                    products: result
-                }],
-                limit: store.data.limit,
-                skip: store.data.skip,
-                total: store.data.total
+            if(store.data.carts) {
+                const newStore = {
+                    carts: [{
+                        ...store.data.carts[0],
+                        products: result
+                    }],
+                    limit: store.data.limit,
+                    skip: store.data.skip,
+                    total: store.data.total
+                }
+                store.setData(newStore);
             }
-            store.setData(newStore);
+            else{
+                store.setData(result);
+            }
         } else {
             AddOrRemoveProductFromCart(id, quantity, false)
         }
     }
 
     function onDelete(id: number, isCustom: boolean, stock: number, quantity: number) {
-        const isProduct=store.data?.carts[0]?.products?.find((product:any)=>product.id === id);
+        const isProduct=data.find((product:any)=>product.id === id);
 
         if (isCustom || isProduct) {
             console.log(toJS(store.data));
-            const result = store.data?.carts[0].products.map((product: TCartProduct) => {
+            const result = data.map((product: TCartProduct) => {
                 if (product.id === id) {
                     return {
                         ...product,
@@ -57,17 +61,21 @@ export const CartQuantityButton = observer(({quantity, id, stock,isCustom}: { qu
                 }
                 return {...product};
             })
-            const newStore = {
-                carts: [{
-                    ...store.data.carts[0],
-                    products: result
-                }],
-                limit: store.data.limit,
-                skip: store.data.skip,
-                total: store.data.total
+            if(store.data.carts) {
+                const newStore = {
+                    carts: [{
+                        ...store.data.carts[0],
+                        products: result
+                    }],
+                    limit: store.data.limit,
+                    skip: store.data.skip,
+                    total: store.data.total
+                }
+                store.setData(newStore);
             }
-            console.log("newStore", newStore);
-            store.setData(newStore);
+            else{
+                store.setData(result);
+            }
         } else {
             AddOrRemoveProductFromCart(id, quantity, true)
         }
@@ -152,7 +160,7 @@ export const CartQuantityButton = observer(({quantity, id, stock,isCustom}: { qu
 
     return (<>
         {<div key={id} className="product-quantity-button">
-            <button onClick={() => onAdd(id, isCustom   , stock, quantity)}>{!quantity ? "Add to Cart" : "+"}</button>
+            <button onClick={() => onAdd(id, isCustom, stock, quantity)}>{!quantity ? "Add to Cart" : "+"}</button>
             <span className={!!quantity ? 'display-inline' : 'display-none'}>
                 <span className="product-quantity-button-text">{quantity}</span>
                 <button onClick={() => onDelete(id, isCustom, stock, quantity)}>-</button>

@@ -4,6 +4,7 @@ import {observer} from "mobx-react-lite";
 import {CartQuantityButton} from "../../cartQuantityButton/cartQuantityButton";
 import {useRootStore} from "../../../Context/RootContext";
 import {NotFoundComponent} from "../../NoSearchResultFound/NotFoundComponent";
+import {ListTableStore} from "../../../store/ListTableStore";
 
 export const CustomProductList = observer(() => {
     const {customProduct} = useRootStore();
@@ -38,10 +39,13 @@ export const CustomProductList = observer(() => {
                                 )
                             </>
                             </h4>
+                            <h4>Category: {cartProduct.category}</h4>
+                            <p>Description: {cartProduct.description}</p>
                         </div>
                         <div className={"product-rating"}>
-                            <CartQuantityButton quantity={cartProduct.quantity} id={cartProduct.id}
-                                                stock={cartProduct.total} isCustom={true}/>
+                            <CartQuantityButton<ListTableStore<any>> quantity={cartProduct.quantity} id={cartProduct.id}
+                                                                     stock={cartProduct.total} isCustom={true}
+                                                                     store={store} data={store.data}/>
                         </div>
                     </div>
                 ))

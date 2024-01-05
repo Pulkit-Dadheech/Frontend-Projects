@@ -7,6 +7,8 @@ import {PaginationComponent} from "../pagination/PaginationComponent";
 import NoResultFound from "../NoSearchResultFound/NoResultFound";
 import {CartQuantityButton} from "../cartQuantityButton/cartQuantityButton";
 import {useRootStore} from "../../Context/RootContext";
+import {CartStore} from "../../store/cartStore";
+import {ListTableStore} from "../../store/ListTableStore";
 
 export const ProductComponent = observer(() => {
     const rootStore = useRootStore();
@@ -74,8 +76,8 @@ export const ProductComponent = observer(() => {
                         </div>
                         <div className={"product-rating"}>
                             <p>Rating: {productWithQuantity.rating}</p>
-                            <CartQuantityButton stock={productWithQuantity.stock} id={productWithQuantity.id}
-                                                quantity={productWithQuantity.quantity} isCustom={false}/>
+                            <CartQuantityButton<ListTableStore<CartStore>> stock={productWithQuantity.stock} id={productWithQuantity.id}
+                                                quantity={productWithQuantity.quantity} isCustom={false} data={cart.cartStore.data?.carts[0]?.products} store={cart.cartStore}/>
                         </div>
                     </div>
                 ))
