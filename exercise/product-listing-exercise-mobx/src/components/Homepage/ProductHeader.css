@@ -62,10 +62,6 @@
     font-size: 1rem;
     border-radius: 1rem;
 }
-.cart>button:hover{
-    background-color: white;
-    color: black;
-}
 
 .cart-no-product-found>button{
     padding: 1rem;
@@ -78,7 +74,7 @@
     box-shadow: 0.125rem 0.125rem 0.125rem grey;
     border-radius: 1rem;
 }
-.cart-no-product-found>button:hover{
+.cart-no-product-found>button:hover,.cart>button:hover{
     background-color: white;
     color: black;
 }

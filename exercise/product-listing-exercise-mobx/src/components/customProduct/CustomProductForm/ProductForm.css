@@ -61,3 +61,19 @@ input::-webkit-inner-spin-button {
 .error-message{
     color: red;
 }
+
+.form-header-text>button{
+    padding: 1rem;
+    background-color: black;
+    border: 0.09rem solid black;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 1rem;
+}
+.form-header-text>button:hover{
+    background-color: white;
+    color: black;
+}
+
