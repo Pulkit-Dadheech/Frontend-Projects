@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {TCartProduct, TProductsWithQuantity, TProductWithQuantity} from "../../types/allTypes";
 import {observer} from "mobx-react-lite";
-import "../../styles/ProductList.css"
+import "./ProductList.css"
 import Loader from "../LoadingPage/Loader";
 import {PaginationComponent} from "../pagination/PaginationComponent";
 import NoResultFound from "../NoSearchResultFound/NoResultFound";
@@ -75,7 +75,7 @@ export const ProductComponent = observer(() => {
                         <div className={"product-rating"}>
                             <p>Rating: {productWithQuantity.rating}</p>
                             <CartQuantityButton stock={productWithQuantity.stock} id={productWithQuantity.id}
-                                                quantity={productWithQuantity.quantity}/>
+                                                quantity={productWithQuantity.quantity} isCustom={false}/>
                         </div>
                     </div>
                 ))

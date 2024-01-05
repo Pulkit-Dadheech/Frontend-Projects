@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import '../../styles/ProductHeader.css';
+import './ProductHeader.css';
 import {observer} from "mobx-react-lite";
 import {useRouterStore} from "mobx-state-router";
 import {useRootStore} from "../../Context/RootContext";
