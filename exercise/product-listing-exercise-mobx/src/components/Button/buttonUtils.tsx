@@ -6,10 +6,11 @@ import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import {useRootStore} from "../../Context/RootContext";
 import {ListTableStore} from "../../store/ListTableStore";
 import {SessionStorageGetter, SessionStorageSetter} from "../SessionStorageHandler/SessionStorageHandler";
+import {AddToCartButton} from "./addToCartButton";
 interface userCartItemsWithQuantity {
     [id: number]: { id: number; quantity: number };
 }
-export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({quantity, id, stock,isCustom,data,store}: { quantity: number, id: number, stock: number ,isCustom:boolean,data: any,store:T}) => {
+export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, id, stock,isCustom,data,store}: { quantity: number, id: number, stock: number ,isCustom:boolean,data: any,store:T}) => {
 
     const {cart} = useRootStore();
 
@@ -178,13 +179,14 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
 
 
     return (<>
-        {<div key={id} className="product-quantity-button">
-            <button onClick={() => onAdd(id, isCustom, stock, quantity)}>{!quantity ? "Add to Cart" : "+"}</button>
-            <span className={!!quantity ? 'display-inline' : 'display-none'}>
-                <span className="product-quantity-button-text">{quantity}</span>
-                <button onClick={() => onDelete(id, isCustom, stock, quantity)}>-</button>
-            </span>
-        </div>
-        }
+        {/*{<div key={id} className="product-quantity-button">*/}
+        {/*    <button onClick={() => onAdd(id, isCustom, stock, quantity)}>{!quantity ? "Add to Cart" : "+"}</button>*/}
+        {/*    <span className={!!quantity ? 'display-inline' : 'display-none'}>*/}
+        {/*        <span className="product-quantity-button-text">{quantity}</span>*/}
+        {/*        <button onClick={() => onDelete(id, isCustom, stock, quantity)}>-</button>*/}
+        {/*    </span>*/}
+        {/*</div>*/}
+        <AddToCartButton id={id} onAdd={onAdd} onDelete={onDelete} quantity={quantity} isCustom={isCustom} stock={stock}/>
+
     </>)
 })

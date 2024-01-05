@@ -1,5 +1,5 @@
 import {observer} from "mobx-react-lite";
-import {CartQuantityButton} from "../cartQuantityButton/cartQuantityButton";
+import {ButtonUtils} from "../Button/buttonUtils";
 import React from "react";
 
 type TCart = {
@@ -40,9 +40,9 @@ export const Cart = observer(<T, >({data, isCustom, store}: { data: Array<TCart>
                         </h4>
                     </div>
                     <div className={"product-rating"}>
-                        <CartQuantityButton<any> quantity={cartProduct.quantity} id={cartProduct.id}
-                                                 stock={cartProduct.total} isCustom={isCustom} data={data}
-                                                 store={store}/>
+                        <ButtonUtils<any> quantity={cartProduct.quantity} id={cartProduct.id}
+                                          stock={cartProduct.total} isCustom={isCustom} data={data}
+                                          store={store}/>
                     </div>
                 </div>))}
         </>

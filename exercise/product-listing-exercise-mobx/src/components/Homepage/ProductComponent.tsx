@@ -5,7 +5,7 @@ import "./ProductList.css"
 import Loader from "../LoadingPage/Loader";
 import {PaginationComponent} from "../pagination/PaginationComponent";
 import NoResultFound from "../NoSearchResultFound/NoResultFound";
-import {CartQuantityButton} from "../cartQuantityButton/cartQuantityButton";
+import {ButtonUtils} from "../Button/buttonUtils";
 import {useRootStore} from "../../Context/RootContext";
 import {CartStore} from "../../store/cartStore";
 import {ListTableStore} from "../../store/ListTableStore";
@@ -81,12 +81,12 @@ export const ProductComponent = observer(() => {
                         </div>
                         <div className={"product-rating"}>
                             <p>Rating: {productWithQuantity.rating}</p>
-                            <CartQuantityButton<ListTableStore<CartStore>> stock={productWithQuantity.stock}
-                                                                           id={productWithQuantity.id}
-                                                                           quantity={productWithQuantity.quantity}
-                                                                           isCustom={false}
-                                                                           data={cart.cartStore.data?.carts[0]?.products}
-                                                                           store={cart.cartStore}/>
+                            <ButtonUtils<ListTableStore<CartStore>> stock={productWithQuantity.stock}
+                                                                    id={productWithQuantity.id}
+                                                                    quantity={productWithQuantity.quantity}
+                                                                    isCustom={false}
+                                                                    data={cart.cartStore.data?.carts[0]?.products}
+                                                                    store={cart.cartStore}/>
                         </div>
                     </div>
                 ))

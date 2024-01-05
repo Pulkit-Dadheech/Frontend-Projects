@@ -1,7 +1,7 @@
 import React from "react";
 import {TSingleCustomProduct} from "../../../types/allTypes";
 import {observer} from "mobx-react-lite";
-import {CartQuantityButton} from "../../cartQuantityButton/cartQuantityButton";
+import {ButtonUtils} from "../../Button/buttonUtils";
 import {useRootStore} from "../../../Context/RootContext";
 import {NotFoundComponent} from "../../NoSearchResultFound/NotFoundComponent";
 import {ListTableStore} from "../../../store/ListTableStore";
@@ -43,9 +43,9 @@ export const CustomProductList = observer(() => {
                             <p>Description: {cartProduct.description}</p>
                         </div>
                         <div className={"product-rating"}>
-                            <CartQuantityButton<ListTableStore<any>> quantity={cartProduct.quantity} id={cartProduct.id}
-                                                                     stock={cartProduct.total} isCustom={true}
-                                                                     store={store} data={store.data}/>
+                            <ButtonUtils<ListTableStore<any>> quantity={cartProduct.quantity} id={cartProduct.id}
+                                                              stock={cartProduct.total} isCustom={true}
+                                                              store={store} data={store.data}/>
                         </div>
                     </div>
                 ))
