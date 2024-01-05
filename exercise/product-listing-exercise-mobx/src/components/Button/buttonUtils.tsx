@@ -20,7 +20,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
         if (isCustom) {
             console.log(toJS(store.data));
             const result = data.map((product: TCartProduct) => {
-                if (product.id === id && quantity<=stock) {
+                if (product.id === id && quantity<stock) {
                     return {
                         ...product,
                         quantity: product.quantity + 1,
@@ -134,7 +134,6 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
                     skip: store.data.skip,
                     limit: store.data.limit,
                 });
-                console.log("this is store data after updating", toJS(store.data));
             }
         } catch (error) {
             createNewCart(filteredProducts,isDelete);

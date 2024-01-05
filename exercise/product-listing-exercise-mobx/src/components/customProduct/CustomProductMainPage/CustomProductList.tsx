@@ -1,14 +1,21 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {TSingleCustomProduct} from "../../../types/allTypes";
 import {observer} from "mobx-react-lite";
 import {ButtonUtils} from "../../Button/buttonUtils";
 import {useRootStore} from "../../../Context/RootContext";
 import {NotFoundComponent} from "../../NoSearchResultFound/NotFoundComponent";
 import {ListTableStore} from "../../../store/ListTableStore";
+import {SessionStorageGetter} from "../../SessionStorageHandler/SessionStorageHandler";
 
 export const CustomProductList = observer(() => {
     const {customProduct} = useRootStore();
     const store = customProduct.customProductStore;
+    useEffect(() => {
+        const customProductDataBeforeRefresh=SessionStorageGetter('customProducts');
+        if(!store.data && customProductDataBeforeRefresh){
+            customProduct.customProductStore.setData(customProductDataBeforeRefresh);
+        }
+    }, []);
     const fetchDiscountPrice = (discount: number, price: number) => {
         return Math.round(price - (discount / 100) * price);
     }

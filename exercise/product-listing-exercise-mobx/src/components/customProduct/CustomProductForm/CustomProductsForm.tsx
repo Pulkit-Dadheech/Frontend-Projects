@@ -5,9 +5,10 @@ import {useRootStore} from "../../../Context/RootContext";
 import {TSingleCustomProduct} from "../../../types/allTypes";
 import {toJS} from "mobx";
 import {observer} from "mobx-react-lite";
+import {SessionStorageGetter, SessionStorageSetter} from "../../SessionStorageHandler/SessionStorageHandler";
 
 
-export const CustomProductForm=observer(()=> {
+export const CustomProductForm = observer(() => {
     const routerStore = useRouterStore();
     const {customProduct} = useRootStore();
     const [successMessage, setSuccessMessage] = useState<string>('');
@@ -15,8 +16,14 @@ export const CustomProductForm=observer(()=> {
     const [showErrorMessage, setShowErrorMessage] = useState<string>("");
 
     useEffect(() => {
-        if(!customProduct.customProductStore.data)
-        customProduct.customProductStore.fetchCustomProductData();
+        const customProductData = SessionStorageGetter('customProducts');
+        if (customProductData) {
+            customProduct.customProductStore.setData(customProductData)
+        } else if (!customProduct.customProductStore.data) {
+
+            customProduct.customProductStore.fetchCustomProductData();
+
+        }
     }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -32,18 +39,21 @@ export const CustomProductForm=observer(()=> {
                 setTimeout(() => setShowErrorMessage(""), 2000)
                 return
             }
-            customProduct.updateCustomProductSingleEntityData( name as keyof TSingleCustomProduct, parseInt(value));
+            customProduct.updateCustomProductSingleEntityData(name as keyof TSingleCustomProduct, parseInt(value));
             return;
         }
-        customProduct.updateCustomProductSingleEntityData( name as keyof TSingleCustomProduct, value);
+        customProduct.updateCustomProductSingleEntityData(name as keyof TSingleCustomProduct, value);
     };
     const handleSave = (e: React.SyntheticEvent) => {
         e.preventDefault();
         customProduct.customProductId = customProduct.customProductId + 1;
-        if(customProduct.customProductStore.data)
+        if (customProduct.customProductStore.data) {
             customProduct.customProductStore.setData([...customProduct.customProductStore.data, customProduct.customProductData]);
-        else
+            SessionStorageSetter('customProducts', customProduct.customProductStore.data)
+        } else {
             customProduct.customProductStore.setData([customProduct.customProductData]);
+            SessionStorageSetter('customProducts', customProduct.customProductStore.data);
+        }
 
         customProduct.setCustomProductData({
             quantity: 0,
@@ -87,7 +97,8 @@ export const CustomProductForm=observer(()=> {
 
                 <label htmlFor="category" className="input-label">Category:</label>
                 <select
-                    name="category" value={customProduct.customProductData.category} onChange={handleChange} className="input-field"
+                    name="category" value={customProduct.customProductData.category} onChange={handleChange}
+                    className="input-field"
                     required>
                     <option value="" disabled hidden>Select Category</option>
                     <option value="smartphone">SmartPhone</option>

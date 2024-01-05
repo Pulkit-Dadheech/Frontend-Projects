@@ -2,14 +2,22 @@ import {useRootStore} from "../../../Context/RootContext";
 import {TCustomProduct, TSingleCustomProduct} from "../../../types/allTypes";
 import {Cart} from "../../GenericCart/Cart";
 import {NotFoundComponent} from "../../NoSearchResultFound/NotFoundComponent";
-import React from "react";
+import React, {useEffect} from "react";
 import {CustomCartHeader} from "./CustomCartHeader";
 import {ListTableStore} from "../../../store/ListTableStore";
 import {observer} from "mobx-react-lite";
+import {SessionStorageGetter} from "../../SessionStorageHandler/SessionStorageHandler";
 
 export const CustomCartPage = observer(() => {
     const {customProduct} = useRootStore();
     const cartTotalProducts = customProduct.customProductStore.data?.filter((product: TSingleCustomProduct) => product.quantity > 0).length;
+
+    useEffect(() => {
+        const customProductDataBeforeRefresh=SessionStorageGetter('customProducts');
+        if(!customProduct.customProductStore.data && customProductDataBeforeRefresh){
+            customProduct.customProductStore.setData(customProductDataBeforeRefresh);
+        }
+    }, []);
 
     if (!customProduct.customProductStore.data || cartTotalProducts === 0) {
         return (

@@ -19,6 +19,7 @@ export class ListTableStore<T extends Record<string, any>> {
 
     fetchCustomProductData() {
         this.setData(this.fetchedDataFunction());
+        SessionStorageSetter('customProducts',this.fetchedDataFunction());
     }
 
     async fetchCartData() {
