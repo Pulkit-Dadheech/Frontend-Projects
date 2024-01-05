@@ -12,12 +12,11 @@ export const CartQuantityButton = observer(({quantity, id, stock,isCustom}: { qu
     const {cart} = useRootStore();
     const store = cart.cartStore;
 
-    if (store) {
-        quantity = store.data?.carts[0]?.products.find((product: any) => product.id === id)?.quantity;
-    }
 
     function onAdd(id: number, isCustom: boolean, stock: number, quantity: number) {
-        if (isCustom) {
+        const isProduct=store.data?.carts[0]?.products.find((product:any)=>product.id === id);
+
+        if (isCustom || isProduct) {
             console.log(toJS(store.data));
             const result = store.data?.carts[0].products.map((product: TCartProduct) => {
                 if (product.id === id && quantity<=stock) {
@@ -45,7 +44,9 @@ export const CartQuantityButton = observer(({quantity, id, stock,isCustom}: { qu
     }
 
     function onDelete(id: number, isCustom: boolean, stock: number, quantity: number) {
-        if (isCustom) {
+        const isProduct=store.data?.carts[0]?.products?.find((product:any)=>product.id === id);
+
+        if (isCustom || isProduct) {
             console.log(toJS(store.data));
             const result = store.data?.carts[0].products.map((product: TCartProduct) => {
                 if (product.id === id) {
@@ -56,7 +57,6 @@ export const CartQuantityButton = observer(({quantity, id, stock,isCustom}: { qu
                 }
                 return {...product};
             })
-
             const newStore = {
                 carts: [{
                     ...store.data.carts[0],
@@ -152,7 +152,7 @@ export const CartQuantityButton = observer(({quantity, id, stock,isCustom}: { qu
 
     return (<>
         {<div key={id} className="product-quantity-button">
-            <button onClick={() => onAdd(id, isCustom, stock, quantity)}>{!quantity ? "Add to Cart" : "+"}</button>
+            <button onClick={() => onAdd(id, isCustom   , stock, quantity)}>{!quantity ? "Add to Cart" : "+"}</button>
             <span className={!!quantity ? 'display-inline' : 'display-none'}>
                 <span className="product-quantity-button-text">{quantity}</span>
                 <button onClick={() => onDelete(id, isCustom, stock, quantity)}>-</button>
