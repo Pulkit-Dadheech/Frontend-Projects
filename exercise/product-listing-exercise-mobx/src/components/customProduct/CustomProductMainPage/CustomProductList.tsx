@@ -3,7 +3,6 @@ import {TSingleCustomProduct} from "../../../types/allTypes";
 import {observer} from "mobx-react-lite";
 import {CartQuantityButton} from "../../cartQuantityButton/cartQuantityButton";
 import {useRootStore} from "../../../Context/RootContext";
-import {useRouterStore} from "mobx-state-router";
 import {NotFoundComponent} from "../../NoSearchResultFound/NotFoundComponent";
 
 export const CustomProductList = observer(() => {

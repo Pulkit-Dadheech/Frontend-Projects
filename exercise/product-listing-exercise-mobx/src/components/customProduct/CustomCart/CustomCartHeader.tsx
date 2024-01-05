@@ -1,5 +1,5 @@
 import React from "react";
-import "../CustomCartMainPage/CustomHeader.css"
+import "../CustomProductMainPage/CustomHeader.css"
 import {useRouterStore} from "mobx-state-router";
 
 export function CustomCartHeader() {
