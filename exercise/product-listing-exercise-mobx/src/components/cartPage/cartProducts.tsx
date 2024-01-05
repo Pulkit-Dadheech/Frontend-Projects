@@ -13,6 +13,8 @@ export const CartProducts = observer(() => {
     const cartTotalProducts = cart.cartStore.data?.carts[0]?.products.filter((product: TCartProduct) => product.quantity > 0).length;
 
     useEffect(() => {
+        const userIdBeforeRefresh=SessionStorageGetter('userId');
+        cart.cartStore.setUserId(userIdBeforeRefresh);
         const data=SessionStorageGetter('cartProducts'+cart.cartStore.userId)
         console.log(data);
 

@@ -3,6 +3,7 @@ import './ProductHeader.css';
 import {observer} from "mobx-react-lite";
 import {useRouterStore} from "mobx-state-router";
 import {useRootStore} from "../../Context/RootContext";
+import {SessionStorageGetter} from "../SessionStorageHandler/SessionStorageHandler";
 
 export const ProductHeader = observer(() => {
     const [searchText, setSearchText] = useState("");
@@ -10,11 +11,17 @@ export const ProductHeader = observer(() => {
     const {category, users, cart, product} = useRootStore();
 
     useEffect(() => {
-        const getCategoryData = async () => {
+
+        const sessionUserId = SessionStorageGetter('userId');
+        if (sessionUserId) {
+            cart.cartStore.setUserId(sessionUserId);
+        }
+        const getData = async () => {
             await category.categoryList.fetchData();
             await users.userStore.fetchData();
         }
-        getCategoryData();
+
+        getData();
     }, []);
 
     const handleClear = () => {
@@ -83,7 +90,7 @@ export const ProductHeader = observer(() => {
                 </select>
             </div>
             <div className="cart">
-                <button onClick={()=>routerStore.goTo('customForm')}>CustomForm</button>
+                <button onClick={() => routerStore.goTo('customForm')}>CustomForm</button>
             </div>
             {/*    <div id="custom-form">*/}
             {/*        <Link to="/form">Add Custom Product</Link>*/}

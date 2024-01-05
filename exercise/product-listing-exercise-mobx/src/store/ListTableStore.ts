@@ -99,5 +99,6 @@ export class ListTableStore<T extends Record<string, any>> {
 
     @action setUserId(id: number) {
         this.userId = id;
+        SessionStorageSetter('userId',this.userId);
     }
 }
