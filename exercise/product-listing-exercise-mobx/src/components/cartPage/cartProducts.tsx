@@ -13,7 +13,7 @@ export const CartProducts = observer(() => {
     const cartTotalProducts = cart.cartStore.data?.carts[0]?.products.filter((product: TCartProduct) => product.quantity > 0).length;
 
     useEffect(() => {
-        const data=SessionStorageGetter('cartProducts')
+        const data=SessionStorageGetter('cartProducts'+cart.cartStore.userId)
         console.log(data);
 
         const getCartData = async () => {
@@ -26,6 +26,7 @@ export const CartProducts = observer(() => {
             getCartData();
         }
     }, [cart.cartStore.userId]);
+
     if (!cart.cartStore.data?.carts[0]?.products.length || cartTotalProducts === 0) {
         return (
             <NotFoundComponent route={'home'}/>

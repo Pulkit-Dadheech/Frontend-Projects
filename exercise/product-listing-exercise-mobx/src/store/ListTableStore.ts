@@ -23,7 +23,7 @@ export class ListTableStore<T extends Record<string, any>> {
 
     async fetchCartData() {
         const result = await this.fetchedDataFunction(this.userId);
-        SessionStorageSetter('cartProducts',result);
+        SessionStorageSetter('cartProducts'+this.userId,result);
         this.setData(result);
     }
 

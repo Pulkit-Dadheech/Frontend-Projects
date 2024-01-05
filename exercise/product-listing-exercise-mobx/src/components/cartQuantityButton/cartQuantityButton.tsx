@@ -37,7 +37,7 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
                     skip: store.data.skip,
                     total: store.data.total
                 }
-                SessionStorageSetter('cartProducts',newStore);
+                SessionStorageSetter('cartProducts'+cart.cartStore.userId,newStore);
                 store.setData(newStore);
             }
             else{
@@ -71,7 +71,7 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
                     skip: store.data.skip,
                     total: store.data.total
                 }
-                SessionStorageSetter('cartProducts',newStore);
+                SessionStorageSetter('cartProducts'+cart.cartStore.userId,newStore);
                 store.setData(newStore);
             }
             else{
@@ -93,11 +93,9 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
             quantity = 0;
         }
 
-        let prevCartQuantitySessionData;
-        if(cart.cartStore.prevUserId === cart.cartStore.userId){
-            prevCartQuantitySessionData= SessionStorageGetter('userPrevCartQuantityData');
-            cart.setUserPrevCartQuantityData(prevCartQuantitySessionData);
-        }
+        const prevCartQuantitySessionData= SessionStorageGetter('userPrevCartQuantityData'+cart.cartStore.userId);
+        cart.setUserPrevCartQuantityData(prevCartQuantitySessionData);
+
         const updatedProduct = {id: id, quantity: isDelete ? quantity - 1 : quantity + 1};
         const updatedCarts = cart.userPrevCartQuantityData ? [...cart.userPrevCartQuantityData, updatedProduct] : [updatedProduct];
 
@@ -106,8 +104,8 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
                 filteredProducts[item.id] = item;
             }
         )
-        SessionStorageSetter('userPrevCartQuantityData',updatedCarts);
 
+        SessionStorageSetter('userPrevCartQuantityData'+cart.cartStore.userId,updatedCarts);
         cart.setUserPrevCartQuantityData(updatedCarts);
 
         try {
@@ -129,7 +127,7 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
                     skip: store.data.skip,
                     limit: store.data.limit,
                 });
-                SessionStorageSetter('cartProducts',{
+                SessionStorageSetter('cartProducts'+cart.cartStore.userId,{
                     carts: Array(data),
                     total: store.data.total,
                     skip: store.data.skip,
@@ -170,7 +168,7 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
             skip: 0,
             limit: 100
         });
-        SessionStorageSetter('cartProducts',{
+        SessionStorageSetter('cartProducts'+cart.cartStore.userId,{
             carts: [responseReceived],
             total: 1,
             skip: 0,
