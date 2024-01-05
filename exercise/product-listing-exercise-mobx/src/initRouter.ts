@@ -17,6 +17,18 @@ export const routes = [
         pattern: '/cart'
     },
     {
+        name: 'customForm',
+        pattern: '/custom-form',
+    },
+    {
+        name: 'customProduct',
+        pattern: '/custom-product',
+    },
+    {
+        name: 'customCart',
+        pattern: '/custom-cart'
+    },
+    {
         name: 'notFound',
         pattern: '/not-found',
     },
