@@ -1,4 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
+import {SessionStorageSetter} from "../components/SessionStorageHandler/SessionStorageHandler";
 
 export class ListTableStore<T extends Record<string, any>> {
     @observable fetchedDataFunction;
@@ -22,6 +23,7 @@ export class ListTableStore<T extends Record<string, any>> {
 
     async fetchCartData() {
         const result = await this.fetchedDataFunction(this.userId);
+        SessionStorageSetter('cartProducts',result);
         this.setData(result);
     }
 

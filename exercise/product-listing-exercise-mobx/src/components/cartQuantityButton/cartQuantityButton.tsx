@@ -5,6 +5,7 @@ import {toJS} from "mobx";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import {useRootStore} from "../../Context/RootContext";
 import {ListTableStore} from "../../store/ListTableStore";
+import {SessionStorageGetter, SessionStorageSetter} from "../SessionStorageHandler/SessionStorageHandler";
 interface userCartItemsWithQuantity {
     [id: number]: { id: number; quantity: number };
 }
@@ -14,9 +15,8 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
 
 
     function onAdd(id: number, isCustom: boolean, stock: number, quantity: number) {
-        const isProduct=data?.find((product:any)=>product.id === id);
 
-        if (isCustom || isProduct) {
+        if (isCustom) {
             console.log(toJS(store.data));
             const result = data.map((product: TCartProduct) => {
                 if (product.id === id && quantity<=stock) {
@@ -37,9 +37,11 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
                     skip: store.data.skip,
                     total: store.data.total
                 }
+                SessionStorageSetter('cartProducts',newStore);
                 store.setData(newStore);
             }
             else{
+                SessionStorageSetter('customProducts',result);
                 store.setData(result);
             }
         } else {
@@ -48,9 +50,7 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
     }
 
     function onDelete(id: number, isCustom: boolean, stock: number, quantity: number) {
-        const isProduct=data.find((product:any)=>product.id === id);
-
-        if (isCustom || isProduct) {
+        if (isCustom) {
             console.log(toJS(store.data));
             const result = data.map((product: TCartProduct) => {
                 if (product.id === id) {
@@ -71,9 +71,11 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
                     skip: store.data.skip,
                     total: store.data.total
                 }
+                SessionStorageSetter('cartProducts',newStore);
                 store.setData(newStore);
             }
             else{
+                SessionStorageSetter('customProducts',result);
                 store.setData(result);
             }
         } else {
@@ -90,6 +92,12 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
         if (!quantity) {
             quantity = 0;
         }
+
+        let prevCartQuantitySessionData;
+        if(cart.cartStore.prevUserId === cart.cartStore.userId){
+            prevCartQuantitySessionData= SessionStorageGetter('userPrevCartQuantityData');
+            cart.setUserPrevCartQuantityData(prevCartQuantitySessionData);
+        }
         const updatedProduct = {id: id, quantity: isDelete ? quantity - 1 : quantity + 1};
         const updatedCarts = cart.userPrevCartQuantityData ? [...cart.userPrevCartQuantityData, updatedProduct] : [updatedProduct];
 
@@ -98,6 +106,7 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
                 filteredProducts[item.id] = item;
             }
         )
+        SessionStorageSetter('userPrevCartQuantityData',updatedCarts);
 
         cart.setUserPrevCartQuantityData(updatedCarts);
 
@@ -115,6 +124,12 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
             } else {
                 const data = await response.json();
                 store.setData({
+                    carts: Array(data),
+                    total: store.data.total,
+                    skip: store.data.skip,
+                    limit: store.data.limit,
+                });
+                SessionStorageSetter('cartProducts',{
                     carts: Array(data),
                     total: store.data.total,
                     skip: store.data.skip,
@@ -155,6 +170,12 @@ export const CartQuantityButton = observer(<T extends ListTableStore<any>,>({qua
             skip: 0,
             limit: 100
         });
+        SessionStorageSetter('cartProducts',{
+            carts: [responseReceived],
+            total: 1,
+            skip: 0,
+            limit: 100
+        })
     }
 
 

@@ -9,6 +9,7 @@ import {CartQuantityButton} from "../cartQuantityButton/cartQuantityButton";
 import {useRootStore} from "../../Context/RootContext";
 import {CartStore} from "../../store/cartStore";
 import {ListTableStore} from "../../store/ListTableStore";
+import {SessionStorageGetter, SessionStorageSetter} from "../SessionStorageHandler/SessionStorageHandler";
 
 export const ProductComponent = observer(() => {
     const rootStore = useRootStore();
@@ -22,11 +23,16 @@ export const ProductComponent = observer(() => {
     }, []);
 
     useEffect(() => {
+        const data=SessionStorageGetter('cartProducts');
         const getCartData = async () => {
             await rootStore?.cart.cartStore.fetchCartData();
         }
-        if (!cart.cartStore.data || cart.cartStore.prevUserId !== cart.cartStore.userId) {
+        if(data && cart.cartStore.prevUserId === cart.cartStore.userId){
+            cart.cartStore.setData(data)
+        }
+        else if (!cart.cartStore.data || cart.cartStore.prevUserId !== cart.cartStore.userId) {
             cart.cartStore.prevUserId = cart.cartStore.userId;
+            SessionStorageSetter('userPrevCartQuantityData',[]);
             getCartData();
         }
     }, [cart.cartStore.userId]);
