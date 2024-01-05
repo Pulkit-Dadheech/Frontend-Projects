@@ -1,0 +1,10 @@
+.custom-header-elements {
+    display: flex;
+    flex-direction: row;
+    padding: 2rem;
+    box-shadow: 0.125rem 0.125rem 0.313rem rgba(0, 0, 0, 0.63);
+    justify-content: space-around;
+    text-align: center;
+    background-color: white;
+    align-items: center;
+}
