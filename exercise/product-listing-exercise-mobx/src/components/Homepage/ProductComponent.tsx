@@ -12,7 +12,6 @@ import {ListTableStore} from "../../store/ListTableStore";
 import {SessionStorageGetter} from "../SessionStorageHandler/SessionStorageHandler";
 
 export const ProductComponent = observer(() => {
-    const rootStore = useRootStore();
     const {cart, product} = useRootStore();
 
     useEffect(() => {
@@ -26,8 +25,9 @@ export const ProductComponent = observer(() => {
         const data = SessionStorageGetter('cartProducts' + cart.cartStore.userId);
 
         const getCartData = async () => {
-            await rootStore?.cart.cartStore.fetchCartData();
+            await cart.cartStore.fetchCartData();
         }
+
         if (data) {
             cart.cartStore.setData(data)
         } else if (!cart.cartStore.data || cart.cartStore.prevUserId !== cart.cartStore.userId) {
@@ -39,7 +39,6 @@ export const ProductComponent = observer(() => {
 
     if (product.dataLoading) {
         return <Loader/>
-
     } else if (product.productStore.data?.products.length === 0) {
         return <NoResultFound/>
     }
