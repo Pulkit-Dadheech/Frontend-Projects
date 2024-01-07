@@ -14,6 +14,7 @@ export const CartProducts = observer(() => {
 
     useEffect(() => {
         const userIdBeforeRefresh=SessionStorageGetter('userId');
+        if(userIdBeforeRefresh)
         cart.cartStore.setUserId(userIdBeforeRefresh);
         const data=SessionStorageGetter('cartProducts'+cart.cartStore.userId)
 
@@ -23,7 +24,7 @@ export const CartProducts = observer(() => {
         if(data){
             cart.cartStore.setData(data);
         }
-        else if (!cart.cartStore.data) {
+        else if (!cart.cartStore.data || cart.cartStore.prevUserId !== cart.cartStore.userId) {
             getCartData();
         }
     }, [cart.cartStore.userId]);
