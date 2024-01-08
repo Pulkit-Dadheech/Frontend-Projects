@@ -45,20 +45,20 @@ export const CustomProductForm = observer(() => {
 
 
     const Validation = (name: string) => {
-        if(formStore.formData[name].isRequired === true){
+        if(formStore.formData[name].isRequired){
             if (name === "title" && formStore.formData[name].value.length === 0) {
                 formStore.addErrorField(name, "Please Enter A Valid Name");
             }
             else if (name === "discountPercentage" && formStore.getValue(name)>100 || formStore.getValue(name)< 0) {
                 formStore.addErrorField(name, "Discount Percentage must be lie between 0 to 100");
             }
-            else if (name === "quantity" || name === "price" && formStore.getValue(name)<=0) {
+            else if ((name === "quantity" || name === "price") && formStore.getValue(name)<=0) {
                 formStore.addErrorField(name, `${name.toUpperCase()} must be greater than 0`);
             }
-            else if(formStore.formData[name].isRequired === true && formStore.formData[name].value.length === 0){
+            else if(formStore.formData[name].value.length === 0){
                 formStore.addErrorField(name,"Please fill this field Correctly");
             }
-            else if (formStore.formData[name].isRequired ) {
+            else {
                 formStore.addErrorField(name, "");
             }
         }
@@ -72,7 +72,7 @@ export const CustomProductForm = observer(() => {
 
         Object.keys(formData).forEach((key) => {
             if (newData) newData[key] = formData[key].value;
-            if (formData[key].isRequired === true && formData[key].value === "") {
+            if (formData[key].isRequired && formData[key].value === "") {
                 newData = null;
                 return;
             }
