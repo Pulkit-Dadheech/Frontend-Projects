@@ -1,16 +1,24 @@
 import React from "react";
 import {observer} from "mobx-react-lite";
 import {TCartProduct} from "../../types/allTypes";
-import {toJS} from "mobx";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import {useRootStore} from "../../Context/RootContext";
 import {ListTableStore} from "../../store/ListTableStore";
 import {SessionStorageGetter, SessionStorageSetter} from "../SessionStorageHandler/SessionStorageHandler";
 import {AddToCartButton} from "./addToCartButton";
+
 interface userCartItemsWithQuantity {
     [id: number]: { id: number; quantity: number };
 }
-export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, id, stock,isCustom,data,store}: { quantity: number, id: number, stock: number ,isCustom:boolean,data: any,store:T}) => {
+
+export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity, id, stock, isCustom, data, store}: {
+    quantity: number,
+    id: number,
+    stock: number,
+    isCustom: boolean,
+    data: any,
+    store: T
+}) => {
 
     const {cart} = useRootStore();
 
@@ -18,9 +26,8 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
     function onAdd(id: number, isCustom: boolean, stock: number, quantity: number) {
 
         if (isCustom) {
-            console.log(toJS(store.data));
             const result = data.map((product: TCartProduct) => {
-                if (product.id === id && quantity<stock) {
+                if (product.id === id && quantity < stock) {
                     return {
                         ...product,
                         quantity: product.quantity + 1,
@@ -28,7 +35,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
                 }
                 return {...product};
             })
-            if(store.data.carts) {
+            if (store.data.carts) {
                 const newStore = {
                     carts: [{
                         ...store.data.carts[0],
@@ -38,11 +45,10 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
                     skip: store.data.skip,
                     total: store.data.total
                 }
-                SessionStorageSetter('cartProducts'+cart.cartStore.userId,newStore);
+                SessionStorageSetter('cartProducts' + cart.cartStore.userId, newStore);
                 store.setData(newStore);
-            }
-            else{
-                SessionStorageSetter('customProducts',result);
+            } else {
+                SessionStorageSetter('customProducts', result);
                 store.setData(result);
             }
         } else {
@@ -52,7 +58,6 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
 
     function onDelete(id: number, isCustom: boolean, stock: number, quantity: number) {
         if (isCustom) {
-            console.log(toJS(store.data));
             const result = data.map((product: TCartProduct) => {
                 if (product.id === id) {
                     return {
@@ -62,7 +67,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
                 }
                 return {...product};
             })
-            if(store.data.carts) {
+            if (store.data.carts) {
                 const newStore = {
                     carts: [{
                         ...store.data.carts[0],
@@ -72,11 +77,10 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
                     skip: store.data.skip,
                     total: store.data.total
                 }
-                SessionStorageSetter('cartProducts'+cart.cartStore.userId,newStore);
+                SessionStorageSetter('cartProducts' + cart.cartStore.userId, newStore);
                 store.setData(newStore);
-            }
-            else{
-                SessionStorageSetter('customProducts',result);
+            } else {
+                SessionStorageSetter('customProducts', result);
                 store.setData(result);
             }
         } else {
@@ -94,7 +98,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
             quantity = 0;
         }
 
-        const prevCartQuantitySessionData= SessionStorageGetter('userPrevCartQuantityData'+cart.cartStore.userId);
+        const prevCartQuantitySessionData = SessionStorageGetter('userPrevCartQuantityData' + cart.cartStore.userId);
         cart.setUserPrevCartQuantityData(prevCartQuantitySessionData);
 
         const updatedProduct = {id: id, quantity: isDelete ? quantity - 1 : quantity + 1};
@@ -106,7 +110,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
             }
         )
 
-        SessionStorageSetter('userPrevCartQuantityData'+cart.cartStore.userId,updatedCarts);
+        SessionStorageSetter('userPrevCartQuantityData' + cart.cartStore.userId, updatedCarts);
         cart.setUserPrevCartQuantityData(updatedCarts);
 
         try {
@@ -119,7 +123,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
                 }),
             });
             if (!response.ok) {
-                createNewCart(filteredProducts,isDelete);
+                createNewCart(filteredProducts, isDelete);
             } else {
                 const data = await response.json();
                 store.setData({
@@ -128,7 +132,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
                     skip: store.data.skip,
                     limit: store.data.limit,
                 });
-                SessionStorageSetter('cartProducts'+cart.cartStore.userId,{
+                SessionStorageSetter('cartProducts' + cart.cartStore.userId, {
                     carts: Array(data),
                     total: store.data.total,
                     skip: store.data.skip,
@@ -136,11 +140,11 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
                 });
             }
         } catch (error) {
-            createNewCart(filteredProducts,isDelete);
+            createNewCart(filteredProducts, isDelete);
         }
     }
 
-    async function createNewCart(filteredProducts:userCartItemsWithQuantity,isDelete: boolean | undefined){
+    async function createNewCart(filteredProducts: userCartItemsWithQuantity, isDelete: boolean | undefined) {
         const response = await fetch(createApiUrl(apiQueries.AddANewCart), {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -168,7 +172,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
             skip: 0,
             limit: 100
         });
-        SessionStorageSetter('cartProducts'+cart.cartStore.userId,{
+        SessionStorageSetter('cartProducts' + cart.cartStore.userId, {
             carts: [responseReceived],
             total: 1,
             skip: 0,
@@ -185,7 +189,8 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>,>({quantity, 
         {/*        <button onClick={() => onDelete(id, isCustom, stock, quantity)}>-</button>*/}
         {/*    </span>*/}
         {/*</div>*/}
-        <AddToCartButton id={id} onAdd={onAdd} onDelete={onDelete} quantity={quantity} isCustom={isCustom} stock={stock}/>
+        <AddToCartButton id={id} onAdd={onAdd} onDelete={onDelete} quantity={quantity} isCustom={isCustom}
+                         stock={stock}/>
 
     </>)
 })
