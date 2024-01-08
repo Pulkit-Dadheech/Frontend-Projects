@@ -17,11 +17,6 @@ export class ListTableStore<T extends Record<string, any>> {
         makeObservable(this);
     }
 
-    fetchCustomProductData() {
-        this.setData(this.fetchedDataFunction());
-        SessionStorageSetter('customProducts',this.fetchedDataFunction());
-    }
-
     async fetchCartData() {
         const result = await this.fetchedDataFunction(this.userId);
         SessionStorageSetter('cartProducts'+this.userId,result);
