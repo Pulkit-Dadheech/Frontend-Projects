@@ -1,94 +1,121 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import './ProductForm.css';
 import {useRouterStore} from "mobx-state-router";
 import {useRootStore} from "../../../Context/RootContext";
-import {TSingleCustomProduct} from "../../../types/allTypes";
-import {toJS} from "mobx";
 import {observer} from "mobx-react-lite";
 import {SessionStorageGetter, SessionStorageSetter} from "../../SessionStorageHandler/SessionStorageHandler";
+import {MessageField, NameField, NumberField, RadioField} from "../../HOC/FieldInputElements";
+import {IFormDataValue} from "../../../store/FormStore";
+
+export interface IFormProps {
+    title: IFormDataValue;
+    category: IFormDataValue;
+    price: IFormDataValue;
+    discountPercentage: IFormDataValue;
+    total: IFormDataValue;
+    description: IFormDataValue;
+    [x: string]: IFormDataValue;
+}
+
+export type TCustomProductFormProps = IFormProps & {
+    id: number;
+    images: Array<any>;
+    rating: number;
+    customProduct: boolean;
+    quantity: number;
+}
 
 
 export const CustomProductForm = observer(() => {
     const routerStore = useRouterStore();
-    const {customProduct} = useRootStore();
-    const [successMessage, setSuccessMessage] = useState<string>('');
-    const [showSuccess, setShowSuccess] = useState(false);
-    const [showErrorMessage, setShowErrorMessage] = useState<string>("");
+    const {formStore} = useRootStore();
 
     useEffect(() => {
         const customProductData = SessionStorageGetter('customProducts');
-        const customProductIdBeforeRefresh=SessionStorageGetter('customProductId');
+        const customProductIdBeforeRefresh = SessionStorageGetter('customProductId');
 
         if (customProductData) {
-            customProduct.customProductStore.setData(customProductData)
-        } else if (!customProduct.customProductStore.data) {
-            customProduct.customProductStore.fetchCustomProductData();
+            formStore.customFormStore.setData(customProductData)
         }
 
-        if(customProductIdBeforeRefresh){
-            customProduct.updateCustomProductId(+customProductIdBeforeRefresh+1)
+        if (customProductIdBeforeRefresh) {
+            formStore.updateCustomId(+customProductIdBeforeRefresh + 1)
         }
     }, []);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const {name, value} = e.target;
-        if (name === 'discountPercentage') {
-            if (parseInt(value) > 100 || parseInt(value) < 0) {
+
+    const Validation = (name: string) => {
+        if(formStore.formData[name].isRequired === true){
+            if (name === "title" && formStore.formData[name].value.length === 0) {
+                formStore.addErrorField(name, "Please Enter A Valid Name");
+            }
+            else if (name === "discountPercentage" && formStore.getValue(name)>100 || formStore.getValue(name)< 0) {
+                formStore.addErrorField(name, "Discount Percentage must be lie between 0 to 100");
+            }
+            else if (name === "quantity" || name === "price" && formStore.getValue(name)<=0) {
+                formStore.addErrorField(name, `${name.toUpperCase()} must be greater than 0`);
+            }
+            else if(formStore.formData[name].isRequired === true && formStore.formData[name].value.length === 0){
+                formStore.addErrorField(name,"Please fill this field Correctly");
+            }
+            else if (formStore.formData[name].isRequired ) {
+                formStore.addErrorField(name, "");
+            }
+        }
+    }
+
+    function handleSubmit() {
+
+        const formData = formStore.formData;
+        let newData = {} as Record<keyof TCustomProductFormProps, any> | null;
+        let errorDetected = false;
+
+        Object.keys(formData).forEach((key) => {
+            if (newData) newData[key] = formData[key].value;
+            if (formData[key].isRequired === true && formData[key].value === "") {
+                newData = null;
                 return;
             }
-        }
-        if (name === 'stock') {
-            if (value === "0") {
-                setShowErrorMessage("Value must be greater than zero");
-                setTimeout(() => setShowErrorMessage(""), 2000)
-                return
-            }
-            customProduct.updateCustomProductSingleEntityData(name as keyof TSingleCustomProduct, parseInt(value));
-            return;
-        }
-        customProduct.updateCustomProductSingleEntityData(name as keyof TSingleCustomProduct, value);
-    };
-    const handleSave = (e: React.SyntheticEvent) => {
-        e.preventDefault();
-        const customProductIdBeforeRefresh=SessionStorageGetter('customProductId')
-
-        if(customProductIdBeforeRefresh){
-            customProduct.updateCustomProductId(+customProductIdBeforeRefresh+1);
-        }
-        else{
-            customProduct.updateCustomProductId(customProduct.customProductId+1)
-        }
-
-        if (customProduct.customProductStore.data) {
-            customProduct.customProductStore.setData([...customProduct.customProductStore.data, customProduct.customProductData]);
-            SessionStorageSetter('customProducts', customProduct.customProductStore.data)
-        } else {
-            customProduct.customProductStore.setData([customProduct.customProductData]);
-            SessionStorageSetter('customProducts', customProduct.customProductStore.data);
-        }
-
-        customProduct.setCustomProductData({
-            quantity: 0,
-            id: customProduct.customProductId,
-            title: "",
-            category: "",
-            description: "",
-            discountPercentage: 0,
-            images: [],
-            price: 0,
-            rating: 0,
-            total: customProduct.customProductData.total,
-            customProduct: true,
         });
 
-        setTimeout(() => {
-            setShowSuccess(false)
-            routerStore.goTo('customProduct')
-        }, 400);
-        setShowSuccess(true);
-        setSuccessMessage('Submitted successfully!');
-        console.log(toJS(customProduct.customProductStore.data));
-    };
+        Object.keys(formData).forEach((key) => {
+            if (!!formData[key].error) {
+                errorDetected = true;
+                return;
+            }
+        });
+
+        if (!errorDetected && newData !== null && Object.keys(newData).length > 1) {
+            const customProductIdBeforeRefresh = SessionStorageGetter('customId')
+
+            if (customProductIdBeforeRefresh) {
+                formStore.updateCustomId(+customProductIdBeforeRefresh + 1);
+            } else {
+                formStore.updateCustomId(formStore.customId + 1);
+            }
+
+            newData["id"] = formStore.customId;
+            newData["images"] = [];
+            newData["rating"] = 4.5;
+            newData["customProduct"] = true;
+            newData["quantity"] = 0;
+            console.log(newData);
+            if (formStore.customFormStore.data) {
+                formStore.customFormStore.setData([...formStore.customFormStore.data, newData]);
+                formStore.updateSuccessMessage("Form Submitted Successfully");
+                setTimeout(() => formStore.updateSuccessMessage(""), 4000)
+                SessionStorageSetter('customProducts', formStore.customFormStore.data)
+                formStore.resetFormData();
+            } else {
+                formStore.customFormStore.setData([newData]);
+                SessionStorageSetter('customProducts', formStore.customFormStore.data);
+            }
+
+        } else {
+            Object.keys(formData).forEach((key) => Validation(key));
+            formStore.updateErrorMessage("Fill all the required fields before submitting")
+        }
+    }
 
     return (
         <div className="form-container">
@@ -97,91 +124,44 @@ export const CustomProductForm = observer(() => {
                 <button onClick={() => routerStore.goTo('customProduct')}>View Custom Products</button>
             </div>
 
-            <form className="product-form" onSubmit={handleSave}>
-                <label htmlFor="name" className="input-label">Product Name:</label>
-                <input
-                    className="input-field"
-                    type="text"
-                    name="title"
-                    onChange={handleChange}
-                    value={customProduct.customProductData.title} required
+            <form className="product-form" onSubmit={handleSubmit}>
+                <NameField
+                    name={"title"}
+                    label={"Enter Your Product Name"}
+                />
+                <RadioField
+                    name={"category"}
+                    label={"Select Your Product Category"}
+                    boxValues={["SmartPhone", "Laptop", "Watch"]}
                 />
 
-                <label htmlFor="category" className="input-label">Category:</label>
-                <select
-                    name="category" value={customProduct.customProductData.category} onChange={handleChange}
-                    className="input-field"
-                    required>
-                    <option value="" disabled hidden>Select Category</option>
-                    <option value="smartphone">SmartPhone</option>
-                    <option value="laptop">Laptop</option>
-                    <option value="watches">Watch</option>
-                </select>
-
-                <label htmlFor="price" className="input-label">Price:</label>
-                <input
-                    type="number"
-                    name="price"
-                    onChange={handleChange}
-                    value={customProduct.customProductData.price}
-                    className="input-field"
-                    required/>
-
-                <label htmlFor="discountedPercentage" className="input-label">Discounted Percentage:</label>
-                <input
-                    type="number"
-                    name="discountPercentage"
-                    value={customProduct.customProductData.discountPercentage}
-                    onChange={handleChange}
-                    placeholder="Write value between 1 to 100"
-                    className="input-field"/>
-
-                <label htmlFor="total" className="input-label">Quantity:</label>
-                <div className="product-form-stock">
-                    <button type="button"
-                            onClick={() =>
-                                customProduct.setCustomProductData(
-                                    {...customProduct.customProductData, total: customProduct.customProductData.total + 1}
-                                )}
-                    >+
-                    </button>
-                    <input
-                        type="number"
-                        name="stock"
-                        onChange={handleChange}
-                        value={customProduct.customProductData.total}
-                        className="input-field"
-                    />
-                    <button type="button"
-                            onClick={() =>
-                                customProduct.setCustomProductData({
-                                    ...customProduct.customProductData,
-                                    total: customProduct.customProductData.total !== 1 ? customProduct.customProductData.total - 1 : 1
-                                })}
-                    >-
-                    </button>
-                </div>
-                <p className="error-message">{showErrorMessage}</p>
-
-                <label
-                    htmlFor="description"
-                    className="input-label"
-                >
-                    Description:
-                </label>
-                <textarea
-                    name="description"
-                    value={customProduct.customProductData.description}
-                    onChange={handleChange}
-                    className="input-field"
+                <NumberField
+                    name={"price"}
+                    label={"Enter Price of Your Product"}
                 />
+                <NumberField
+                    name={"discountPercentage"}
+                    label={"Enter Discount Percentage"}
+                />
+                <NumberField
+                    name={"total"}
+                    label={"Enter Total Quantity"}
+                />
+                <MessageField name={"description"} label={"Description"}/>
+                {formStore.errorMessage !== "" &&
+                    <p className={"text-danger"}>{formStore.errorMessage}</p>}
 
                 <button
                     type="submit"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        handleSubmit();
+
+                    }}
                 >
-                    Save
+                    Submit
                 </button>
-                {showSuccess && <div className="success-message">{successMessage}</div>}
+                {formStore.successMessage && <div className="success-message">{formStore.successMessage}</div>}
             </form>
         </div>
     );
