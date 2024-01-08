@@ -1,5 +1,5 @@
 import {useRootStore} from "../../../Context/RootContext";
-import {TCustomProduct, TSingleCustomProduct} from "../../../types/allTypes";
+import {TSingleCustomProduct} from "../../../types/allTypes";
 import {Cart} from "../../GenericCart/Cart";
 import {NotFoundComponent} from "../../NoSearchResultFound/NotFoundComponent";
 import React, {useEffect} from "react";
@@ -7,24 +7,26 @@ import {CustomCartHeader} from "./CustomCartHeader";
 import {ListTableStore} from "../../../store/ListTableStore";
 import {observer} from "mobx-react-lite";
 import {SessionStorageGetter} from "../../SessionStorageHandler/SessionStorageHandler";
+import {FormStore} from "../../../store/FormStore";
+import {IFormProps} from "../CustomProductForm/CustomProductsForm";
 
 export const CustomCartPage = observer(() => {
-    const {customProduct} = useRootStore();
-    const cartTotalProducts = customProduct.customProductStore.data?.filter((product: TSingleCustomProduct) => product.quantity > 0).length;
+    const {formStore} = useRootStore();
+    const cartTotalProducts = formStore.customFormStore.data?.filter((product: TSingleCustomProduct) => product.quantity > 0).length;
 
     useEffect(() => {
-        const customProductDataBeforeRefresh=SessionStorageGetter('customProducts');
-        const customProductIdBeforeRefresh=SessionStorageGetter('customProductId')
+        const customProductDataBeforeRefresh = SessionStorageGetter('customProducts');
+        const customProductIdBeforeRefresh = SessionStorageGetter('customProductId')
 
-        if(customProductIdBeforeRefresh){
-            customProduct.updateCustomProductId(+customProductIdBeforeRefresh+1);
+        if (customProductIdBeforeRefresh) {
+            formStore.updateCustomId(+customProductIdBeforeRefresh + 1);
         }
-        if(!customProduct.customProductStore.data && customProductDataBeforeRefresh){
-            customProduct.customProductStore.setData(customProductDataBeforeRefresh);
+        if (!formStore.customFormStore.data && customProductDataBeforeRefresh) {
+            formStore.customFormStore.setData(customProductDataBeforeRefresh);
         }
     }, []);
 
-    if (!customProduct.customProductStore.data || cartTotalProducts === 0) {
+    if (!formStore.customFormStore.data || cartTotalProducts === 0) {
         return (
             <NotFoundComponent route={'customProduct'}/>
         )
@@ -32,9 +34,9 @@ export const CustomCartPage = observer(() => {
     return (
         <>
             <CustomCartHeader/>
-            <Cart<ListTableStore<TCustomProduct>>
-                data={customProduct.customProductStore.data?.filter((product) => product.quantity > 0)} isCustom={true}
-                store={customProduct.customProductStore}/>
+            <Cart<ListTableStore<FormStore<IFormProps>>>
+                data={formStore.customFormStore.data?.filter((product: any) => product.quantity > 0)} isCustom={true}
+                store={formStore.customFormStore}/>
         </>
     )
 })

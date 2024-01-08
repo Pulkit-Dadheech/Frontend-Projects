@@ -6,20 +6,22 @@ import {useRootStore} from "../../../Context/RootContext";
 import {NotFoundComponent} from "../../NoSearchResultFound/NotFoundComponent";
 import {ListTableStore} from "../../../store/ListTableStore";
 import {SessionStorageGetter} from "../../SessionStorageHandler/SessionStorageHandler";
+import {FormStore} from "../../../store/FormStore";
 
 export const CustomProductList = observer(() => {
-    const {customProduct} = useRootStore();
-    const store = customProduct.customProductStore;
+    const {formStore} = useRootStore();
+    const store = formStore.customFormStore;
+
     useEffect(() => {
         const customProductDataBeforeRefresh=SessionStorageGetter('customProducts');
         const customProductIdBeforeRefresh=SessionStorageGetter('customProductId')
 
         if(customProductIdBeforeRefresh){
-            customProduct.updateCustomProductId(+customProductIdBeforeRefresh+1);
+            formStore.updateCustomId(+customProductIdBeforeRefresh+1);
         }
 
         if(!store.data && customProductDataBeforeRefresh){
-            customProduct.customProductStore.setData(customProductDataBeforeRefresh);
+            store.setData(customProductDataBeforeRefresh);
         }
     }, []);
     const fetchDiscountPrice = (discount: number, price: number) => {
@@ -56,7 +58,7 @@ export const CustomProductList = observer(() => {
                             <p>Description: {cartProduct.description}</p>
                         </div>
                         <div className={"product-rating"}>
-                            <ButtonUtils<ListTableStore<any>> quantity={cartProduct.quantity} id={cartProduct.id}
+                            <ButtonUtils<ListTableStore<FormStore<any>>> quantity={cartProduct.quantity} id={cartProduct.id}
                                                               stock={cartProduct.total} isCustom={true}
                                                               store={store} data={store.data}/>
                         </div>
