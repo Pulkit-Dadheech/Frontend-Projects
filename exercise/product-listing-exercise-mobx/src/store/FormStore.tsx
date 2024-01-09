@@ -17,7 +17,6 @@ export class FormStore<T extends Record<keyof T, IFormDataValue>> {
     @observable formData: T;
     initialData: T;
     @observable errorMessage: string;
-    customFormStore: any;
     @observable customId: number=0;
     @observable successMessage:string= "";
 
@@ -25,7 +24,6 @@ export class FormStore<T extends Record<keyof T, IFormDataValue>> {
         this.formData = initialData;
         this.initialData = initialData;
         this.errorMessage = "";
-        this.customFormStore=new ListTableStore(this.formData);
         makeObservable(this);
     }
 
