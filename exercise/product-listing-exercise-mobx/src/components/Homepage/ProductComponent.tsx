@@ -83,7 +83,7 @@ export const ProductComponent = observer(() => {
                             <ButtonUtils<ListTableStore<CartStore>> stock={productWithQuantity.stock}
                                                                     id={productWithQuantity.id}
                                                                     quantity={productWithQuantity.quantity}
-                                                                    isCustom={false}
+                                                                    isCustom={productWithQuantity.customProduct? true : false}
                                                                     data={cart.cartStore.data?.carts[0]?.products}
                                                                     store={cart.cartStore}/>
                         </div>

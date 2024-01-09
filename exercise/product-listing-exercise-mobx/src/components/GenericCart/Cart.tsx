@@ -12,6 +12,7 @@ type TCart = {
     discountedPrice?: number;
     thumbnail?: string;
     image?: string
+    customProduct?: boolean;
 }
 
 export const Cart = observer(<T, >({data, isCustom, store}: { data: Array<TCart>, isCustom: boolean, store: T }) => {
@@ -41,7 +42,7 @@ export const Cart = observer(<T, >({data, isCustom, store}: { data: Array<TCart>
                     </div>
                     <div className={"product-rating"}>
                         <ButtonUtils<any> quantity={cartProduct.quantity} id={cartProduct.id}
-                                          stock={cartProduct.total} isCustom={isCustom} data={data}
+                                          stock={cartProduct.total} isCustom={cartProduct.customProduct? true : false} data={data}
                                           store={store}/>
                     </div>
                 </div>))}
