@@ -12,7 +12,7 @@ export function CustomProductHeader() {
                     <button onClick={() => routerStore.goTo('customForm')}>Add Product</button>
                 </div>
                 <div id="cart">
-                    <button onClick={() => routerStore.goTo('customCart')}>Go to Cart</button>
+                    <button onClick={() => routerStore.goTo('cart')}>Go to Cart</button>
                 </div>
             </div>
         </>
