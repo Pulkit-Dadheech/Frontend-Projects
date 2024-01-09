@@ -1,5 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
-import {SessionStorageSetter} from "../components/SessionStorageHandler/SessionStorageHandler";
+import {setLocalStorageData} from "../components/SessionStorageHandler/SessionStorageHandler";
 
 export class ListTableStore<T extends Record<string, any>> {
     @observable fetchedDataFunction;
@@ -19,7 +19,7 @@ export class ListTableStore<T extends Record<string, any>> {
 
     async fetchCartData() {
         const result = await this.fetchedDataFunction(this.userId);
-        SessionStorageSetter('cartProducts'+this.userId,result);
+        setLocalStorageData('cartProducts'+this.userId,result);
         this.setData(result);
     }
 
@@ -95,6 +95,6 @@ export class ListTableStore<T extends Record<string, any>> {
 
     @action setUserId(id: number) {
         this.userId = id;
-        SessionStorageSetter('userId',this.userId);
+        setLocalStorageData('userId',this.userId);
     }
 }

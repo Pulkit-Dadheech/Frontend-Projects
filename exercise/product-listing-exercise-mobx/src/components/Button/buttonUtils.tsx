@@ -4,7 +4,7 @@ import {TCartProduct} from "../../types/allTypes";
 import {apiQueries, createApiUrl} from "../../dataFetchingFile";
 import {useRootStore} from "../../Context/RootContext";
 import {ListTableStore} from "../../store/ListTableStore";
-import {SessionStorageGetter, SessionStorageSetter} from "../SessionStorageHandler/SessionStorageHandler";
+import {getLocalStorageData, setLocalStorageData} from "../SessionStorageHandler/SessionStorageHandler";
 import {AddToCartButton} from "./addToCartButton";
 
 interface userCartItemsWithQuantity {
@@ -45,11 +45,11 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
                     skip: store.data.skip,
                     total: store.data.total
                 }
-                SessionStorageSetter('cartProducts' + cart.cartStore.userId, newStore);
+                setLocalStorageData('cartProducts' + cart.cartStore.userId, newStore);
                 store.setData(newStore);
                 formStore.customFormStore.setData(result.filter((data:any)=>data.id.includes("custom")));
             } else {
-                SessionStorageSetter('customProducts', result);
+                setLocalStorageData('customProducts', result);
                 store.setData(result);
                 formStore.customFormStore.setData(result.filter((data:any)=>data.id.includes("custom")));
             }
@@ -79,11 +79,11 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
                     skip: store.data.skip,
                     total: store.data.total
                 }
-                SessionStorageSetter('cartProducts' + cart.cartStore.userId, newStore);
+                setLocalStorageData('cartProducts' + cart.cartStore.userId, newStore);
                 store.setData(newStore);
                 formStore.customFormStore.setData(result.filter((data:any)=>data.id.toString().includes("custom")));
             } else {
-                SessionStorageSetter('customProducts', result);
+                setLocalStorageData('customProducts', result);
                 store.setData(result);
                 formStore.customFormStore.setData(result.filter((data:any)=>data.id.toString().includes("custom")));
             }
@@ -102,7 +102,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
             quantity = 0;
         }
 
-        const prevCartQuantitySessionData = SessionStorageGetter('userPrevCartQuantityData' + cart.cartStore.userId);
+        const prevCartQuantitySessionData = getLocalStorageData('userPrevCartQuantityData' + cart.cartStore.userId);
         cart.setUserPrevCartQuantityData(prevCartQuantitySessionData);
 
         const updatedProduct = {id: id, quantity: isDelete ? quantity - 1 : quantity + 1};
@@ -114,7 +114,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
             }
         )
 
-        SessionStorageSetter('userPrevCartQuantityData' + cart.cartStore.userId, updatedCarts);
+        setLocalStorageData('userPrevCartQuantityData' + cart.cartStore.userId, updatedCarts);
         cart.setUserPrevCartQuantityData(updatedCarts);
 
         try {
@@ -136,7 +136,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
                     skip: store.data.skip,
                     limit: store.data.limit,
                 });
-                SessionStorageSetter('cartProducts' + cart.cartStore.userId, {
+                setLocalStorageData('cartProducts' + cart.cartStore.userId, {
                     carts: Array(data),
                     total: store.data.total,
                     skip: store.data.skip,
@@ -176,7 +176,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
             skip: 0,
             limit: 100
         });
-        SessionStorageSetter('cartProducts' + cart.cartStore.userId, {
+        setLocalStorageData('cartProducts' + cart.cartStore.userId, {
             carts: [responseReceived],
             total: 1,
             skip: 0,

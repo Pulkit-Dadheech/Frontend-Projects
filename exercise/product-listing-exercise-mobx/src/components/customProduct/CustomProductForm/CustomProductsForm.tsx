@@ -3,7 +3,7 @@ import './ProductForm.css';
 import {useRouterStore} from "mobx-state-router";
 import {useRootStore} from "../../../Context/RootContext";
 import {observer} from "mobx-react-lite";
-import {SessionStorageGetter, SessionStorageSetter} from "../../SessionStorageHandler/SessionStorageHandler";
+import {getLocalStorageData, setLocalStorageData} from "../../SessionStorageHandler/SessionStorageHandler";
 import {MessageField, NameField, NumberField, RadioField} from "../../HOC/FieldInputElements";
 import {IFormDataValue} from "../../../store/FormStore";
 
@@ -32,8 +32,8 @@ export const CustomProductForm = observer(() => {
     const {formStore,cart} = useRootStore();
 
     useEffect(() => {
-        const customProductData = SessionStorageGetter('customProducts');
-        const customProductIdBeforeRefresh = SessionStorageGetter('customProductId');
+        const customProductData = getLocalStorageData('customProducts');
+        const customProductIdBeforeRefresh = getLocalStorageData('customProductId');
         if (customProductData) {
             formStore.customFormStore.setData(customProductData)
         }
@@ -82,7 +82,7 @@ export const CustomProductForm = observer(() => {
         });
 
         if (!errorDetected && newData !== null && Object.keys(newData).length > 1) {
-            const customProductIdBeforeRefresh = SessionStorageGetter('customId')
+            const customProductIdBeforeRefresh = getLocalStorageData('customId')
 
             if (customProductIdBeforeRefresh) {
                 formStore.updateCustomId(+customProductIdBeforeRefresh + 1);
@@ -100,7 +100,7 @@ export const CustomProductForm = observer(() => {
                 formStore.customFormStore.setData([...formStore.customFormStore.data, newData]);
                 formStore.updateSuccessMessage("Form Submitted Successfully");
                 setTimeout(() => formStore.updateSuccessMessage(""), 4000)
-                SessionStorageSetter('customProducts', formStore.customFormStore.data)
+                setLocalStorageData('customProducts', formStore.customFormStore.data)
                 const newStore = {
                     carts: [{
                         ...cart.cartStore?.data?.carts[0],
@@ -124,7 +124,7 @@ export const CustomProductForm = observer(() => {
                     total: 1
                 }
                 cart.cartStore.setData(newStore);
-                SessionStorageSetter('customProducts', formStore.customFormStore.data);
+                setLocalStorageData('customProducts', formStore.customFormStore.data);
                 formStore.resetFormData();
             }
 

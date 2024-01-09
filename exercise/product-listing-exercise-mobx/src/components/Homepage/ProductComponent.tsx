@@ -9,7 +9,7 @@ import {ButtonUtils} from "../Button/buttonUtils";
 import {useRootStore} from "../../Context/RootContext";
 import {CartStore} from "../../store/cartStore";
 import {ListTableStore} from "../../store/ListTableStore";
-import {SessionStorageGetter} from "../SessionStorageHandler/SessionStorageHandler";
+import {getLocalStorageData} from "../SessionStorageHandler/SessionStorageHandler";
 
 export const ProductComponent = observer(() => {
     const {cart, product} = useRootStore();
@@ -22,7 +22,7 @@ export const ProductComponent = observer(() => {
     }, []);
 
     useEffect(() => {
-        const data = SessionStorageGetter('cartProducts' + cart.cartStore.userId);
+        const data = getLocalStorageData('cartProducts' + cart.cartStore.userId);
 
         const getCartData = async () => {
             await cart.cartStore.fetchCartData();

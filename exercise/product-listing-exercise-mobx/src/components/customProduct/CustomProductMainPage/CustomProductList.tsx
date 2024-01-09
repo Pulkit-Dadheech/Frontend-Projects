@@ -5,7 +5,7 @@ import {ButtonUtils} from "../../Button/buttonUtils";
 import {useRootStore} from "../../../Context/RootContext";
 import {NotFoundComponent} from "../../NoSearchResultFound/NotFoundComponent";
 import {ListTableStore} from "../../../store/ListTableStore";
-import {SessionStorageGetter} from "../../SessionStorageHandler/SessionStorageHandler";
+import {getLocalStorageData} from "../../SessionStorageHandler/SessionStorageHandler";
 import {FormStore} from "../../../store/FormStore";
 
 export const CustomProductList = observer(() => {
@@ -13,8 +13,8 @@ export const CustomProductList = observer(() => {
     const store = formStore.customFormStore;
 
     useEffect(() => {
-        const customProductDataBeforeRefresh = SessionStorageGetter('customProducts');
-        const customProductIdBeforeRefresh = SessionStorageGetter('customProductId')
+        const customProductDataBeforeRefresh = getLocalStorageData('customProducts');
+        const customProductIdBeforeRefresh = getLocalStorageData('customProductId')
 
         if (customProductIdBeforeRefresh) {
             formStore.updateCustomId(+customProductIdBeforeRefresh + 1);

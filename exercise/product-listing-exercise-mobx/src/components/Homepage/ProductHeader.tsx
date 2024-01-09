@@ -3,7 +3,7 @@ import './ProductHeader.css';
 import {observer} from "mobx-react-lite";
 import {useRouterStore} from "mobx-state-router";
 import {useRootStore} from "../../Context/RootContext";
-import {SessionStorageGetter} from "../SessionStorageHandler/SessionStorageHandler";
+import {getLocalStorageData} from "../SessionStorageHandler/SessionStorageHandler";
 
 export const ProductHeader = observer(() => {
     const [searchText, setSearchText] = useState("");
@@ -12,7 +12,7 @@ export const ProductHeader = observer(() => {
 
     useEffect(() => {
 
-        const sessionUserId = SessionStorageGetter('userId');
+        const sessionUserId = getLocalStorageData('userId');
         if (sessionUserId) {
             cart.cartStore.setUserId(sessionUserId);
         }

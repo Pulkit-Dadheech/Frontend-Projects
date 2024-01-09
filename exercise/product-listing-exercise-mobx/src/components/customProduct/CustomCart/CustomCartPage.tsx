@@ -6,7 +6,7 @@ import React, {useEffect} from "react";
 import {CustomCartHeader} from "./CustomCartHeader";
 import {ListTableStore} from "../../../store/ListTableStore";
 import {observer} from "mobx-react-lite";
-import {SessionStorageGetter} from "../../SessionStorageHandler/SessionStorageHandler";
+import {getLocalStorageData} from "../../SessionStorageHandler/SessionStorageHandler";
 import {FormStore} from "../../../store/FormStore";
 import {IFormProps} from "../CustomProductForm/CustomProductsForm";
 
@@ -15,8 +15,8 @@ export const CustomCartPage = observer(() => {
     const cartTotalProducts = formStore.customFormStore.data?.filter((product: TSingleCustomProduct) => product.quantity > 0).length;
 
     useEffect(() => {
-        const customProductDataBeforeRefresh = SessionStorageGetter('customProducts');
-        const customProductIdBeforeRefresh = SessionStorageGetter('customProductId')
+        const customProductDataBeforeRefresh = getLocalStorageData('customProducts');
+        const customProductIdBeforeRefresh = getLocalStorageData('customProductId')
 
         if (customProductIdBeforeRefresh) {
             formStore.updateCustomId(+customProductIdBeforeRefresh + 1);

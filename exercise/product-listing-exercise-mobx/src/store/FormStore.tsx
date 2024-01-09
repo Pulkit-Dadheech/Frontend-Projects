@@ -1,6 +1,6 @@
 import {action, makeObservable, observable} from "mobx";
 import {ListTableStore} from "./ListTableStore";
-import {SessionStorageSetter} from "../components/SessionStorageHandler/SessionStorageHandler";
+import {setLocalStorageData} from "../components/SessionStorageHandler/SessionStorageHandler";
 
 export interface IFormDataValue {
     value: any;
@@ -169,7 +169,7 @@ export class FormStore<T extends Record<keyof T, IFormDataValue>> {
     @action
     updateCustomId(id: number){
         this.customId=id;
-        SessionStorageSetter("customId",id);
+        setLocalStorageData("customId",id);
     }
     @action
     updateSuccessMessage(message: string){

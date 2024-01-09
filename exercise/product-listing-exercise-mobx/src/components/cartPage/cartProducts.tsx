@@ -6,17 +6,17 @@ import {Cart} from "../GenericCart/Cart";
 import {NotFoundComponent} from "../NoSearchResultFound/NotFoundComponent";
 import {CartStore} from "../../store/cartStore";
 import {ListTableStore} from "../../store/ListTableStore";
-import {SessionStorageGetter} from "../SessionStorageHandler/SessionStorageHandler";
+import {getLocalStorageData} from "../SessionStorageHandler/SessionStorageHandler";
 
 export const CartProducts = observer(() => {
     const {cart, formStore} = useRootStore();
     const cartTotalProducts = cart.cartStore.data?.carts[0]?.products.filter((product: TCartProduct) => product.quantity > 0).length;
 
     useEffect(() => {
-        const userIdBeforeRefresh = SessionStorageGetter('userId');
+        const userIdBeforeRefresh = getLocalStorageData('userId');
         if (userIdBeforeRefresh)
             cart.cartStore.setUserId(userIdBeforeRefresh);
-        const data = SessionStorageGetter('cartProducts' + cart.cartStore.userId)
+        const data = getLocalStorageData('cartProducts' + cart.cartStore.userId)
 
         const getCartData = async () => {
             await cart.cartStore.fetchCartData();
@@ -29,7 +29,7 @@ export const CartProducts = observer(() => {
     }, [cart.cartStore.userId]);
 
     useEffect(() => {
-        const customProducts = SessionStorageGetter("customProducts");
+        const customProducts = getLocalStorageData("customProducts");
         if (customProducts && !!cart.cartStore.data.carts.length) {
             const newStore = {
                 carts: [{
