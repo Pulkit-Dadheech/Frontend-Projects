@@ -6,7 +6,6 @@ import {useRootStore} from "../../Context/RootContext";
 import {ListTableStore} from "../../store/ListTableStore";
 import {getLocalStorageData, setLocalStorageData} from "../SessionStorageHandler/SessionStorageHandler";
 import {AddToCartButton} from "./addToCartButton";
-import {formStore} from "../customProduct/CustomProductForm/CustomProductsForm";
 
 interface userCartItemsWithQuantity {
     [id: number]: { id: number; quantity: number };
@@ -21,14 +20,14 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
     store: T
 }) => {
 
-    const {cart} = useRootStore();
+    const {cart, customProduct} = useRootStore();
 
 
     function onAdd(id: number, isCustom: boolean, stock: number, quantity: number) {
 
         if (isCustom) {
             const result = data.map((product: TCartProduct) => {
-                if (product.id === id && quantity < stock) {
+                if (product.id.toString() === id.toString() && quantity < stock) {
                     return {
                         ...product,
                         quantity: product.quantity + 1,
@@ -48,11 +47,11 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
                 }
                 setLocalStorageData('cartProducts' + cart.cartStore.userId, newStore);
                 store.setData(newStore);
-                formStore.customFormStore.setData(result.filter((data: any) => data.id.toString().includes("custom")));
+                customProduct.customProductStore.setData(result.filter((data: any) => data.id.toString().includes("custom")));
             } else {
                 setLocalStorageData('customProducts', result);
                 store.setData(result);
-                formStore.customFormStore.setData(result.filter((data: any) => data.id.toString().includes("custom")));
+                customProduct.customProductStore.setData(result.filter((data: any) => data.id.toString().includes("custom")));
             }
         } else {
             AddOrRemoveProductFromCart(id, quantity, false)
@@ -62,7 +61,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
     function onDelete(id: number, isCustom: boolean, stock: number, quantity: number) {
         if (isCustom) {
             const result = data.map((product: TCartProduct) => {
-                if (product.id === id) {
+                if (product.id.toString() === id.toString()) {
                     return {
                         ...product,
                         quantity: product.quantity - 1,
@@ -80,13 +79,14 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
                     skip: store.data.skip,
                     total: store.data.total
                 }
+                console.log("store", store);
                 setLocalStorageData('cartProducts' + cart.cartStore.userId, newStore);
                 store.setData(newStore);
-                formStore.customFormStore.setData(result.filter((data: any) => data.id.toString().includes("custom")));
+                customProduct.customProductStore.setData(result.filter((data: any) => data.id.toString().includes("custom")));
             } else {
                 setLocalStorageData('customProducts', result);
                 store.setData(result);
-                formStore.customFormStore.setData(result.filter((data: any) => data.id.toString().includes("custom")));
+                customProduct.customProductStore.setData(result.filter((data: any) => data.id.toString().includes("custom")));
             }
         } else {
             AddOrRemoveProductFromCart(id, quantity, true)

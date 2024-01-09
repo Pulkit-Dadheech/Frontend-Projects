@@ -1,16 +1,17 @@
 import React, {useEffect} from "react";
-import {TSingleCustomProduct} from "../../../types/allTypes";
+import {TCustomProductsWithQuantity, TSingleCustomProduct} from "../../../types/allTypes";
 import {observer} from "mobx-react-lite";
 import {ButtonUtils} from "../../Button/buttonUtils";
-import {useRootStore} from "../../../Context/RootContext";
 import {NotFoundComponent} from "../../NoSearchResultFound/NotFoundComponent";
 import {ListTableStore} from "../../../store/ListTableStore";
 import {getLocalStorageData} from "../../SessionStorageHandler/SessionStorageHandler";
 import {FormStore} from "../../../store/FormStore";
+import {formStore} from "../CustomProductForm/CustomProductsForm";
+import {useRootStore} from "../../../Context/RootContext";
 
 export const CustomProductList = observer(() => {
-    const {formStore} = useRootStore();
-    const store = formStore.customFormStore;
+    const {customProduct }=useRootStore();
+    const store=customProduct.customProductStore;
 
     useEffect(() => {
         const customProductDataBeforeRefresh = getLocalStorageData('customProducts');
@@ -58,7 +59,7 @@ export const CustomProductList = observer(() => {
                             <p>Description: {cartProduct.description}</p>
                         </div>
                         <div className={"product-rating"}>
-                            <ButtonUtils<ListTableStore<FormStore<any>>> quantity={cartProduct.quantity}
+                            <ButtonUtils<ListTableStore<TCustomProductsWithQuantity[]>> quantity={cartProduct.quantity}
                                                                          id={cartProduct.id}
                                                                          stock={cartProduct.total} isCustom={true}
                                                                          store={store} data={store.data}/>

@@ -9,7 +9,7 @@ import {ListTableStore} from "../../store/ListTableStore";
 import {getLocalStorageData} from "../SessionStorageHandler/SessionStorageHandler";
 
 export const CartProducts = observer(() => {
-    const {cart, formStore} = useRootStore();
+    const {cart, customProduct} = useRootStore();
     const cartTotalProducts = cart.cartStore.data?.carts[0]?.products.filter((product: TCartProduct) => product.quantity > 0).length;
 
     useEffect(() => {
@@ -30,33 +30,22 @@ export const CartProducts = observer(() => {
 
     useEffect(() => {
         const customProducts = getLocalStorageData("customProducts");
-        if (customProducts && !!cart.cartStore.data.carts.length) {
+        if (customProducts) {
             const newStore = {
                 carts: [{
                     ...cart.cartStore.data?.carts[0],
-                    products: [...cart.cartStore.data?.carts[0]?.products, ...customProducts]
+                    products: !!cart.cartStore.data?.carts.length ? [...cart.cartStore.data?.carts[0]?.products, ...customProducts] : [...customProducts]
                 }],
-                limit: cart.cartStore.data.limit,
-                skip: cart.cartStore.data.skip,
-                total: cart.cartStore.data.total
+                limit: 1,
+                skip: 0,
+                total: 1
             }
             cart.cartStore.setData(newStore);
-
-        } else if (customProducts) {
-            const newStore = {
-                carts: [{
-                    products: [...customProducts]
-                }],
-                limit: cart.cartStore.data.limit,
-                skip: cart.cartStore.data.skip,
-                total: cart.cartStore.data.total
-            }
-            cart.cartStore.setData(newStore);
-        } else if (formStore.customFormStore.data) {
+        } else if (customProduct.customProductStore.data) {
             const newStore = {
                 carts: [{
                     ...cart.cartStore.data.carts[0],
-                    products: [...formStore.customFormStore.data]
+                    products: [...customProduct.customProductStore.data]
                 }],
                 limit: cart.cartStore.data.limit,
                 skip: cart.cartStore.data.skip,
@@ -64,6 +53,7 @@ export const CartProducts = observer(() => {
             }
             cart.cartStore.setData(newStore);
         }
+
     }, [cart.cartStore.userId]);
 
     if (!cart.cartStore.data?.carts[0]?.products.length || cartTotalProducts === 0) {

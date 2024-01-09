@@ -5,7 +5,9 @@ import {useRootStore} from "../../../Context/RootContext";
 import {observer} from "mobx-react-lite";
 import {getLocalStorageData, setLocalStorageData} from "../../SessionStorageHandler/SessionStorageHandler";
 import {MessageField, NameField, NumberField, RadioField} from "../../HOC/FieldInputElements";
-import {IFormDataValue} from "../../../store/FormStore";
+import {FormStore, IFormDataValue} from "../../../store/FormStore";
+import FormWrapper from "../../HOC/FormWrapper";
+import {TCustomProductsWithQuantity} from "../../../types/allTypes";
 
 export interface IFormProps {
     title: IFormDataValue;
@@ -14,7 +16,6 @@ export interface IFormProps {
     discountPercentage: IFormDataValue;
     total: IFormDataValue;
     description: IFormDataValue;
-
     [x: string]: IFormDataValue;
 }
 
@@ -26,16 +27,24 @@ export type TCustomProductFormProps = IFormProps & {
     quantity: number;
 }
 
+export const formStore = new FormStore<IFormProps>({
+    title: {value: "",isRequired: true},
+    category: {value: "", isRequired: true},
+    price: {value: 0, isRequired: true},
+    discountPercentage: {value: 0, isRequired: true},
+    total: {value: 1, isRequired: true},
+    description: {value: ""},
+});
 
 export const CustomProductForm = observer(() => {
     const routerStore = useRouterStore();
-    const {formStore,cart} = useRootStore();
+    const {cart,customProduct} = useRootStore();
 
     useEffect(() => {
         const customProductData = getLocalStorageData('customProducts');
         const customProductIdBeforeRefresh = getLocalStorageData('customProductId');
         if (customProductData) {
-            formStore.customFormStore.setData(customProductData)
+            customProduct.customProductStore.setData(customProductData)
         }
 
         if (customProductIdBeforeRefresh) {
@@ -63,11 +72,11 @@ export const CustomProductForm = observer(() => {
     function handleSubmit() {
 
         const formData = formStore.formData;
-        let newData = {} as Record<keyof TCustomProductFormProps, any> | null;
+        let newData = {} as Record<keyof TCustomProductsWithQuantity, any> | null;
         let errorDetected = false;
 
         Object.keys(formData).forEach((key) => {
-            if (newData) newData[key] = formData[key].value;
+            if (newData) newData[key as keyof TCustomProductsWithQuantity] = formData[key].value;
             if (formData[key].isRequired && formData[key].value === "") {
                 newData = null;
                 return;
@@ -95,16 +104,15 @@ export const CustomProductForm = observer(() => {
             newData["rating"] = 4.5;
             newData["customProduct"] = true;
             newData["quantity"] = 0;
-            console.log(newData);
-            if (formStore.customFormStore.data) {
-                formStore.customFormStore.setData([...formStore.customFormStore.data, newData]);
+            if (customProduct.customProductStore.data) {
+                customProduct.customProductStore.setData([...customProduct.customProductStore.data, newData]);
                 formStore.updateSuccessMessage("Form Submitted Successfully");
                 setTimeout(() => formStore.updateSuccessMessage(""), 4000)
-                setLocalStorageData('customProducts', formStore.customFormStore.data)
+                setLocalStorageData('customProducts', customProduct.customProductStore.data)
                 const newStore = {
                     carts: [{
                         ...cart.cartStore?.data?.carts[0],
-                        products: cart.cartStore.data ? [...cart.cartStore.data?.carts[0]?.products,...formStore.customFormStore.data] : [...formStore.customFormStore.data]
+                        products: cart.cartStore.data ? [...cart.cartStore.data?.carts[0]?.products,...customProduct.customProductStore.data] : [...customProduct.customProductStore.data]
                     }],
                     limit: 1,
                     skip: 0,
@@ -113,18 +121,18 @@ export const CustomProductForm = observer(() => {
                 cart.cartStore.setData(newStore);
                 formStore.resetFormData();
             } else {
-                formStore.customFormStore.setData([newData]);
+                customProduct.customProductStore.setData([newData]);
                 const newStore = {
                     carts: [{
                         ...cart.cartStore?.data?.carts[0],
-                        products: cart.cartStore.data ? [...cart.cartStore.data?.carts[0]?.products,...formStore.customFormStore.data] : [...formStore.customFormStore.data]
+                        products: cart.cartStore.data ? [...cart.cartStore.data?.carts[0]?.products,newData] : [newData]
                     }],
                     limit: 1,
                     skip: 0,
                     total: 1
                 }
                 cart.cartStore.setData(newStore);
-                setLocalStorageData('customProducts', formStore.customFormStore.data);
+                setLocalStorageData('customProducts', customProduct.customProductStore.data);
                 formStore.resetFormData();
             }
 
@@ -134,6 +142,10 @@ export const CustomProductForm = observer(() => {
         }
     }
 
+    function handleReset(e: React.SyntheticEvent){
+        e.preventDefault();
+    }
+
     return (
         <div className="form-container">
             <div className={"form-header"}>
@@ -141,7 +153,11 @@ export const CustomProductForm = observer(() => {
                 <button onClick={() => routerStore.goTo('customProduct')}>View Custom Products</button>
             </div>
 
-            <form className="product-form" onSubmit={handleSubmit}>
+            <FormWrapper<IFormProps>
+                formStore={formStore}
+                onSubmit={handleSubmit}
+                onReset={handleReset}
+            >
                 <NameField
                     name={"title"}
                     label={"Enter Your Product Name"}
@@ -179,7 +195,7 @@ export const CustomProductForm = observer(() => {
                     Submit
                 </button>
                 {formStore.successMessage && <div className="success-message">{formStore.successMessage}</div>}
-            </form>
+            </FormWrapper>
         </div>
     );
 })
