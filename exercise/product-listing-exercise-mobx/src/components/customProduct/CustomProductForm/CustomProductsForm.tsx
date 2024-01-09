@@ -14,11 +14,12 @@ export interface IFormProps {
     discountPercentage: IFormDataValue;
     total: IFormDataValue;
     description: IFormDataValue;
+
     [x: string]: IFormDataValue;
 }
 
 export type TCustomProductFormProps = IFormProps & {
-    id: number;
+    id: string;
     images: Array<any>;
     rating: number;
     customProduct: boolean;
@@ -33,7 +34,6 @@ export const CustomProductForm = observer(() => {
     useEffect(() => {
         const customProductData = SessionStorageGetter('customProducts');
         const customProductIdBeforeRefresh = SessionStorageGetter('customProductId');
-
         if (customProductData) {
             formStore.customFormStore.setData(customProductData)
         }
@@ -45,20 +45,16 @@ export const CustomProductForm = observer(() => {
 
 
     const Validation = (name: string) => {
-        if(formStore.formData[name].isRequired){
+        if (formStore.formData[name].isRequired) {
             if (name === "title" && formStore.formData[name].value.length === 0) {
                 formStore.addErrorField(name, "Please Enter A Valid Name");
-            }
-            else if (name === "discountPercentage" && formStore.getValue(name)>100 || formStore.getValue(name)< 0) {
+            } else if (name === "discountPercentage" && formStore.getValue(name) > 100 || formStore.getValue(name) < 0) {
                 formStore.addErrorField(name, "Discount Percentage must be lie between 0 to 100");
-            }
-            else if ((name === "quantity" || name === "price") && formStore.getValue(name)<=0) {
+            } else if ((name === "quantity" || name === "price") && formStore.getValue(name) <= 0) {
                 formStore.addErrorField(name, `${name.toUpperCase()} must be greater than 0`);
-            }
-            else if(formStore.formData[name].value.length === 0){
-                formStore.addErrorField(name,"Please fill this field Correctly");
-            }
-            else {
+            } else if (formStore.formData[name].value.length === 0) {
+                formStore.addErrorField(name, "Please fill this field Correctly");
+            } else {
                 formStore.addErrorField(name, "");
             }
         }
@@ -94,7 +90,7 @@ export const CustomProductForm = observer(() => {
                 formStore.updateCustomId(formStore.customId + 1);
             }
 
-            newData["id"] = formStore.customId;
+            newData["id"] = `custom` + formStore.customId;
             newData["images"] = [];
             newData["rating"] = 4.5;
             newData["customProduct"] = true;
