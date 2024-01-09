@@ -2,6 +2,7 @@ import React from "react";
 import {InputType} from "reactstrap/types/lib/Input";
 import {EmailField} from "../HOC/FieldInputElements";
 import {useRootStore} from "../../Context/RootContext";
+import {JsonInputComponentNameHandler} from "../JsonInputComponentNameHandler";
 
 export type TCustomInputProps = {
     name: string;
@@ -25,9 +26,7 @@ export const JsonInputComponent: React.FC<TCustomInputProps> = ({
     const {formStore} = useRootStore();
     function handleDelete(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, entity: string, inputValueIndex: number) {
         e.preventDefault();
-        const newEntity = entity.toString();
-        const entityParts = newEntity.split(".");
-        const nestedProperty = entityParts[1];
+        const {nestedProperty}=JsonInputComponentNameHandler<string>(entity.toString())
 
         if (nestedProperty !== undefined) {
             formStore.deleteFormData(entity);

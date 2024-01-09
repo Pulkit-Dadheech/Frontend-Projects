@@ -2,6 +2,8 @@ import React from "react";
 import {observer} from "mobx-react-lite";
 import {useRootStore} from "../../Context/RootContext";
 import "../customProduct/CustomProductForm/ProductForm.css"
+import {JsonInputComponentNameHandler} from "../JsonInputComponentNameHandler";
+import {IFormProps} from "../customProduct/CustomProductForm/CustomProductsForm";
 
 export type TFormFieldComponents = {
     name: string;
@@ -33,9 +35,7 @@ export type TFieldPropsWithRender = {
 
 const FormField = observer((props: TFieldPropsWithRender) => {
     const {formStore: store} = useRootStore();
-    const newEntity = props.name as string;
-    const indexMatch = newEntity.split(".");
-    const baseEntity = indexMatch[0];
+    const {baseEntity}=JsonInputComponentNameHandler<IFormProps>(props.name.toString())
     let errorMessage = store.getErrorField(props.name);
     const handleChange = (value: string | string[] | boolean) => {
         store.updateFormData(props.name, value);
