@@ -19,15 +19,21 @@ export const CartHeader = observer(() => {
             getUserData();
     }, []);
 
-    const handleNavigation = () => {
+    const handleHomePageClick = () => {
         routerStore.goTo('home');
+    }
+    const handleCustomProductClick = () => {
+        routerStore.goTo('customProduct');
     }
 
     const userInfo = users.userStore.data?.users.find((user) => user.id === cart.cartStore.userId);
     return (
         <div className="cart-header">
             <div className="homepage">
-                <button onClick={handleNavigation}>HomePage</button>
+                <button onClick={handleHomePageClick}>HomePage</button>
+            </div>
+            <div className="homepage">
+                <button onClick={handleCustomProductClick}>CustomProduct</button>
             </div>
             <h1 className="cart-header-name">{`${userInfo ? userInfo.firstName : ""} ${userInfo ? userInfo.lastName : ""}`}</h1>
             <h2 className="cart-total-products">
