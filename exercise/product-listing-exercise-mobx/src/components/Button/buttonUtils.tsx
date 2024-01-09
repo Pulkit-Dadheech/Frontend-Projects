@@ -6,6 +6,7 @@ import {useRootStore} from "../../Context/RootContext";
 import {ListTableStore} from "../../store/ListTableStore";
 import {getLocalStorageData, setLocalStorageData} from "../SessionStorageHandler/SessionStorageHandler";
 import {AddToCartButton} from "./addToCartButton";
+import {formStore} from "../customProduct/CustomProductForm/CustomProductsForm";
 
 interface userCartItemsWithQuantity {
     [id: number]: { id: number; quantity: number };
@@ -13,17 +14,17 @@ interface userCartItemsWithQuantity {
 
 export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity, id, stock, isCustom, data, store}: {
     quantity: number,
-    id: number | string,
+    id: number,
     stock: number,
     isCustom: boolean,
     data: any,
     store: T
 }) => {
 
-    const {cart, formStore} = useRootStore();
+    const {cart} = useRootStore();
 
 
-    function onAdd(id: number | string, isCustom: boolean, stock: number, quantity: number) {
+    function onAdd(id: number, isCustom: boolean, stock: number, quantity: number) {
 
         if (isCustom) {
             const result = data.map((product: TCartProduct) => {
@@ -47,18 +48,18 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
                 }
                 setLocalStorageData('cartProducts' + cart.cartStore.userId, newStore);
                 store.setData(newStore);
-                formStore.customFormStore.setData(result.filter((data:any)=>data.id.includes("custom")));
+                formStore.customFormStore.setData(result.filter((data: any) => data.id.toString().includes("custom")));
             } else {
                 setLocalStorageData('customProducts', result);
                 store.setData(result);
-                formStore.customFormStore.setData(result.filter((data:any)=>data.id.includes("custom")));
+                formStore.customFormStore.setData(result.filter((data: any) => data.id.toString().includes("custom")));
             }
         } else {
             AddOrRemoveProductFromCart(id, quantity, false)
         }
     }
 
-    function onDelete(id: number | string, isCustom: boolean, stock: number, quantity: number) {
+    function onDelete(id: number, isCustom: boolean, stock: number, quantity: number) {
         if (isCustom) {
             const result = data.map((product: TCartProduct) => {
                 if (product.id === id) {
@@ -81,11 +82,11 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
                 }
                 setLocalStorageData('cartProducts' + cart.cartStore.userId, newStore);
                 store.setData(newStore);
-                formStore.customFormStore.setData(result.filter((data:any)=>data.id.toString().includes("custom")));
+                formStore.customFormStore.setData(result.filter((data: any) => data.id.toString().includes("custom")));
             } else {
                 setLocalStorageData('customProducts', result);
                 store.setData(result);
-                formStore.customFormStore.setData(result.filter((data:any)=>data.id.toString().includes("custom")));
+                formStore.customFormStore.setData(result.filter((data: any) => data.id.toString().includes("custom")));
             }
         } else {
             AddOrRemoveProductFromCart(id, quantity, true)
@@ -93,7 +94,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
     }
 
     async function AddOrRemoveProductFromCart(
-        id: any,
+        id: number,
         quantity: number | undefined,
         isDelete?: boolean,
     ) {
