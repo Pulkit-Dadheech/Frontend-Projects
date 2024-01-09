@@ -77,6 +77,9 @@ export type TSingleCustomProduct={
     total: number,
     customProduct: boolean,
 }
+export type TCustomProductsWithQuantity= TSingleCustomProduct &{
+    quantity: number;
+}
 
 export type TCustomProduct = TSingleCustomProduct[]
 
