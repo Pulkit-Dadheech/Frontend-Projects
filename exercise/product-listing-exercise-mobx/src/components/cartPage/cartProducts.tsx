@@ -22,7 +22,6 @@ export const CartProducts = observer(() => {
             await cart.cartStore.fetchCartData();
         }
         if (data) {
-            console.log("this is data", cart.cartStore.data);
             cart.cartStore.setData(data);
         } else if (!cart.cartStore.data || cart.cartStore.prevUserId !== cart.cartStore.userId) {
             getCartData();
@@ -31,9 +30,7 @@ export const CartProducts = observer(() => {
 
     useEffect(() => {
         const customProducts = SessionStorageGetter("customProducts");
-        console.log("custom",customProducts);
         if (customProducts && !!cart.cartStore.data.carts.length) {
-            console.log(cart.cartStore.data)
             const newStore = {
                 carts: [{
                     ...cart.cartStore.data?.carts[0],
@@ -74,10 +71,6 @@ export const CartProducts = observer(() => {
             <NotFoundComponent route={'home'}/>
         )
     }
-
-    console.log(formStore.customFormStore.data);
-    let data;
-    console.log("data", data);
 
     return (
         <>

@@ -13,14 +13,14 @@ export const CustomProductList = observer(() => {
     const store = formStore.customFormStore;
 
     useEffect(() => {
-        const customProductDataBeforeRefresh=SessionStorageGetter('customProducts');
-        const customProductIdBeforeRefresh=SessionStorageGetter('customProductId')
+        const customProductDataBeforeRefresh = SessionStorageGetter('customProducts');
+        const customProductIdBeforeRefresh = SessionStorageGetter('customProductId')
 
-        if(customProductIdBeforeRefresh){
-            formStore.updateCustomId(+customProductIdBeforeRefresh+1);
+        if (customProductIdBeforeRefresh) {
+            formStore.updateCustomId(+customProductIdBeforeRefresh + 1);
         }
 
-        if(!store.data && customProductDataBeforeRefresh){
+        if (!store.data && customProductDataBeforeRefresh) {
             store.setData(customProductDataBeforeRefresh);
         }
     }, []);
@@ -58,9 +58,10 @@ export const CustomProductList = observer(() => {
                             <p>Description: {cartProduct.description}</p>
                         </div>
                         <div className={"product-rating"}>
-                            <ButtonUtils<ListTableStore<FormStore<any>>> quantity={cartProduct.quantity} id={cartProduct.id}
-                                                              stock={cartProduct.total} isCustom={true}
-                                                              store={store} data={store.data}/>
+                            <ButtonUtils<ListTableStore<FormStore<any>>> quantity={cartProduct.quantity}
+                                                                         id={cartProduct.id}
+                                                                         stock={cartProduct.total} isCustom={true}
+                                                                         store={store} data={store.data}/>
                         </div>
                     </div>
                 ))
