@@ -29,7 +29,7 @@ export type TCustomProductFormProps = IFormProps & {
 
 export const CustomProductForm = observer(() => {
     const routerStore = useRouterStore();
-    const {formStore} = useRootStore();
+    const {formStore,cart} = useRootStore();
 
     useEffect(() => {
         const customProductData = SessionStorageGetter('customProducts');
@@ -101,10 +101,31 @@ export const CustomProductForm = observer(() => {
                 formStore.updateSuccessMessage("Form Submitted Successfully");
                 setTimeout(() => formStore.updateSuccessMessage(""), 4000)
                 SessionStorageSetter('customProducts', formStore.customFormStore.data)
+                const newStore = {
+                    carts: [{
+                        ...cart.cartStore?.data?.carts[0],
+                        products: cart.cartStore.data ? [...cart.cartStore.data?.carts[0]?.products,...formStore.customFormStore.data] : [...formStore.customFormStore.data]
+                    }],
+                    limit: 1,
+                    skip: 0,
+                    total: 1
+                }
+                cart.cartStore.setData(newStore);
                 formStore.resetFormData();
             } else {
                 formStore.customFormStore.setData([newData]);
+                const newStore = {
+                    carts: [{
+                        ...cart.cartStore?.data?.carts[0],
+                        products: cart.cartStore.data ? [...cart.cartStore.data?.carts[0]?.products,...formStore.customFormStore.data] : [...formStore.customFormStore.data]
+                    }],
+                    limit: 1,
+                    skip: 0,
+                    total: 1
+                }
+                cart.cartStore.setData(newStore);
                 SessionStorageSetter('customProducts', formStore.customFormStore.data);
+                formStore.resetFormData();
             }
 
         } else {

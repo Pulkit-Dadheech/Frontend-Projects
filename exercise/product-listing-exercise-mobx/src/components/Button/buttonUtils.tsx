@@ -13,17 +13,17 @@ interface userCartItemsWithQuantity {
 
 export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity, id, stock, isCustom, data, store}: {
     quantity: number,
-    id: number,
+    id: number | string,
     stock: number,
     isCustom: boolean,
     data: any,
     store: T
 }) => {
 
-    const {cart} = useRootStore();
+    const {cart, formStore} = useRootStore();
 
 
-    function onAdd(id: number, isCustom: boolean, stock: number, quantity: number) {
+    function onAdd(id: number | string, isCustom: boolean, stock: number, quantity: number) {
 
         if (isCustom) {
             const result = data.map((product: TCartProduct) => {
@@ -47,16 +47,18 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
                 }
                 SessionStorageSetter('cartProducts' + cart.cartStore.userId, newStore);
                 store.setData(newStore);
+                formStore.customFormStore.setData(result.filter((data:any)=>data.id.includes("custom")));
             } else {
                 SessionStorageSetter('customProducts', result);
                 store.setData(result);
+                formStore.customFormStore.setData(result.filter((data:any)=>data.id.includes("custom")));
             }
         } else {
             AddOrRemoveProductFromCart(id, quantity, false)
         }
     }
 
-    function onDelete(id: number, isCustom: boolean, stock: number, quantity: number) {
+    function onDelete(id: number | string, isCustom: boolean, stock: number, quantity: number) {
         if (isCustom) {
             const result = data.map((product: TCartProduct) => {
                 if (product.id === id) {
@@ -79,9 +81,11 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
                 }
                 SessionStorageSetter('cartProducts' + cart.cartStore.userId, newStore);
                 store.setData(newStore);
+                formStore.customFormStore.setData(result.filter((data:any)=>data.id.toString().includes("custom")));
             } else {
                 SessionStorageSetter('customProducts', result);
                 store.setData(result);
+                formStore.customFormStore.setData(result.filter((data:any)=>data.id.toString().includes("custom")));
             }
         } else {
             AddOrRemoveProductFromCart(id, quantity, true)
@@ -89,7 +93,7 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
     }
 
     async function AddOrRemoveProductFromCart(
-        id: number,
+        id: any,
         quantity: number | undefined,
         isDelete?: boolean,
     ) {
@@ -182,13 +186,6 @@ export const ButtonUtils = observer(<T extends ListTableStore<any>, >({quantity,
 
 
     return (<>
-        {/*{<div key={id} className="product-quantity-button">*/}
-        {/*    <button onClick={() => onAdd(id, isCustom, stock, quantity)}>{!quantity ? "Add to Cart" : "+"}</button>*/}
-        {/*    <span className={!!quantity ? 'display-inline' : 'display-none'}>*/}
-        {/*        <span className="product-quantity-button-text">{quantity}</span>*/}
-        {/*        <button onClick={() => onDelete(id, isCustom, stock, quantity)}>-</button>*/}
-        {/*    </span>*/}
-        {/*</div>*/}
         <AddToCartButton id={id} onAdd={onAdd} onDelete={onDelete} quantity={quantity} isCustom={isCustom}
                          stock={stock}/>
 
