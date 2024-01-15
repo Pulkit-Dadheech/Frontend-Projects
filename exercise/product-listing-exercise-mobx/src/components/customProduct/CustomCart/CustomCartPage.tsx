@@ -1,4 +1,3 @@
-import {useRootStore} from "../../../Context/RootContext";
 import {TSingleCustomProduct} from "../../../types/allTypes";
 import {Cart} from "../../GenericCart/Cart";
 import {NotFoundComponent} from "../../NoSearchResultFound/NotFoundComponent";
@@ -9,9 +8,11 @@ import {observer} from "mobx-react-lite";
 import {getLocalStorageData} from "../../SessionStorageHandler/SessionStorageHandler";
 import {FormStore} from "../../../store/FormStore";
 import {IFormProps} from "../CustomProductForm/CustomProductsForm";
+import {useFormContext} from "../../../Context/FormContext";
 
 export const CustomCartPage = observer(() => {
-    const {formStore} = useRootStore();
+    const {formStore} = useFormContext();
+
     const cartTotalProducts = formStore.customFormStore.data?.filter((product: TSingleCustomProduct) => product.quantity > 0).length;
 
     useEffect(() => {

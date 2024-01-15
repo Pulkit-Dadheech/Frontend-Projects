@@ -5,13 +5,12 @@ import {ButtonUtils} from "../../Button/buttonUtils";
 import {NotFoundComponent} from "../../NoSearchResultFound/NotFoundComponent";
 import {ListTableStore} from "../../../store/ListTableStore";
 import {getLocalStorageData} from "../../SessionStorageHandler/SessionStorageHandler";
-import {FormStore} from "../../../store/FormStore";
 import {formStore} from "../CustomProductForm/CustomProductsForm";
 import {useRootStore} from "../../../Context/RootContext";
 
 export const CustomProductList = observer(() => {
-    const {customProduct }=useRootStore();
-    const store=customProduct.customProductStore;
+    const {customProduct} = useRootStore();
+    const store = customProduct.customProductStore;
 
     useEffect(() => {
         const customProductDataBeforeRefresh = getLocalStorageData('customProducts');
@@ -60,9 +59,11 @@ export const CustomProductList = observer(() => {
                         </div>
                         <div className={"product-rating"}>
                             <ButtonUtils<ListTableStore<TCustomProductsWithQuantity[]>> quantity={cartProduct.quantity}
-                                                                         id={cartProduct.id}
-                                                                         stock={cartProduct.total} isCustom={true}
-                                                                         store={store} data={store.data}/>
+                                                                                        id={cartProduct.id}
+                                                                                        stock={cartProduct.total}
+                                                                                        isCustom={true}
+                                                                                        store={store}
+                                                                                        data={store.data}/>
                         </div>
                     </div>
                 ))

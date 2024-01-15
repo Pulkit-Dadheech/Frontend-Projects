@@ -1,5 +1,4 @@
 import {action, makeObservable, observable} from "mobx";
-import {ListTableStore} from "./ListTableStore";
 import {setLocalStorageData} from "../components/SessionStorageHandler/SessionStorageHandler";
 import {JsonInputComponentNameHandler} from "../components/JsonInputComponentNameHandler";
 
@@ -17,8 +16,8 @@ export class FormStore<T extends Record<keyof T, IFormDataValue>> {
     @observable formData: T;
     initialData: T;
     @observable errorMessage: string;
-    @observable customId: number=0;
-    @observable successMessage:string= "";
+    @observable customId: number = 0;
+    @observable successMessage: string = "";
 
     constructor(initialData: T) {
         this.formData = initialData;
@@ -28,7 +27,7 @@ export class FormStore<T extends Record<keyof T, IFormDataValue>> {
     }
 
     getValue(entity: keyof T) {
-        const {baseEntity,nestedProperty}=JsonInputComponentNameHandler<T>(entity.toString())
+        const {baseEntity, nestedProperty} = JsonInputComponentNameHandler<T>(entity.toString())
 
         if (nestedProperty !== undefined) {
             const index = parseInt(nestedProperty, 10);
@@ -46,7 +45,7 @@ export class FormStore<T extends Record<keyof T, IFormDataValue>> {
 
     getErrorField(entity: keyof T) {
 
-        const {baseEntity,nestedProperty}=JsonInputComponentNameHandler<T>(entity.toString())
+        const {baseEntity, nestedProperty} = JsonInputComponentNameHandler<T>(entity.toString())
 
         if (nestedProperty !== undefined) {
             const index = parseInt(nestedProperty, 10);
@@ -63,7 +62,7 @@ export class FormStore<T extends Record<keyof T, IFormDataValue>> {
 
 
     @action addErrorField(entity: keyof T, error: any) {
-        const {baseEntity,nestedProperty}=JsonInputComponentNameHandler<T>(entity.toString())
+        const {baseEntity, nestedProperty} = JsonInputComponentNameHandler<T>(entity.toString())
 
         if (nestedProperty !== undefined) {
             const index = parseInt(nestedProperty, 10);
@@ -101,7 +100,7 @@ export class FormStore<T extends Record<keyof T, IFormDataValue>> {
     @action
     updateFormData<K extends keyof T>(entity: K, value: T[K]['value']) {
         this.errorMessage = "";
-        const {baseEntity,nestedProperty}=JsonInputComponentNameHandler<T>(entity.toString())
+        const {baseEntity, nestedProperty} = JsonInputComponentNameHandler<T>(entity.toString())
 
         if (nestedProperty !== undefined) {
             const index = parseInt(nestedProperty, 10);
@@ -127,7 +126,7 @@ export class FormStore<T extends Record<keyof T, IFormDataValue>> {
 
     @action
     deleteFormData(entity: keyof T) {
-        const {baseEntity,nestedProperty}=JsonInputComponentNameHandler<T>(entity.toString())
+        const {baseEntity, nestedProperty} = JsonInputComponentNameHandler<T>(entity.toString())
 
         if (nestedProperty !== undefined) {
             const index = parseInt(nestedProperty, 10);
@@ -150,14 +149,16 @@ export class FormStore<T extends Record<keyof T, IFormDataValue>> {
     resetFormData() {
         this.formData = this.initialData;
     }
+
     @action
-    updateCustomId(id: number){
-        this.customId=id;
-        setLocalStorageData("customId",id);
+    updateCustomId(id: number) {
+        this.customId = id;
+        setLocalStorageData("customId", id);
     }
+
     @action
-    updateSuccessMessage(message: string){
-        this.successMessage=message;
+    updateSuccessMessage(message: string) {
+        this.successMessage = message;
     }
 }
 

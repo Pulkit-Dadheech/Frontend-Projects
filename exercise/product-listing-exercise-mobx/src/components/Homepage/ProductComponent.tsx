@@ -10,9 +10,11 @@ import {useRootStore} from "../../Context/RootContext";
 import {CartStore} from "../../store/cartStore";
 import {ListTableStore} from "../../store/ListTableStore";
 import {getLocalStorageData} from "../SessionStorageHandler/SessionStorageHandler";
+import {useRouterStore} from "mobx-state-router";
 
 export const ProductComponent = observer(() => {
     const {cart, product} = useRootStore();
+    const routerStore=useRouterStore();
 
     useEffect(() => {
         const getProductData = async () => {
@@ -35,7 +37,6 @@ export const ProductComponent = observer(() => {
             getCartData();
         }
     }, [cart.cartStore.userId]);
-
 
     if (product.dataLoading) {
         return <Loader/>
